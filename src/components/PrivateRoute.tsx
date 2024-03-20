@@ -1,11 +1,11 @@
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { getAuthUser } from "../utils/storage";
+// import React from "react";
+// import { Navigate, useLocation } from "react-router-dom";
+// import { getAuthUser } from "../utils/storage";
 
 const PrivateRoute = ({ children }: any) => {
   //   const isAuthenticated = localStorage.getItem("access_token");
-  const isAuthenticated = JSON.parse(getAuthUser());
-  const location = useLocation();
+  // const isAuthenticated = JSON.parse(getAuthUser());
+  // const location = useLocation();
 
   // if (!isAuthenticated) {
   //   // Redirect them to the /login page, but save the current location they were

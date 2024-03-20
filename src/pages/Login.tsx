@@ -1,6 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -16,8 +16,8 @@ import "./Login.scss";
 
 const Login = () => {
   const dispatch = useDispatch<any>();
-  const navigate = useNavigate();
-  const [loading, setLoading] = React.useState(false);
+  // const navigate = useNavigate();
+  const [loading] = React.useState(false);
 
   const schemaValidation = Yup.object({
     email: validations.email("Email").required("Email is required"),

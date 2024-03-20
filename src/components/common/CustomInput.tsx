@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 
 type InputProps = {
-  
+  placeholder: string;
+};
+
+function CustomInput({ placeholder }: InputProps) {
+  return <input placeholder={placeholder} />;
 }
 
-function CustomInput({}: InputProps) {
-  return (
-    <input />
-  )
-}
-
-export default CustomInput
+export default CustomInput;

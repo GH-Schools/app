@@ -69,7 +69,7 @@ function Drawer() {
       <div className="flex flex-col items-center w-full">
         <div className="flex justify-end w-full pb-2 md:none">
           <button onClick={() => setOpen(false)}>
-            <MdClose />
+            {open && <MdClose />}
           </button>
         </div>
 

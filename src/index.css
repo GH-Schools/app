@@ -14,8 +14,8 @@ html {
   --palette-color-contrast-3: #fff;
   --palette-color-4: #eb5e55;
   --palette-color-contrast-4: #000;
-  --palette-color-4: #f5f3bb;
-  --palette-color-contrast-4: #000;
+  --palette-color-5: #f5f3bb;
+  --palette-color-contrast-5: #000;
 }
 
 body {
@@ -47,8 +47,8 @@ code {
     --palette-color-3: #d81e5b;
     --palette-color-contrast-3: #fff;
     --palette-color-4: #eb5e55;
-    --palette-color-contrast-4: #000;
-    --palette-color-4: #f5f3bb;
-    --palette-color-contrast-4: #000;
+    --palette-color-contrast-4: #fff;
+    --palette-color-5: #f5f3bb;
+    --palette-color-contrast-5: #000;
   }
 }

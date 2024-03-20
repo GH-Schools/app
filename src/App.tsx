@@ -17,7 +17,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import NoPage from "./pages/UnknownPage";
 import Dashboard from "./pages/Dashboard";
+import Admissions from "./pages/Admissions";
 
+import DefaultLayout from "./layouts/DefaultLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 
 // Other assets
@@ -55,8 +57,11 @@ function App() {
       <React.Suspense fallback={<SuspenseFallback />}>
         <Router>
           <Switch>
-            <Route index path="/" element={<Login />} />
-            <Route index path="/app" element={<DefaultApp />} />
+            <Route path="/" element={<DefaultLayout />}>
+              <Route index element={<Login />} />
+              <Route path="app" element={<DefaultApp />} />
+              <Route path="admissions" element={<Admissions />} />
+            </Route>
 
             {/* DASHBOARD */}
             <Route

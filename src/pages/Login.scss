@@ -21,7 +21,7 @@ form {
     font-weight: 900;
     font-size: 24px;
     line-height: 33px;
-    color: #009688;
+    color: var(--palette-color-1);
     margin-bottom: 25px;
   }
 
@@ -47,17 +47,17 @@ form {
     button {
       display: flex;
       justify-content: center;
-      background: #009688;
-      border: 1px solid #009688;
+      background: var(--palette-color-4);
+      border: 1px solid var(--palette-color-4);
       border-radius: 5px;
       width: 100%;
-      color: #ffffff;
+      color: var(--palette-color-contrast-4);
       padding: 13px 20px;
       cursor: pointer;
       transition: all 0.3s ease;
 
       &:hover {
-        background: #016359;
+        background: var(--palette-color-3);
       }
     }
   }

@@ -8,6 +8,7 @@ import {
   MdPayment,
 } from "react-icons/md";
 import logo from "../assets/favicon.png";
+import { useNavigate } from "react-router-dom";
 
 type DrawerMenuProps = {
   text: React.ReactNode | JSX.Element;
@@ -54,7 +55,9 @@ const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
 };
 
 function Drawer() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <div
       className="flex flex-col fixed md:relative items-center p-6 w-[360px] h-full min-h-screen justify-between overflow-auto"
@@ -91,7 +94,11 @@ function Drawer() {
       </div>
 
       <nav className="flex flex-col w-full py-2">
-        <DrawerMenu text="Log Out" icon={<MdExitToApp />} />
+        <DrawerMenu
+          text="Log Out"
+          icon={<MdExitToApp />}
+          onClick={() => navigate("/")}
+        />
       </nav>
     </div>
   );

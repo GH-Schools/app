@@ -13,7 +13,6 @@ import logo from "../assets/favicon.png";
 import { validations } from "../utils/validations";
 
 import "./Login.scss";
-import { AsyncThunkAction } from "@reduxjs/toolkit";
 
 const Login = () => {
   const dispatch = useDispatch<any>();
@@ -110,11 +109,11 @@ const Login = () => {
                     </div>
 
                     <div className="login-btn">
-                      <button type="submit">
+                      <button type="submit" className="font-bold uppercase">
                         {isSubmitting ? (
                           <Spinner size={20} color="secondary" />
                         ) : (
-                          "LOGIN"
+                          "Login"
                         )}
                       </button>
                     </div>

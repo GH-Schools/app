@@ -4,7 +4,7 @@ import Button from "../components/common/Button";
 import logo from "../assets/favicon.png";
 
 function Home() {
-  const [animate, setAnimate] = useState(false);
+  const [animate] = useState(false);
 
   const schools = [
     { name: "Fashion School", logo, textColor: "text-black" },

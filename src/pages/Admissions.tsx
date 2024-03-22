@@ -1,11 +1,11 @@
 import { Formik } from "formik";
-import React, { SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 
 import { login } from "../redux/actions/auth.action";
 
 import { validations } from "../utils/validations";
-import logo from "../assets/favicon.png";
+// import logo from "../assets/favicon.png";
 
 import Spinner from "../components/Spinner";
 import "./Admissions.scss";

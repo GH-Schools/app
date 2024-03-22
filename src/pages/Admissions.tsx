@@ -36,8 +36,8 @@ const Section1 = ({ isActive }: SectionProps) => {
       <section
         className={`card flex flex-col flex-none rounded-2xl shadow-lg text-center items-center justify-center bg-white w-full p-8 mb-5`}
       >
-        <h2 className="font-bold text-xl">SELECT A PAYMENT METHOD BELOW</h2>
-        <p className="mt-4">ADMISSION FORM INTO GH SCHOOLS COSTS GHC 150.00</p>
+        <h2 className="font-bold text-xl md:text-2xl">SELECT A PAYMENT METHOD BELOW</h2>
+        <p className="md:mt-3 mt-1 text-gray-500 font-semibold text-base">Admission form into GH Schools costs GHC 150.00</p>
       </section>
 
       <section className="card flex flex-col flex-none rounded-2xl shadow-lg items-center justify-center bg-white w-full p-8 mb-5">
@@ -362,7 +362,7 @@ const NavigationTab = ({
         style={{ minHeight: "unset" }}
       >
         <h2 className="font-bold text-base md:text-lg">LOGIN TO DASHBOARD</h2>
-        <p className="mt-2 capitalize">(For Returning students) </p>
+        <p className={`mt-1.5 capitalize font-semibold text-sm ${activeSection === SECTIONS.SECTION2 ? "text-white" : "text-gray-500"}`}>(For Returning students) </p>
       </button>
 
       <button
@@ -375,7 +375,7 @@ const NavigationTab = ({
         style={{ minHeight: "unset" }}
       >
         <h2 className="font-bold text-base md:text-lg">APPLY FOR ADMISSION</h2>
-        <p className="mt-2 capitalize">(For Applicants)</p>
+        <p className={`mt-1.5 capitalize font-semibold text-sm ${activeSection === SECTIONS.SECTION1 ? "text-white" : "text-gray-500"}`}>(For Applicants)</p>
       </button>
     </div>
   );

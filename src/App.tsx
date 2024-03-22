@@ -14,6 +14,7 @@ import SuspenseFallback from "./components/SuspenseFallback";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PrivateRoute from "./components/PrivateRoute";
 
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NoPage from "./pages/UnknownPage";
 import Dashboard from "./pages/Dashboard";
@@ -57,7 +58,9 @@ function App() {
       <React.Suspense fallback={<SuspenseFallback />}>
         <Router>
           <Switch>
-            <Route path="/" element={<DefaultLayout />}>
+            <Route path="/" element={<Home />} />
+            
+            <Route path="/app" element={<DefaultLayout />}>
               <Route index element={<Login />} />
               <Route path="app" element={<DefaultApp />} />
               <Route path="admissions" element={<Admissions />} />

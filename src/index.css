@@ -37,6 +37,19 @@ code {
   background-color: var(--backdrop-color);
 }
 
+.input-error,
+.input-error .MuiInputBase-root {
+  border: 1px solid #ff0000;
+}
+
+.error {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #ff0000;
+  margin-top: 3px;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     --backdrop-color: #EFEFEF;

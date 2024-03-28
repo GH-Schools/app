@@ -7,7 +7,7 @@ function DashboardLayout() {
   return (
     <main className="flex flex-row h-screen w-screen min-h-[500px]">
       <Drawer/>
-      <section className="backdrop w-full">
+      <section className="backdrop w-full overflow-auto">
         <Header />
         <Outlet />
       </section>

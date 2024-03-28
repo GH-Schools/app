@@ -6,7 +6,11 @@ import {
   MdExpandLess,
   MdExpandMore,
   MdPayment,
+  MdPages,
 } from "react-icons/md";
+import {
+  FaMoneyBill,
+} from "react-icons/fa";
 import logo from "../assets/favicon.png";
 import { useNavigate } from "react-router-dom";
 
@@ -21,20 +25,22 @@ const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
   const [open, setOpen] = useState(false);
 
   const buttonClass =
-    "flex flex-row p-2 justify-between items-center hover:bg-[rgba(0, 0, 0, 0.2)]";
+    `flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]`;
 
   const Icon = () => (
-    <div className="flex items-center justify-center min-w-[30px] min-h-[30px] mr-5 text-[1.375rem]">
+    <div className="flex items-center justify-center min-w-[30px] min-h-[30px] mr-4 text-[1.375rem]">
       {icon}
     </div>
   );
+
   return children ? (
     <>
       <button className={buttonClass} {...rest}>
         <div className={"flex flex-row items-center mr-4"}>
           <Icon />
-          <span className="text-left">{text}</span>
+          <span className="text-left text-sm">{text}</span>
         </div>
+
         <button
           className="p-1 rounded-full text-xl"
           onClick={() => setOpen(!open)}
@@ -48,7 +54,7 @@ const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
     <button className={buttonClass} {...rest}>
       <div className={`flex flex-row items-center mr-2`}>
         <Icon />
-        <span className="text-left">{text}</span>
+        <span className="text-left text-sm">{text}</span>
       </div>
     </button>
   );
@@ -84,11 +90,11 @@ function Drawer() {
 
         <nav className="flex flex-col w-full py-4">
           <DrawerMenu text="Overview" icon={<MdDashboard />} />
-          <DrawerMenu text="Accounts" icon={<MdDashboard />}>
+          <DrawerMenu text="Applications" icon={<MdPages />}>
             <DrawerMenu text="Accounts" />
           </DrawerMenu>
-          <DrawerMenu text="Payments" icon={<MdPayment />}>
-            <DrawerMenu text="Accounts" />
+          <DrawerMenu text="Payments" icon={<FaMoneyBill />}>
+            <DrawerMenu text="View Receipts" />
           </DrawerMenu>
         </nav>
       </div>
@@ -97,7 +103,7 @@ function Drawer() {
         <DrawerMenu
           text="Log Out"
           icon={<MdExitToApp />}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/portal")}
         />
       </nav>
     </div>

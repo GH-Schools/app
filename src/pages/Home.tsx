@@ -10,7 +10,7 @@ function Home() {
     { name: "Fashion School", logo, textColor: "text-black" },
     { name: "Catering School", logo, textColor: "text-black" },
     { name: "Cosmetology School", logo, textColor: "text-black" },
-    { name: "Health School", logo, textColor: "text-white" },
+    { name: "Media School", logo, textColor: "text-white" },
     { name: "Technology School", logo, textColor: "text-white" },
   ];
 
@@ -24,7 +24,7 @@ function Home() {
             <div
               key={index}
               className={
-                "flex flex-row md:flex-col gap-3 md:gap-10 justify-between md:max-w-[350px] items-center flex-none md:flex-initial md:justify-end py-6 md:py-10 px-6 md:h-full flex-grow w-full self-end shadow-lg"
+                "flex flex-row md:flex-col gap-3 md:gap-10 justify-between md:max-w-[350px] items-center flex-none md:flex-initial md:justify-end py-6 md:py-10 px-6 min-h-64 md:min-h-[unset] md:h-full flex-grow w-full self-end shadow-lg"
               }
               style={{}}
             >
@@ -36,7 +36,7 @@ function Home() {
                 style={{ objectFit: "contain" }}
               />
 
-              <Button text="Get Started" className="my-4 mx-4" style={{}} href="/app/admissions"/>
+              <Button text="Get Started" className="my-4 mx-4" style={{}} href="/portal/admissions"/>
 
               <h2
                 className={`${info.textColor} inline-block md:h-[4.5rem] uppercase text-center font-bold text-lg sm:text-2xl`}

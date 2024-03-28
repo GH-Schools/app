@@ -50,6 +50,57 @@ code {
   margin-top: 3px;
 }
 
+footer {
+  color: white;
+  /* border: 1px solid; */
+  width: 100%;
+  min-width: 300px;
+  min-height: 10rem;
+  /* margin: 3.5rem auto 0; */
+  padding: 2rem 3rem;
+  font-size: 0.9rem;
+  justify-content: space-between;
+  background-color: var(--palette-color-1);
+}
+
+footer .top {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+footer .top > * {
+  margin: 0.8rem 1.6rem 1.6rem;
+}
+
+footer .bottom {
+  justify-content: center;
+  align-items: center;
+}
+
+footer .footer-logo {
+  width: 20rem;
+  height: auto;
+}
+
+footer a:link {
+  display: block;
+  margin: 0.5rem;
+  text-decoration: none;
+}
+
+footer a:link,
+footer a:visited {
+  color: #999;
+}
+
+footer big {
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     --backdrop-color: #EFEFEF;

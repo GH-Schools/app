@@ -13,8 +13,8 @@ function Header() {
       </div>
       <div className="flex gap-6 items-center justify-center w-full bg-green-700 text-white px-3 py-4">
         <a href="/">HOME</a>
-        <a href="/app/admissions">ADMISSIONS</a>
-        <a href="/dashboard">STUDENT PORTAL</a>
+        <a href="/portal/admissions?tab=apply">ADMISSIONS</a>
+        <a href="/portal">STUDENT PORTAL</a>
         <a href="/courses">OUR COURSES</a>
         <a href="/fees">OUR FEES</a>
       </div>

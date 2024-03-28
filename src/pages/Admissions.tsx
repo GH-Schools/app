@@ -10,7 +10,8 @@ import { validations } from "../utils/validations";
 import Spinner from "../components/Spinner";
 import "./Admissions.scss";
 import { useDispatch } from "react-redux";
-import { PiDnaDuotone } from "react-icons/pi";
+import { MdLock as PadlockIcon } from "react-icons/md";
+import { useQuery } from "../utils/useQuery";
 
 enum SECTIONS {
   SECTION1,
@@ -18,6 +19,7 @@ enum SECTIONS {
 }
 
 type SectionProps = {
+  setActiveSection?: React.Dispatch<React.SetStateAction<SECTIONS>> | Function;
   isActive: boolean;
 };
 
@@ -26,169 +28,199 @@ type NavigationProps = {
   activeSection: SECTIONS;
 };
 
+// PAYMENT SECTION
 const Section1 = ({ isActive }: SectionProps) => {
   return (
-    <section
-      className={`${
-        isActive ? "flex" : "hidden"
-      } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
-    >
+    <>
       <section
-        className={`card flex flex-col flex-none rounded-2xl shadow-lg text-center items-center justify-center bg-white w-full p-8 mb-5`}
+        className={`${
+          isActive ? "flex" : "hidden"
+        } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
       >
-        <h2 className="font-bold text-xl md:text-2xl">SELECT A PAYMENT METHOD BELOW</h2>
-        <p className="md:mt-3 mt-1 text-gray-500 font-semibold text-base">Admission form into GH Schools costs GHC 150.00</p>
-      </section>
+        <section
+          className={`card flex flex-col flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full p-8 mb-5`}
+        >
+          <h2 className="font-bold text-xl md:text-2xl">
+            SELECT A PAYMENT METHOD BELOW
+          </h2>
+          <p className="md:mt-3 mt-1 text-gray-500 font-semibold text-base">
+            Admission form into GH Schools costs GHC 150.00
+          </p>
+        </section>
 
-      <section className="card flex flex-col flex-none rounded-2xl shadow-lg items-center justify-center bg-white w-full p-8 mb-5">
-        <h2 className="font-bold text-xl">
-          PAY FOR YOUR FEES ONLINE VIA - MOBILE MOBILE OR BANK CARD OPTION BY
-          FILLING THE FORM BELOW
-        </h2>
-        <p className="mt-4">
-          KINDLY PROVIDE YOUR FIRST AND LAST NAME (SURNAME) BELOW. FOR EXAMPLE,
-          IF YOUR FIRST NAME IS ABIGAIL AND LAST NAME (SURNAME) IS OSEI, ENTER
-          IN THE FIELD BELOW: ABIGAIL OSEI. ALSO NOTE THAT, YOUR PAYMENT RECEIPT
-          WOULD BE SENT TO THE EMAIL ADDRESS PROVIDED BELOW.
-        </p>
+        <section className="card flex flex-col flex-none rounded-2xl shadow-md items-center justify-center bg-white w-full p-8 mb-5">
+          <h2 className="font-bold text-xl">
+            PAY FOR YOUR FEES ONLINE VIA - MOBILE MOBILE OR BANK CARD OPTION BY
+            FILLING THE FORM BELOW
+          </h2>
+          <p className="mt-4">
+            KINDLY PROVIDE YOUR FIRST AND LAST NAME (SURNAME) BELOW. FOR
+            EXAMPLE, IF YOUR FIRST NAME IS ABIGAIL AND LAST NAME (SURNAME) IS
+            OSEI, ENTER IN THE FIELD BELOW: ABIGAIL OSEI. ALSO NOTE THAT, YOUR
+            PAYMENT RECEIPT WOULD BE SENT TO THE EMAIL ADDRESS PROVIDED BELOW.
+          </p>
 
-        <div>
-          <Formik
-            initialValues={{
-              first_name: "",
-              last_name: "",
-            }}
-            validationSchema={Yup.object({})}
-            onSubmit={(values) => {
-              alert("JDJJD");
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-            }) => (
-              <form onSubmit={handleSubmit} className="flex flex-col mt-8">
-                <div className="flex flex-row gap-5">
+          <div>
+            <Formik
+              initialValues={{
+                first_name: "",
+                last_name: "",
+                email: "",
+                mobile: "",
+              }}
+              validationSchema={Yup.object({})}
+              onSubmit={(values, { setSubmitting }) => {
+                alert("JDJJD");
+                setSubmitting(false);
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+              }) => (
+                <form onSubmit={handleSubmit} className="flex flex-col mt-8">
+                  <div className="flex flex-row gap-5">
+                    <div className="form_input_wrapper">
+                      <label htmlFor="first_name">First Name</label>
+                      <input
+                        type="text"
+                        name="first_name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.first_name}
+                        placeholder="Enter first name"
+                        className={
+                          errors.first_name && touched.first_name
+                            ? "input-error"
+                            : ""
+                        }
+                        disabled={!isActive}
+                      />
+                      {errors.first_name && touched.first_name && (
+                        <span className="error">{errors.first_name}</span>
+                      )}
+                    </div>
+
+                    <div className="form_input_wrapper">
+                      <label htmlFor="last_name">Last Name</label>
+                      <input
+                        type="text"
+                        name="last_name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.last_name}
+                        placeholder="Enter last name"
+                        className={
+                          errors.last_name && touched.last_name
+                            ? "input-error"
+                            : ""
+                        }
+                        disabled={!isActive}
+                      />
+                      {errors.last_name && touched.last_name && (
+                        <span className="error">{errors.last_name}</span>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="form_input_wrapper">
-                    <label htmlFor="first_name">First Name</label>
+                    <label htmlFor="email">Email</label>
                     <input
                       type="text"
-                      name="first_name"
+                      name="email"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.first_name}
-                      placeholder="Enter first anme"
+                      value={values.email}
+                      placeholder="Enter email address"
                       className={
-                        errors.first_name && touched.first_name
-                          ? "input-error"
-                          : ""
+                        errors.email && touched.email ? "input-error" : ""
                       }
                       disabled={!isActive}
                     />
-                    {errors.first_name && touched.first_name && (
-                      <span className="error">{errors.first_name}</span>
+                    {errors.email && touched.email && (
+                      <span className="error">{errors.email}</span>
                     )}
                   </div>
 
                   <div className="form_input_wrapper">
-                    <label htmlFor="last_name">Last Name</label>
+                    <label htmlFor="mobile">Phone Number</label>
                     <input
                       type="text"
-                      name="last_name"
+                      name="mobile"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.last_name}
-                      placeholder="Enter last anme"
+                      value={values.mobile}
+                      placeholder="Enter last name"
                       className={
-                        errors.last_name && touched.last_name
-                          ? "input-error"
-                          : ""
+                        errors.mobile && touched.mobile ? "input-error" : ""
                       }
                       disabled={!isActive}
                     />
-                    {errors.last_name && touched.last_name && (
-                      <span className="error">{errors.last_name}</span>
+                    {errors.mobile && touched.mobile && (
+                      <span className="error">{errors.mobile}</span>
                     )}
                   </div>
-                </div>
 
-                <div className="form_input_wrapper">
-                  <label htmlFor="last_name">Email</label>
-                  <input
-                    type="text"
-                    name="last_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.last_name}
-                    placeholder="Enter last anme"
-                    className={
-                      errors.last_name && touched.last_name ? "input-error" : ""
-                    }
-                    disabled={!isActive}
-                  />
-                  {errors.last_name && touched.last_name && (
-                    <span className="error">{errors.last_name}</span>
-                  )}
-                </div>
+                  <div className="login-btn">
+                    <button
+                      type="submit"
+                      className="font-bold uppercase bg-orange-600 hover:shadow-sm shadow-lg hover:scale-95 transition"
+                      disabled={!isActive}
+                    >
+                      {isSubmitting ? (
+                        <Spinner size={20} color="secondary" />
+                      ) : (
+                        "Pay"
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </Formik>
+          </div>
+        </section>
 
-                <div className="form_input_wrapper">
-                  <label htmlFor="last_name">Phone Number</label>
-                  <input
-                    type="text"
-                    name="last_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.last_name}
-                    placeholder="Enter last anme"
-                    className={
-                      errors.last_name && touched.last_name ? "input-error" : ""
-                    }
-                    disabled={!isActive}
-                  />
-                  {errors.last_name && touched.last_name && (
-                    <span className="error">{errors.last_name}</span>
-                  )}
-                </div>
-              </form>
-            )}
-          </Formik>
-        </div>
+        <section className="card flex flex-col flex-none rounded-2xl shadow-md items-start justify-center bg-white w-full p-8 mb-5">
+          <p className="mb-4">NEED MORE HELP?</p>
+          <h2 className="font-bold text-xl">
+            CONTACT OUR ADMISSIONS OFFICE (MON-FRI | 8AM-5PM)
+          </h2>
+          <p className="mt-4">
+            OUR ADMISSIONS OFFICE ARE AVAILABLE FROM MONDAY TO FRIDAY, BETWEEN
+            THE HOURS OF 8AM TO 5PM. FOR ENQUIRIES OR ASSISTANCE, KINDLY CONTACT
+            ON:
+            <br />
+            EMAIL:{" "}
+            <a href="mailto:admissions@ghschools.online">
+              ADMISSIONS@GHSCHOOLS.ONLINE
+            </a>
+            <br />
+            <br />
+            <a href="tel:+233204622250">+233 204 622 250</a>
+            <br />
+            <a href="tel:+233544622250">+233 544 62 2250 (WHATSAPP ONLY)</a>
+          </p>
+        </section>
       </section>
-
-      <section className="card flex flex-col flex-none rounded-2xl shadow-lg items-start justify-center bg-white w-full p-8 mb-5">
-        <p className="mb-4">NEED MORE HELP?</p>
-        <h2 className="font-bold text-xl">
-          CONTACT OUR ADMISSIONS OFFICE (MON-FRI | 8AM-5PM)
-        </h2>
-        <p className="mt-4">
-          OUR ADMISSIONS OFFICE ARE AVAILABLE FROM MONDAY TO FRIDAY, BETWEEN THE
-          HOURS OF 8AM TO 5PM. FOR ENQUIRIES OR ASSISTANCE, KINDLY CONTACT ON:
-          <br />
-          EMAIL:{" "}
-          <a href="mailto:admissions@ghschools.online">
-            ADMISSIONS@GHSCHOOLS.ONLINE
-          </a>
-          <br />
-          <br />
-          <a href="tel:+233204622250">+233 204 622 250</a>
-          <br />
-          <a href="tel:+233544622250">+233 544 62 2250 (WHATSAPP ONLY)</a>
-        </p>
-      </section>
-    </section>
+    </>
   );
 };
 
-const Section2 = ({ isActive }: SectionProps) => {
+// LOGIN SECTION
+const Section2 = ({
+  isActive,
+  setActiveSection = () => null,
+}: SectionProps) => {
   const dispatch = useDispatch<any>();
   // const navigate = useNavigate();
 
   const schemaValidation = Yup.object({
-    email: validations.email("Email").required("Email is required"),
+    mobile: validations.mobile("Mobile").required("Mobile is required"),
     password: validations
       .password("Password", 6, 24)
       .required("Password is required"),
@@ -200,7 +232,7 @@ const Section2 = ({ isActive }: SectionProps) => {
         isActive ? "flex" : "hidden"
       } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
     >
-      <section className="card flex flex-row flex-none rounded-2xl shadow-lg text-center items-center justify-center bg-white w-full p-6 mb-5">
+      <section className="card flex flex-row flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full p-6 mb-5">
         {/* <img
           src={logo}
           alt="tradebuza"
@@ -213,21 +245,21 @@ const Section2 = ({ isActive }: SectionProps) => {
         /> */}
 
         <div
-          className="hidden sm:block sm:[150px] md:w-[200px] text-[150px]"
+          className="hidden sm:flex items-center justify-center sm:[150px] md:w-[200px] text-[150px] bg-gray-100 border border-gray-300 fill-gray-400 p-8 rounded-xl"
           style={{
             margin: "1.8rem 3% 0.2rem 0",
             // width: "25%",
           }}
         >
-          <PiDnaDuotone />
+          <PadlockIcon />
         </div>
 
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ mobile: "", password: "" }}
           validationSchema={schemaValidation}
           onSubmit={async (values, { setSubmitting }) => {
             const body = {
-              email: values.email,
+              mobile: values.mobile,
               password: values.password,
               source: "web",
             };
@@ -266,18 +298,18 @@ const Section2 = ({ isActive }: SectionProps) => {
                 <div className="flex flex-col form_input_wrapper items-start">
                   <input
                     type="text"
-                    name="email"
+                    name="mobile"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.email}
-                    placeholder="Enter email address..."
+                    value={values.mobile}
+                    placeholder="Enter mobile number"
                     className={
-                      errors.email && touched.email ? "input-error" : ""
+                      errors.mobile && touched.mobile ? "input-error" : ""
                     }
                     disabled={!isActive}
                   />
-                  {errors.email && touched.email && (
-                    <span className="error">{errors.email}</span>
+                  {errors.mobile && touched.mobile && (
+                    <span className="error">{errors.mobile}</span>
                   )}
                 </div>
 
@@ -302,7 +334,7 @@ const Section2 = ({ isActive }: SectionProps) => {
                 <div className="login-btn">
                   <button
                     type="submit"
-                    className="font-bold uppercase bg-orange-600"
+                    className="font-bold uppercase bg-orange-600 hover:shadow-sm shadow-lg hover:scale-95 transition"
                     disabled={!isActive}
                   >
                     {isSubmitting ? (
@@ -322,7 +354,36 @@ const Section2 = ({ isActive }: SectionProps) => {
         </Formik>
       </section>
 
-      <section className="card flex flex-col flex-none rounded-2xl shadow-lg items-start justify-center bg-white w-full p-8 mb-5">
+      <section className="card flex flex-col flex-none rounded-2xl shadow-md items-center justify-center bg-green-800 text-slate-50 w-full p-8 mb-5">
+        {/* <p className="mb-4">NEED MORE HELP?</p> */}
+        <h2 className="font-bold text-xl capitalize">
+          Don't have an account yet?
+        </h2>
+        <p className="my-4 text-center max-w-2xl text-base">
+          Our admissions office are available from monday to friday, between the
+          hours of 8AM to 5PM. For enquiries or assistance, kindly contact us
+          on:
+          <br />
+          Email:{" "}
+          <a
+            href="mailto:admissions@ghschools.online"
+            className="border-b border-dotted"
+          >
+            admissions@ghschools.online
+          </a>
+        </p>
+
+        <button
+          type="button"
+          className="font-bold uppercase bg-orange-600 rounded-md px-5 py-3 mt-1"
+          disabled={!isActive}
+          onClick={() => setActiveSection(SECTIONS.SECTION1)}
+        >
+          {"Apply for admission"}
+        </button>
+      </section>
+
+      <section className="card flex flex-col flex-none rounded-2xl shadow-md items-start justify-center bg-white w-full p-8 mb-5">
         <p className="mb-4">NEED MORE HELP?</p>
         <h2 className="font-bold text-xl">
           CONTACT OUR ADMISSIONS OFFICE (MON-FRI | 8AM-5PM)
@@ -332,14 +393,21 @@ const Section2 = ({ isActive }: SectionProps) => {
           HOURS OF 8AM TO 5PM. FOR ENQUIRIES OR ASSISTANCE, KINDLY CONTACT ON:
           <br />
           EMAIL:{" "}
-          <a href="mailto:admissions@ghschools.online">
+          <a
+            href="mailto:admissions@ghschools.online"
+            className="border-b border-dotted"
+          >
             ADMISSIONS@GHSCHOOLS.ONLINE
           </a>
           <br />
           <br />
-          <a href="tel:+233204622250">+233 204 622 250</a>
+          <a href="tel:+233204622250" className="border-b border-dotted">
+            +233 204 622 250
+          </a>
           <br />
-          <a href="tel:+233544622250">+233 544 62 2250 (WHATSAPP ONLY)</a>
+          <a href="tel:+233544622250" className="border-b border-dotted">
+            +233 544 62 2250 (WHATSAPP ONLY)
+          </a>
         </p>
       </section>
     </section>
@@ -351,9 +419,9 @@ const NavigationTab = ({
   setActiveSection,
 }: NavigationProps) => {
   return (
-    <div className="flex flex-row md:flex-col backdrop p-6 gap-8 w-full md:w-auto h-auto md:h-full mb-5 md:mb-0 mr-0 md:mr-5 border">
+    <div className="flex flex-row md:flex-col backdrop p-6 gap-8 w-full md:w-auto h-auto md:h-full mb-4 md:mb-0 mr-0 md:mr-4 border">
       <button
-        className={`flex flex-col rounded-xl shadow-lg text-center items-center justify-center w-full p-4 ${
+        className={`flex flex-col rounded-xl hover:shadow-sm shadow-xl hover:scale-95 transition text-center items-center justify-center w-full md:max-w-52 px-5 py-5 ${
           activeSection === SECTIONS.SECTION2
             ? "bg-orange-600 ring ring-orange-600 text-white"
             : "bg-white"
@@ -361,12 +429,20 @@ const NavigationTab = ({
         onClick={() => setActiveSection(SECTIONS.SECTION2)}
         style={{ minHeight: "unset" }}
       >
-        <h2 className="font-bold text-base md:text-lg">LOGIN TO DASHBOARD</h2>
-        <p className={`mt-1.5 capitalize font-semibold text-sm ${activeSection === SECTIONS.SECTION2 ? "text-white" : "text-gray-500"}`}>(For Returning students) </p>
+        <h2 className="font-bold text-sm md:text-base uppercase">
+          Login to admissions dashboard
+        </h2>
+        <p
+          className={`mt-1.5 capitalize font-semibold text-sm ${
+            activeSection === SECTIONS.SECTION2 ? "text-white" : "text-gray-500"
+          }`}
+        >
+          (For Returning students){" "}
+        </p>
       </button>
 
       <button
-        className={`flex flex-col rounded-xl shadow-lg text-center items-center justify-center w-full p-4 ${
+        className={`flex flex-col rounded-xl hover:shadow-sm hover:scale-95 shadow-xl transition text-center items-center justify-center w-full md:max-w-52 px-5 py-5 ${
           activeSection === SECTIONS.SECTION1
             ? "bg-green-700 ring ring-green-700 text-white"
             : "bg-white"
@@ -374,15 +450,34 @@ const NavigationTab = ({
         onClick={() => setActiveSection(SECTIONS.SECTION1)}
         style={{ minHeight: "unset" }}
       >
-        <h2 className="font-bold text-base md:text-lg">APPLY FOR ADMISSION</h2>
-        <p className={`mt-1.5 capitalize font-semibold text-sm ${activeSection === SECTIONS.SECTION1 ? "text-white" : "text-gray-500"}`}>(For Applicants)</p>
+        <h2 className="font-bold text-base md:text-base uppercase">
+          Pay for admissions form
+        </h2>
+        <p
+          className={`mt-1.5 capitalize font-semibold text-sm ${
+            activeSection === SECTIONS.SECTION1 ? "text-white" : "text-gray-500"
+          }`}
+        >
+          (New Application)
+        </p>
       </button>
     </div>
   );
 };
 
 function Admissions() {
-  const [activeSection, setActiveSection] = useState(SECTIONS.SECTION1);
+  const urlParam = useQuery();
+  console.log(urlParam.get("tab"));
+
+  const queryMap: { [x: string]: SECTIONS } = {
+    apply: SECTIONS.SECTION1,
+    account: SECTIONS.SECTION2,
+  };
+
+  const [activeSection, setActiveSection] = useState(
+    queryMap[urlParam.get("tab") || "account"]
+  );
+
   return (
     <main className="flex w-full justify-center min-h-[500px] bg-white">
       <div className="flex flex-col md:flex-row items-center justify-center w-full min-h-[500px] max-w-[1440px] bg-white">
@@ -393,7 +488,10 @@ function Admissions() {
 
         <div className="flex flex-row ">
           <Section1 isActive={activeSection === SECTIONS.SECTION1} />
-          <Section2 isActive={activeSection === SECTIONS.SECTION2} />
+          <Section2
+            isActive={activeSection === SECTIONS.SECTION2}
+            setActiveSection={setActiveSection}
+          />
         </div>
       </div>
     </main>

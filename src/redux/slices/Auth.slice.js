@@ -50,6 +50,7 @@ const authSlice = createSlice({
           // console.log("fulfilled", state, rest);
           state.login.isLoading = false;
           setToken(token);
+          window.location.href = "/dashboard";
           // notify("Login success", { type: "success" });
         }
       )

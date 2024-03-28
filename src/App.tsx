@@ -60,7 +60,7 @@ function App() {
           <Switch>
             <Route path="/" element={<Home />} />
             
-            <Route path="/app" element={<DefaultLayout />}>
+            <Route path="/portal" element={<DefaultLayout />}>
               <Route index element={<Login />} />
               <Route path="app" element={<DefaultApp />} />
               <Route path="admissions" element={<Admissions />} />

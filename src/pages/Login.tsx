@@ -18,7 +18,7 @@ const Login = () => {
   // const navigate = useNavigate();
 
   const schemaValidation = Yup.object({
-    email: validations.email("Email").required("Email is required"),
+    mobile: validations.mobile("Mobile").required("Mobile is required"),
     password: validations
       .password("Password", 6, 24)
       .required("Password is required"),
@@ -28,11 +28,11 @@ const Login = () => {
     <div className="flex flex-row">
       <div className="md:w-3/5 w-full mx-auto h-screen flex flex-col justify-center">
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ mobile: "", password: "" }}
           validationSchema={schemaValidation}
           onSubmit={async (values, { setSubmitting }) => {
             const body = {
-              email: values.email,
+              mobile: values.mobile,
               password: values.password,
               source: "web",
             };
@@ -68,17 +68,17 @@ const Login = () => {
                 <div className="form_input_wrapper">
                   <input
                     type="text"
-                    name="email"
+                    name="mobile"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.email}
+                    value={values.mobile}
                     placeholder="Enter email address..."
                     className={
-                      errors.email && touched.email ? "input-error" : ""
+                      errors.mobile && touched.mobile ? "input-error" : ""
                     }
                   />
-                  {errors.email && touched.email && (
-                    <span className="error">{errors.email}</span>
+                  {errors.mobile && touched.mobile && (
+                    <span className="error">{errors.mobile}</span>
                   )}
                 </div>
                 <div className="form_input_wrapper password-input">

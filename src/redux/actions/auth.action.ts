@@ -7,7 +7,7 @@ import { setToken } from "../../utils/storage";
 import { toast } from "react-toastify";
 
 type LoginPayload = {
-  email: string;
+  mobile: string;
   password: string;
 };
 
@@ -15,12 +15,13 @@ export const login = createAsyncThunk<any, LoginPayload>(
   "auth/loginStatus",
   async (payload, { dispatch }) => {
     try {
-      const config = {};
-      const response = await axios.post(`${AUTH_URL}/login`, payload, config);
-      setToken(response?.data?.token);
-      await dispatch(getUserProfile());
+      // const config = {};
+      // const response = await axios.post(`${AUTH_URL}/login`, payload, config);
+      // setToken(response?.data?.token);
+      // await dispatch(getUserProfile());
 
-      return response?.data;
+      // return response?.data;
+      return { token: "1" }
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
       throw error;

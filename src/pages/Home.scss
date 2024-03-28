@@ -138,6 +138,10 @@ main {
       background-image: url("../assets/fpdl1.jpg");
       overflow: auto;
 
+      .step-1 {
+        position: fixed;
+      }
+
       .step-2 {
         > * {
           background-color: transparent !important;

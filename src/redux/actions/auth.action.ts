@@ -1,9 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AUTH_URL, BASE_URL } from "../../constants/urls";
+import {
+  // AUTH_URL,
+  BASE_URL,
+} from "../../constants/urls";
 // import authAxiosService from "../../services/authAxiosService";
 import axiosServices from "../../services/axiosServices";
-import { setToken } from "../../utils/storage";
+// import { setToken } from "../../utils/storage";
 import { toast } from "react-toastify";
 
 type LoginPayload = {
@@ -14,18 +17,18 @@ type LoginPayload = {
 export const login = createAsyncThunk<any, LoginPayload>(
   "auth/loginStatus",
   async (payload, { dispatch }) => {
-    try {
-      // const config = {};
-      // const response = await axios.post(`${AUTH_URL}/login`, payload, config);
-      // setToken(response?.data?.token);
-      // await dispatch(getUserProfile());
+    // try {
+    // const config = {};
+    // const response = await axios.post(`${AUTH_URL}/login`, payload, config);
+    // setToken(response?.data?.token);
+    // await dispatch(getUserProfile());
 
-      // return response?.data;
-      return { token: "1" }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message);
-      throw error;
-    }
+    // return response?.data;
+    return { token: "1" };
+    // } catch (error: any) {
+    //   toast.error(error?.response?.data?.message);
+    //   throw error;
+    // }
   }
 );
 
@@ -42,9 +45,7 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
-type RegisterPayload = {
-
-}
+type RegisterPayload = {};
 export const registerApi = createAsyncThunk<any, RegisterPayload>(
   "auth/register",
   async (payload, thunkAPI) => {

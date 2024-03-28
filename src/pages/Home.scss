@@ -26,59 +26,69 @@ main {
     .step-2 {
       $timing: 5s;
 
-      > * {
+      .school {
         overflow: auto hidden;
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
         animation: grow 500ms ease-out $timing 1 normal both;
 
-        button,
-        a {
+        // p.description {
+        //   height: auto;
+        //   transition: all 0.3s ease;
+        // }
+
+        button.desktop,
+        a.desktop {
           opacity: 0;
           transition: opacity 0.3s linear;
         }
 
         &:hover {
-          button,
-          a {
+          button.desktop,
+          a.desktop {
             opacity: 1;
           }
+
+          // p.description {
+          //   display: block;
+          //   overflow: initial;
+          // }
         }
       }
 
       @for $i from 1 through 5 {
-        > *:nth-child(#{$i}) {
+        .school:nth-child(#{$i}) {
           animation-delay: calc($timing * (1 + ($i/ 18)));
           // animation-delay: calc(4.5s + ($i / 3));
         }
       }
 
-      > *:nth-child(1) {
+      .school:nth-child(1) {
         background-color: #6699cc;
         background-image: linear-gradient(to top, #6699cc 10%, #6699cc33 80%),
           url("../assets/fashion\ 2.jpg");
       }
 
-      > *:nth-child(2) {
+      .school:nth-child(2) {
         background-color: #fff275;
         background-image: linear-gradient(to top, #fff275 10%, #fff27533 80%),
           url("../assets/catering\ 1.jpg");
       }
 
-      > *:nth-child(3) {
+      .school:nth-child(3) {
         background-color: #ff8c42;
         background-image: linear-gradient(to top, #ff8c42 10%, #ff8c4233 80%),
           url("../assets/cosmetology\ 1.jpg");
       }
 
-      > *:nth-child(4) {
+      .school:nth-child(4) {
         background-color: #ff3c38;
         background-image: linear-gradient(to top, #ff3c38 10%, #ff3c3833 80%),
           url("../assets/media\ 4.jpg");
       }
 
-      > *:nth-child(5) {
+      .school:nth-child(5) {
         background-color: #a23e48;
         background-image: linear-gradient(to top, #a23e48 10%, #a23e4833 80%),
           url("../assets/technology\ 2.jpg");
@@ -144,47 +154,47 @@ main {
       }
 
       .step-2 {
-        > * {
+        .school {
           background-color: transparent !important;
         }
 
-        > *:nth-child(1) {
+        .school:nth-child(1) {
           background-image: linear-gradient(
             to left,
-            #6699cc 10%,
-            #6699cc33 80%
+            #6699ccee 30%,
+            #6699cc33
           );
         }
 
-        > *:nth-child(2) {
+        .school:nth-child(2) {
           background-image: linear-gradient(
             to left,
-            #fff275 10%,
-            #fff27533 80%
+            #fff275ee 30%,
+            #fff27533
           );
         }
 
-        > *:nth-child(3) {
+        .school:nth-child(3) {
           background-image: linear-gradient(
             to left,
-            #ff8c42 10%,
-            #ff8c4233 80%
+            #ff8c42ee 30%,
+            #ff8c4233
           );
         }
 
-        > *:nth-child(4) {
+        .school:nth-child(4) {
           background-image: linear-gradient(
             to left,
-            #ff3c38 10%,
-            #ff3c3833 80%
+            #ff3c38ee 30%,
+            #ff3c3833
           );
         }
 
-        > *:nth-child(5) {
+        .school:nth-child(5) {
           background-image: linear-gradient(
             to left,
-            #a23e48 10%,
-            #a23e4833 80%
+            #a23e48ee 30%,
+            #a23e4833
           );
         }
       }

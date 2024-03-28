@@ -133,6 +133,7 @@ main {
 @media screen and (max-width: 768px) {
   main {
     section.tv {
+      background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       background-image: url("../assets/fpdl1.jpg");

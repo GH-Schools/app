@@ -64,6 +64,8 @@ function Drawer() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  console.log(open)
+
   return (
     <div
       className="flex flex-col fixed md:relative items-center p-6 w-[360px] h-full min-h-screen justify-between overflow-auto"
@@ -73,9 +75,9 @@ function Drawer() {
       }}
     >
       <div className="flex flex-col items-center w-full">
-        <div className="flex justify-end w-full pb-2 md:none">
+        <div className="flex justify-end w-full pb-2 md:hidden">
           <button onClick={() => setOpen(false)}>
-            {open && <MdClose />}
+            {<MdClose />}
           </button>
         </div>
 

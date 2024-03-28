@@ -15,11 +15,7 @@ export const mergeClassNames = (...classNames: (string | string[])[]) => {
         nextClass = nextClass.split(/\s+/gi);
       }
 
-      // if (typeof combined === "string") {
-      //   a = combined.split(/\s+/gi);
-      // } else {
       a = combined;
-      // }
 
       nextClass.forEach((stringClass: string) => {
         if (!a.includes(stringClass)) {

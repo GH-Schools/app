@@ -16,6 +16,7 @@ function Home() {
 
   return (
     <main className="" style={{}}>
+      <header className="flex md:hidden sticky p-3 bg-slate-600">h</header>
       <section className="tv relative min-h-screen md:min-h-screen w-screen">
         <div className="step step-3"></div>
 
@@ -36,13 +37,20 @@ function Home() {
                 style={{ objectFit: "contain" }}
               />
 
-              <Button text="Get Started" className="my-4 mx-4" style={{}} href="/portal/admissions"/>
+              <Button
+                text="Get Started"
+                className="my-4 mx-4 none md:flex"
+                style={{}}
+                href="/portal/admissions"
+              />
 
-              <h2
-                className={`${info.textColor} inline-block md:h-[4.5rem] uppercase text-center font-bold text-lg sm:text-2xl`}
-              >
-                {info.name}
-              </h2>
+              <div>
+                <h2
+                  className={`${info.textColor} inline-block md:h-[4.5rem] uppercase text-center font-bold text-lg sm:text-2xl`}
+                >
+                  {info.name}
+                </h2>
+              </div>
             </div>
           ))}
         </div>
@@ -59,8 +67,10 @@ function Home() {
             height={"200px"}
             style={{ objectFit: "contain" }}
           />
-          <h1 className="font-bold text-3xl text-white uppercase my-4">GH Schools</h1>
-          <p className="text-white">Your GH Schools Journy starts here</p>
+          <h1 className="font-bold text-3xl text-white uppercase my-4">
+            GH Schools
+          </h1>
+          <p className="text-white">Your GH Schools journey starts here</p>
         </div>
       </section>
     </main>

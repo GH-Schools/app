@@ -24,7 +24,7 @@ function Home() {
             <div
               key={index}
               className={
-                "flex flex-row md:flex-col gap-3 md:gap-10 justify-between md:max-w-[350px] items-center flex-none md:flex-initial md:justify-end py-6 md:py-10 px-6 min-h-64 md:min-h-[unset] md:h-full flex-grow w-full self-end shadow-lg"
+                "flex flex-row md:flex-col gap-3 md:gap-10 justify-between md:max-w-[350px] items-center flex-none md:flex-initial md:justify-end py-6 md:py-10 px-6 min-h-52 md:min-h-[unset] md:h-full flex-grow w-full self-end shadow-lg"
               }
               style={{}}
             >

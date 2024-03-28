@@ -8,9 +8,7 @@ import {
   // MdPayment,
   MdPages,
 } from "react-icons/md";
-import {
-  FaMoneyBill,
-} from "react-icons/fa";
+import { FaMoneyBill } from "react-icons/fa";
 import logo from "../assets/favicon.png";
 import { useNavigate } from "react-router-dom";
 
@@ -21,11 +19,15 @@ type DrawerMenuProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
+type DrawerProps = {
+  open: boolean;
+  toggleHandler: (state: boolean) => any;
+};
+
 const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
   const [open, setOpen] = useState(false);
 
-  const buttonClass =
-    `flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]`;
+  const buttonClass = `flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]`;
 
   const Icon = () => (
     <div className="flex items-center justify-center min-w-[30px] min-h-[30px] mr-4 text-[1.375rem]">
@@ -60,15 +62,14 @@ const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
   );
 };
 
-function Drawer() {
-  const [open, setOpen] = useState(false);
+function Drawer({ open, toggleHandler }: DrawerProps) {
   const navigate = useNavigate();
-
-  console.log(open)
 
   return (
     <div
-      className="flex flex-col fixed md:relative items-center p-6 w-[360px] h-full min-h-screen justify-between overflow-auto"
+      className={`flex flex-col fixed ${
+        !open ? "left-[-100vw]" : "left-0"
+      } md:left-[unset] md:relative items-center p-6 w-[360px] h-full min-h-screen justify-between overflow-auto`}
       style={{
         backgroundColor: "var(--palette-color-1)",
         color: "var(--palette-color-contrast-1)",
@@ -76,9 +77,7 @@ function Drawer() {
     >
       <div className="flex flex-col items-center w-full">
         <div className="flex justify-end w-full pb-2 md:hidden">
-          <button onClick={() => setOpen(false)}>
-            {<MdClose />}
-          </button>
+          <button onClick={toggleHandler(false)}>{<MdClose />}</button>
         </div>
 
         <img

@@ -18,9 +18,9 @@ export const login = createAsyncThunk<any, LoginPayload>(
   "auth/loginStatus",
   async (payload, { dispatch }) => {
     // try {
-    const config = {};
-    const response = await axios.post(`${API_BASE_URL}/auth/login`, payload, config);
-    console.log(response);
+    // const config = {};
+    // const response = await axios.post(`${API_BASE_URL}/auth/login`, payload, config);
+    // console.log(response);
     // setToken(response?.data?.token);/
     // await dispatch(getUserProfile());
 

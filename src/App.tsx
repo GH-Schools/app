@@ -27,8 +27,9 @@ import "./App.css";
 const Home =  React.lazy(() => import("./pages/Home"));
 const Login =  React.lazy(() => import("./pages/Login"));
 const NoPage =  React.lazy(() => import("./pages/UnknownPage"));
-const Dashboard =  React.lazy(() => import("./pages/Dashboard"));
 const Admissions =  React.lazy(() => import("./pages/Admissions"));
+const Dashboard =  React.lazy(() => import("./pages/dashboard/Dashboard"));
+const Application =  React.lazy(() => import("./pages/dashboard/Application"));
 
 // create a default container so we can override the styles
 const ToastContainer = (props: any) => (
@@ -78,6 +79,7 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
+              <Route path="apply/form" element={<Application />} />
             </Route>
 
             <Route path="*" element={<NoPage />} />

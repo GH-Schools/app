@@ -2,14 +2,14 @@ import React, { MouseEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   MdClose,
-  MdDashboard,
+  // MdDashboard,
   MdExitToApp,
   MdExpandLess,
   MdExpandMore,
 } from "react-icons/md";
 import { RxDashboard as DashboardIcon } from "react-icons/rx";
-import { SiGoogleforms } from 'react-icons/si'
-import { BsFillCreditCardFill as CardIcon } from 'react-icons/bs';
+import { SiGoogleforms } from "react-icons/si";
+import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
 
 import logo from "../assets/favicon.png";
 
@@ -91,9 +91,16 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
         />
 
         <nav className="flex flex-col w-full py-4">
-          <DrawerMenu text="Overview" icon={<DashboardIcon />} />
+          <DrawerMenu
+            text="Overview"
+            icon={<DashboardIcon />}
+            onClick={() => navigate("/dashboard")}
+          />
           <DrawerMenu text="Applications" icon={<SiGoogleforms />}>
-            <DrawerMenu text="Admissions Form" />
+            <DrawerMenu
+              text="Admissions Form"
+              onClick={() => navigate("/dashboard/apply/form")}
+            />
             <DrawerMenu text="Track Status" />
           </DrawerMenu>
           <DrawerMenu text="Payments" icon={<CardIcon />}>

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
-  API_BASE_URL,
+  // API_BASE_URL,
   BASE_URL,
 } from "../../constants/urls";
 // import authAxiosService from "../../services/authAxiosService";
@@ -18,9 +18,9 @@ export const login = createAsyncThunk<any, LoginPayload>(
   "auth/loginStatus",
   async (payload, { dispatch }) => {
     // try {
-    const config = {};
-    const response = await axios.post(`${API_BASE_URL}/auth/login`, payload, config);
-    console.log(response);
+    // const config = {};
+    // const response = await axios.post(`${API_BASE_URL}/auth/login`, payload, config);
+    // console.log(response);
     // setToken(response?.data?.token);/
     // await dispatch(getUserProfile());
 

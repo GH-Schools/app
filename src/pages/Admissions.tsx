@@ -232,7 +232,7 @@ const Section2 = ({
         isActive ? "flex" : "hidden"
       } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
     >
-      <section className="card flex flex-row flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full p-6 mb-5">
+      <section className="card flex flex-row flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full px-6 py-14 mb-5">
         {/* <img
           src={logo}
           alt="tradebuza"
@@ -247,7 +247,7 @@ const Section2 = ({
         <div
           className="hidden sm:flex items-center justify-center sm:[150px] md:w-[200px] text-[150px] bg-gray-100 border border-gray-300 fill-gray-400 p-8 rounded-xl"
           style={{
-            margin: "1.8rem 3% 0.2rem 0",
+            margin: "1.8rem 5% 0.2rem 0",
             // width: "25%",
           }}
         >

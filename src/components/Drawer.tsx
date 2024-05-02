@@ -1,16 +1,17 @@
 import React, { MouseEventHandler, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   MdClose,
   MdDashboard,
   MdExitToApp,
   MdExpandLess,
   MdExpandMore,
-  // MdPayment,
-  MdPages,
 } from "react-icons/md";
-import { FaMoneyBill } from "react-icons/fa";
+import { RxDashboard as DashboardIcon } from "react-icons/rx";
+import { SiGoogleforms } from 'react-icons/si'
+import { BsFillCreditCardFill as CardIcon } from 'react-icons/bs';
+
 import logo from "../assets/favicon.png";
-import { useNavigate } from "react-router-dom";
 
 type DrawerMenuProps = {
   text: React.ReactNode | JSX.Element;
@@ -69,7 +70,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
     <div
       className={`flex flex-col fixed ${
         !open ? "left-[-100vw]" : "left-0"
-      } md:left-[unset] md:relative items-center p-6 w-[360px] h-full min-h-screen justify-between overflow-auto`}
+      } md:left-[unset] md:relative items-center p-6 md:w-[320px] w-[260px] h-full min-h-screen justify-between overflow-auto`}
       style={{
         backgroundColor: "var(--palette-color-1)",
         color: "var(--palette-color-contrast-1)",
@@ -90,12 +91,14 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
         />
 
         <nav className="flex flex-col w-full py-4">
-          <DrawerMenu text="Overview" icon={<MdDashboard />} />
-          <DrawerMenu text="Applications" icon={<MdPages />}>
-            <DrawerMenu text="Accounts" />
+          <DrawerMenu text="Overview" icon={<DashboardIcon />} />
+          <DrawerMenu text="Applications" icon={<SiGoogleforms />}>
+            <DrawerMenu text="Admissions Form" />
+            <DrawerMenu text="Track Status" />
           </DrawerMenu>
-          <DrawerMenu text="Payments" icon={<FaMoneyBill />}>
+          <DrawerMenu text="Payments" icon={<CardIcon />}>
             <DrawerMenu text="View Receipts" />
+            <DrawerMenu text="Print Receipts" />
           </DrawerMenu>
         </nav>
       </div>

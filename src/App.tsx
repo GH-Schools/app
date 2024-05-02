@@ -14,12 +14,7 @@ import SuspenseFallback from "./components/SuspenseFallback";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PrivateRoute from "./components/PrivateRoute";
 
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import NoPage from "./pages/UnknownPage";
-import Dashboard from "./pages/Dashboard";
-import Admissions from "./pages/Admissions";
-
+// LAYOUTS
 import DefaultLayout from "./layouts/DefaultLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 
@@ -27,6 +22,13 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import "react-toastify/dist/ReactToastify.min.css";
 import logo from "./logo.svg";
 import "./App.css";
+
+// PAGES
+const Home =  React.lazy(() => import("./pages/Home"));
+const Login =  React.lazy(() => import("./pages/Login"));
+const NoPage =  React.lazy(() => import("./pages/UnknownPage"));
+const Dashboard =  React.lazy(() => import("./pages/Dashboard"));
+const Admissions =  React.lazy(() => import("./pages/Admissions"));
 
 // create a default container so we can override the styles
 const ToastContainer = (props: any) => (

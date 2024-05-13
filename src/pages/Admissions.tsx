@@ -3,7 +3,11 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import { useDispatch, useSelector } from "react-redux";
-import { MdLock as PadlockIcon } from "react-icons/md";
+// import { MdLock as PadlockIcon } from "react-icons/md";
+import {
+  AiOutlineUser as AccountIcon,
+  AiOutlineCreditCard as PaymentIcon,
+} from "react-icons/ai";
 
 import { StoreState } from "../redux/reducers";
 
@@ -55,6 +59,14 @@ const NavigationTab = ({
         onClick={() => setActiveSection(SECTIONS.SECTION2)}
         style={{ minHeight: "unset" }}
       >
+        <span
+          className={`mb-2.5 capitalize font-semibold text-sm ${
+            activeSection === SECTIONS.SECTION2 ? "text-white" : "text-gray-500"
+          }`}
+        >
+          <AccountIcon fontSize={48} />
+        </span>
+
         <h2 className="font-bold text-sm md:text-base uppercase">
           Login to admissions dashboard
         </h2>
@@ -76,9 +88,18 @@ const NavigationTab = ({
         onClick={() => setActiveSection(SECTIONS.SECTION1)}
         style={{ minHeight: "unset" }}
       >
+        <span
+          className={`mb-2.5 capitalize font-semibold text-sm ${
+            activeSection === SECTIONS.SECTION1 ? "text-white" : "text-gray-500"
+          }`}
+        >
+          <PaymentIcon fontSize={48} />
+        </span>
+
         <h2 className="font-bold text-base md:text-base uppercase">
           Pay for admissions form
         </h2>
+
         <p
           className={`mt-2.5 capitalize font-semibold text-sm ${
             activeSection === SECTIONS.SECTION1 ? "text-white" : "text-gray-500"
@@ -120,14 +141,23 @@ const Section1 = ({ isActive }: SectionProps) => {
         } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
       >
         <section
-          className={`card flex flex-col flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full p-8 mb-5`}
+          className={`card flex flex-row flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full px-12 py-8 mb-5`}
+          style={{ minHeight: "unset" }}
         >
-          <h2 className="font-bold text-xl md:text-2xl">
-            Select A Payment Method Below
-          </h2>
-          <p className="md:mt-3 mt-1 text-gray-500 font-semibold text-base">
-            {`Admission form into GH Schools costs GHC ${registrationCost}.00`}
-          </p>
+          <div
+            className={`flex flex-col text-left items-left justify-center w-full`}
+          >
+            <h2 className="font-bold text-xl md:text-2xl">
+              Select A Payment Method Below
+            </h2>
+            <p className="md:mt-3 mt-1 text-gray-500 font-semibold text-base">
+              {`Admission form into GH Schools costs GHC ${registrationCost}.00`}
+            </p>
+          </div>
+
+          <div className="hidden sm:flex items-center justify-center sm:w-[100px] md:w-[150px] sm:h-[100px] md:h-[150px] text-[150px] bg-gray-100 border border-gray-300 fill-gray-400 p-8 rounded-xl my-auto ml-10">
+            <PaymentIcon className="fill-gray-800" />
+          </div>
         </section>
 
         <section className="card flex flex-col flex-none rounded-2xl shadow-md items-center justify-center bg-white w-full px-12 py-8 mb-5">
@@ -170,7 +200,7 @@ const Section1 = ({ isActive }: SectionProps) => {
                       mobile: values.mobile,
                     })
                   );
-                  
+
                   if (verification?.meta?.requestStatus === "fulfilled") {
                     notify("Payment record exists for this user", {
                       type: "warn",
@@ -293,25 +323,6 @@ const Section1 = ({ isActive }: SectionProps) => {
                   </div>
 
                   <div className="form_input_wrapper">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="text"
-                      name="email"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.email}
-                      placeholder="Enter email address"
-                      className={
-                        errors.email && touched.email ? "input-error" : ""
-                      }
-                      disabled={!isActive}
-                    />
-                    {errors.email && touched.email && (
-                      <span className="error">{errors.email}</span>
-                    )}
-                  </div>
-
-                  <div className="form_input_wrapper">
                     <label htmlFor="mobile">
                       Phone Number <small className="text-red-600">*</small>
                     </label>
@@ -329,6 +340,25 @@ const Section1 = ({ isActive }: SectionProps) => {
                     />
                     {errors.mobile && touched.mobile && (
                       <span className="error">{errors.mobile}</span>
+                    )}
+                  </div>
+
+                  <div className="form_input_wrapper">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="text"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      placeholder="Enter email address"
+                      className={
+                        errors.email && touched.email ? "input-error" : ""
+                      }
+                      disabled={!isActive}
+                    />
+                    {errors.email && touched.email && (
+                      <span className="error">{errors.email}</span>
                     )}
                   </div>
 
@@ -440,7 +470,7 @@ const Section2 = ({
             // width: "25%",
           }}
         >
-          <PadlockIcon className="fill-gray-800" />
+          <AccountIcon className="fill-gray-800" />
         </div>
 
         <Formik

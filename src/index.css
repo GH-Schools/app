@@ -5,7 +5,7 @@
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
-  --backdrop-color: #EFEFEF;
+  --backdrop-color: #f7f7f9;
   --palette-color-1: #090909;
   --palette-color-contrast-1: #fff;
   --palette-color-2: #861657;
@@ -16,6 +16,15 @@ html {
   --palette-color-contrast-4: #000;
   --palette-color-5: #f5f3bb;
   --palette-color-contrast-5: #000;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.3;
+  background-color: gray;
+  color: #111 !important;
+  transform: none !important;
+  /* pointer-events: none; */
 }
 
 body {

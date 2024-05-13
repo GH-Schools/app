@@ -1,4 +1,6 @@
-export const saveToStorage = (payload, storageType = "session") => {
+import { GenericObject } from "../interfaces";
+
+export const saveToStorage = (payload: GenericObject, storageType = "session") => {
   Object.entries(payload).forEach(([key, value]) => {
     switch (storageType) {
       case "local":
@@ -13,7 +15,7 @@ export const saveToStorage = (payload, storageType = "session") => {
   });
 };
 
-export const fetchFromStorage = (key, storageType = "session") => {
+export const fetchFromStorage = (key: string, storageType = "session") => {
   switch (storageType) {
     case "local":
       return localStorage.getItem(key);
@@ -24,7 +26,7 @@ export const fetchFromStorage = (key, storageType = "session") => {
   }
 };
 
-export const clearStorage = (key) => {
+export const clearStorage = (key: string) => {
   localStorage.clear();
   sessionStorage.clear();
   window.location.href = "/";
@@ -38,15 +40,15 @@ export const clearStorage = (key) => {
 };
 
 export const getAuthUser = () => {
-  const a = JSON.parse(localStorage.getItem("user_profile") || null);
+  const a = JSON.parse(localStorage.getItem("user_profile") as string);
   console.log(a)
   return a;
 };
 
-export const setAuthUser = (profile) =>
+export const setAuthUser = (profile: GenericObject) =>
   saveToStorage({ user_profile: JSON.stringify(profile) }, "local");
 
 export const getToken = () => localStorage.getItem("access_token");
 
-export const setToken = (token) =>
+export const setToken = (token: string) =>
   saveToStorage({ access_token: token }, "local");

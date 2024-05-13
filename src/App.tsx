@@ -30,6 +30,7 @@ const NoPage =  React.lazy(() => import("./pages/UnknownPage"));
 const Admissions =  React.lazy(() => import("./pages/Admissions"));
 const Dashboard =  React.lazy(() => import("./pages/dashboard/Dashboard"));
 const Application =  React.lazy(() => import("./pages/dashboard/Application"));
+const ViewPaymentReceipt = React.lazy(() => import( "./pages/dashboard/ViewPaymentReceipt"));
 
 // create a default container so we can override the styles
 const ToastContainer = (props: any) => (
@@ -80,6 +81,7 @@ function App() {
             >
               <Route index element={<Dashboard />} />
               <Route path="apply/form" element={<Application />} />
+              <Route path="payment/view-receipt" element={<ViewPaymentReceipt />} />
             </Route>
 
             <Route path="*" element={<NoPage />} />

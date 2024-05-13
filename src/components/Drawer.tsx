@@ -13,19 +13,28 @@ import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
 
 import logo from "../assets/favicon.png";
 
-type DrawerMenuProps = {
-  text: React.ReactNode | JSX.Element;
-  icon?: React.ReactNode | JSX.Element;
-  children?: React.ReactNode;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-};
-
 type DrawerProps = {
   open: boolean;
   toggleHandler: (state: boolean) => any;
 };
 
-const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
+type DrawerMenuProps = {
+  text: React.ReactNode | JSX.Element;
+  icon?: React.ReactNode | JSX.Element;
+  children?: React.ReactNode;
+  href?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+};
+
+const DrawerMenu = ({
+  children,
+  text,
+  icon,
+  href = "#",
+  onClick,
+  ...rest
+}: DrawerMenuProps) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const buttonClass = `flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]`;
@@ -36,9 +45,15 @@ const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
     </div>
   );
 
+  const onClickHandler = (ev: any) => {
+    return onClick && typeof onClick === "function"
+      ? onClick(ev)
+      : navigate(href);
+  };
+
   return children ? (
     <>
-      <button className={buttonClass} {...rest}>
+      <button className={buttonClass} onClick={onClickHandler} title={href} {...rest}>
         <div className={"flex flex-row items-center mr-4"}>
           <Icon />
           <span className="text-left text-sm">{text}</span>
@@ -54,7 +69,7 @@ const DrawerMenu = ({ children, text, icon, ...rest }: DrawerMenuProps) => {
       {open && children}
     </>
   ) : (
-    <button className={buttonClass} {...rest}>
+    <button className={buttonClass} onClick={onClickHandler} title={href} {...rest}>
       <div className={`flex flex-row items-center mr-2`}>
         <Icon />
         <span className="text-left text-sm">{text}</span>
@@ -94,17 +109,17 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
           <DrawerMenu
             text="Overview"
             icon={<DashboardIcon />}
-            onClick={() => navigate("/dashboard")}
+            href="/dashboard"
           />
           <DrawerMenu text="Applications" icon={<SiGoogleforms />}>
-            <DrawerMenu
-              text="Admissions Form"
-              onClick={() => navigate("/dashboard/apply/form")}
-            />
+            <DrawerMenu text="Admissions Form" href="/dashboard/apply/form" />
             <DrawerMenu text="Track Status" />
           </DrawerMenu>
           <DrawerMenu text="Payments" icon={<CardIcon />}>
-            <DrawerMenu text="View Receipts" />
+            <DrawerMenu
+              text="View Receipts"
+              href="/dashboard/payment/view-receipt"
+            />
             <DrawerMenu text="Print Receipts" />
           </DrawerMenu>
         </nav>

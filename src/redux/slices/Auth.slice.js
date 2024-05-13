@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { Cookies } from "react-cookie";
 import { notify } from "../../utils/toastNotification";
 import { login as loginAPI, getUserProfile } from "../actions/auth.action";
 import {
@@ -46,12 +45,13 @@ const authSlice = createSlice({
     builder
       .addCase(
         loginAPI.fulfilled,
-        (state, { payload: { token, dispatch }, ...rest }) => {
-          // console.log("fulfilled", state, rest);
+        (state, { payload: { token } }) => {
+          // cVVhRMV3
+          // console.log("fulfilled", token);
           state.login.isLoading = false;
           setToken(token);
+          notify("Login success", { type: "success" });
           window.location.href = "/dashboard";
-          // notify("Login success", { type: "success" });
         }
       )
       .addCase(loginAPI.pending, (state, action) => {
@@ -64,17 +64,8 @@ const authSlice = createSlice({
 
       // User PROFILE GET
       .addCase(getUserProfile.fulfilled, (state, { payload }) => {
-        // console.log("fulfilled", payload?.roles[0]);
-        if (payload?.roles[0]?.role === "Agent") {
-          notify("Agents can only login on the mobile app", { type: "error" });
-
-          // Ensure clearStorage is correctly implemented or just use localStorage.clear()
-          localStorage.clear(); // This will clear everything in localStorage
-          return;
-        }
         setAuthUser(payload);
-        // notify("Login success", { type: "success" });
-        window.location.href = "/dashboard";
+        state.userProfile = payload;
       })
 
       .addCase(getUserProfile.pending, (state, action) => {

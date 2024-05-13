@@ -1,4 +1,6 @@
-export function createQuery(queryParams = {}) {
+import { GenericObject } from "../interfaces";
+
+export function createQuery(queryParams: GenericObject = {}) {
   let queryString = "";
   if (Object.keys(queryParams).length > 0) {
     queryString = "?";
@@ -14,7 +16,7 @@ export function createQuery(queryParams = {}) {
 }
 
 export function getQuery(queryString = "") {
-  let queryParams = {};
+  let queryParams: GenericObject = {};
   queryString = queryString.replace('?', '');
 
   queryString.split('&').forEach((keyValuePair) => {

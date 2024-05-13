@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../constants/urls";
+import { API_BASE_URL as BASE_URL } from "../constants/urls";
 
 // Add a request interceptor
 const axiosServices = axios.create({ BASE_URL });

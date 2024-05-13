@@ -36,7 +36,8 @@ const Login = () => {
               password: values.password,
               source: "web",
             };
-            dispatch(login(body));
+            const response = await dispatch(login(body));
+            console.log(response);
           }}
         >
           {({
@@ -47,13 +48,11 @@ const Login = () => {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            isValid,
-            dirty,
           }) => (
             <form onSubmit={handleSubmit}>
               <img
                 src={logo}
-                alt="tradebuza"
+                alt="GH Schhols"
                 style={{
                   margin: "0 auto 1.8rem",
                   display: "block",
@@ -67,12 +66,12 @@ const Login = () => {
                 </p>
                 <div className="form_input_wrapper">
                   <input
-                    type="text"
+                    type="tel"
                     name="mobile"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.mobile}
-                    placeholder="Enter email address..."
+                    placeholder="Enter mobile number"
                     className={
                       errors.mobile && touched.mobile ? "input-error" : ""
                     }
@@ -98,7 +97,7 @@ const Login = () => {
                   )}
                 </div>
 
-                <div className="login-btn ">
+                <div className="login-btn">
                   <button
                     type="submit"
                     className="font-bold uppercase bg-orange-600"

@@ -1,14 +1,33 @@
-import React from "react";
-import CustomInput from "./common/CustomInput";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { MdSearch } from "react-icons/md";
 import { AiOutlineUser as AvatarIcon } from "react-icons/ai";
+import CustomInput from "./common/CustomInput";
 import DropMenu, { EVENT_TYPES, PLACEMENT } from "./common/DropMenu";
+import { StoreState } from "../redux/reducers";
+import { useDispatch } from "react-redux";
+import { getUserProfile } from "../redux/actions/auth.action";
+import { getCurrentSession } from "../redux/actions/app.action";
 
 type HeaderProps = {
   toggleHandler: (state: boolean) => any;
 };
 
 function Header({ toggleHandler }: HeaderProps) {
+  const dispatch = useDispatch<any>();
+  const authenticatedUser = useSelector((state: StoreState) => state?.Auth?.userProfile)
+  const academicSession = useSelector(
+    (state: StoreState) => state.App?.sessionInfo
+  );
+
+  console.log(academicSession);
+  console.log(authenticatedUser);
+
+  useEffect(() => {
+    dispatch(getCurrentSession());
+    dispatch(getUserProfile());
+  }, [dispatch]);
+
   return (
     <header className="flex flex-col sm:flex-row gap-5 px-6 sm:px-7 py-6 bg-white justify-between sm:items-center">
       <div className="flex flex-row items-center gap-4 w-full sm:w-auto">

@@ -11,7 +11,7 @@ function Header() {
       >
         <h1 className="text-2xl font-bold">GH SCHOOLS</h1>
       </div>
-      <div className="flex gap-6 items-center justify-center w-full bg-green-700 text-white px-3 py-4">
+      <div className="flex gap-6 items-center justify-center w-full bg-green-700 text-white px-3 py-4 text-sm font-semibold text-center">
         <a href="/">HOME</a>
         <a href="/portal/admissions?tab=apply">ADMISSIONS</a>
         <a href="/portal">STUDENT PORTAL</a>

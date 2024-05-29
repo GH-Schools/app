@@ -1,44 +1,47 @@
-import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import TextSpinner from "../components/TextSpinner";
 
-import { login } from "../redux/actions/auth.action";
+import { resetPassword } from "../redux/actions/auth.action";
 import { validations } from "../utils/validations";
 
 import logo from "../assets/favicon.png";
 import "./Login.scss";
+import { notify } from "../utils/toastNotification";
 
-const Login = () => {
+const ResetPassword = () => {
   const dispatch = useDispatch<any>();
   // const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const schemaValidation = Yup.object({
     mobile: validations.mobile("Mobile").required("Mobile is required"),
-    password: validations
-      .password("Password", 6, 24)
-      .required("Password is required"),
   });
 
   return (
     <div className="flex flex-row backdrop">
       <div className="md:w-3/5 w-full mx-auto h-screen flex flex-col justify-center">
         <Formik
-          initialValues={{ mobile: "", password: "" }}
+          initialValues={{ mobile: "" }}
           validationSchema={schemaValidation}
           onSubmit={async (values, { setSubmitting }) => {
-            const body = {
-              mobile: values.mobile,
-              password: values.password,
-              source: "web",
-            };
-            const response = await dispatch(login(body));
-            console.log(response);
+            try {
+              setSubmitting(true);
+              const body = {
+                mobile: values.mobile,
+              };
+              const response = await dispatch(resetPassword(body));
+              console.log(response);
+              if (response?.meta?.requestStatus === "fulfilled") {
+                notify("Email sent successfully", { type: "success" });
+              }
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({
@@ -63,7 +66,7 @@ const Login = () => {
 
               <div id="login" className="form_wrapper">
                 <p className="text-lg text-black font-semibold text-center">
-                  Sign In
+                  Reset Password
                 </p>
                 <div className="form_input_wrapper">
                   <input
@@ -81,49 +84,24 @@ const Login = () => {
                     <span className="error">{errors.mobile}</span>
                   )}
                 </div>
-                <div className="form_input_wrapper password-input">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                    placeholder="Enter password"
-                    className={
-                      errors.password && touched.password ? "input-error" : ""
-                    }
-                  />
-                  {errors.password && touched.password && (
-                    <span className="error">{errors.password}</span>
-                  )}
-                </div>
-
-                <div className="-mt-4 mb-6 px-1 w-full">
-                  <span
-                    className="inline-block text-xs uppercase font-semibold cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "Hide Password" : "Show Password"}
-                  </span>
-                </div>
 
                 <div className="login-btn">
                   <button
                     type="submit"
-                    className="font-semibold uppercase bg-orange-600"
+                    className="font-semibold capitalize bg-orange-600"
                   >
-                    <TextSpinner loading={isSubmitting} text="Login" />
+                    <TextSpinner loading={isSubmitting} text="Send Mail" />
                   </button>
                 </div>
 
                 <div className="text-sm text-black text-center mt-8">
-                  <span>Can't remember login?</span>{" "}
+                  <span>Proceed to login to</span>{" "}
                   <a
-                    href="/portal/password/reset"
+                    href="/portal"
                     className="text-green-700 font-semibold"
                     style={{ textDecoration: "underline" }}
                   >
-                    Reset Password
+                    your portal
                   </a>
                 </div>
               </div>
@@ -135,4 +113,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

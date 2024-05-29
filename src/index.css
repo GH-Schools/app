@@ -16,6 +16,7 @@ html {
   --palette-color-contrast-4: #000;
   --palette-color-5: #f5f3bb;
   --palette-color-contrast-5: #000;
+  color: #494949;
 }
 
 button:disabled {

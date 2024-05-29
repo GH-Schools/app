@@ -1,23 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import axiosServices from "../../services/axiosServices";
-import { errorHandler } from "../../utils/actionsErrorHandler";
+import { errorHandler } from "../errorHandler";
 import { createQuery } from "../../utils/createQuery";
 import { GenericObject } from "../../interfaces";
-
-type SubmitPaymentPayload = {
-  firstName: string;
-  lastName: string;
-  mobile: string;
-  email?: string;
-  reference: string;
-  amount: number | string;
-};
-
-type VerifyPaymentPayload = {
-  mobile: string;
-  reference: string;
-};
+import { SubmitPaymentPayload, VerifyPaymentPayload } from "../types/payment.types";
 
 export const submitPayment = createAsyncThunk<any, SubmitPaymentPayload>(
   "payment/submitPayment",

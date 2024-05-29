@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import { useDispatch, useSelector } from "react-redux";
@@ -115,6 +116,7 @@ const NavigationTab = ({
 // PAYMENT SECTION
 const Section1 = ({ isActive }: SectionProps) => {
   const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
   const registrationCost = 150;
 
   const paystackHandler = usePaystackPayment({
@@ -147,10 +149,10 @@ const Section1 = ({ isActive }: SectionProps) => {
           <div
             className={`flex flex-col text-left items-left justify-center w-full`}
           >
-            <h2 className="font-bold text-xl md:text-2xl">
+            <h2 className="font-bold text-xl md:text-2xl text-black">
               Select A Payment Method Below
             </h2>
-            <p className="md:mt-3 mt-1 text-gray-500 font-semibold text-base">
+            <p className="md:mt-3 mt-1 text-gray-500 font-medium text-base">
               {`Admission form into GH Schools costs GHC ${registrationCost}.00`}
             </p>
           </div>
@@ -161,7 +163,7 @@ const Section1 = ({ isActive }: SectionProps) => {
         </section>
 
         <section className="card flex flex-col flex-none rounded-2xl shadow-md items-center justify-center bg-white w-full px-12 py-8 mb-5">
-          <h2 className="font-bold text-xl w-full capitalize">
+          <h2 className="font-bold text-xl w-full capitalize text-black">
             Pay for your fees online via - mobile or bank card option by filling
             the form below
           </h2>
@@ -211,23 +213,24 @@ const Section1 = ({ isActive }: SectionProps) => {
 
                   // console.log(verification);
 
-                  paystackHandler({
-                    config: {
-                      email: values?.email,
-                      amount: registrationCost * 100,
-                      currency: "GHS",
-                      channels: [
-                        "card",
-                        "bank",
-                        "mobile_money",
-                        "bank_transfer",
-                      ],
-                      metadata: {
-                        name: `${values?.first_name} ${values?.last_name}`,
-                        phone: values?.mobile,
-                        custom_fields: [],
-                      },
+                  const paystackConfig = {
+                    email: values?.email,
+                    amount: registrationCost * 100,
+                    currency: "GHS",
+                    channels: [
+                      "card",
+                      "bank",
+                      "mobile_money",
+                      "bank_transfer",
+                    ],
+                    metadata: {
+                      name: `${values?.first_name} ${values?.last_name}`,
+                      phone: values?.mobile,
+                      custom_fields: [],
                     },
+                  };
+                  paystackHandler({
+                    config: paystackConfig,
                     onSuccess: (response) => {
                       console.log(response);
                       setSubmitting(true);
@@ -239,6 +242,7 @@ const Section1 = ({ isActive }: SectionProps) => {
                           email: values?.email,
                           reference: response?.reference ?? "",
                           amount: registrationCost,
+                          currency: paystackConfig.currency,
                         })
                       )
                         .then((res: any) => {
@@ -248,6 +252,7 @@ const Section1 = ({ isActive }: SectionProps) => {
                             alert(
                               "Thanks for doing business with us! Come back soon!!"
                             );
+                            navigate("/portal/admissions/payment-success");
                           }
                         })
                         .finally(() => {
@@ -389,7 +394,7 @@ const Section1 = ({ isActive }: SectionProps) => {
 
         <section className="card flex flex-col flex-none rounded-2xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
           <p className="mb-4 text-base">Need more help?</p>
-          <h2 className="font-bold capitalize text-xl">
+          <h2 className="font-bold capitalize text-xl text-black">
             Contact our admissions office (Mon-Fri | 8AM-5PM)
           </h2>
           <p className="mt-4 text-base">
@@ -564,7 +569,7 @@ const Section2 = ({
                 </div>
 
                 <div className="mt-4 w-full text-center md:text-left">
-                  <a href="#e" className="text-md">
+                  <a href="/portal/password/reset" className="text-md">
                     Forgot password?
                   </a>
                 </div>
@@ -605,7 +610,7 @@ const Section2 = ({
 
       <section className="card flex flex-col flex-none rounded-2xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
         <p className="mb-4 text-base">Need more help?</p>
-        <h2 className="font-bold capitalize text-2xl">
+        <h2 className="font-bold capitalize text-2xl text-black">
           Contact our admissions office (Mon-Fri | 8AM-5PM)
         </h2>
         <p className="mt-4 text-base">

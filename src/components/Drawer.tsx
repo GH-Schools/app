@@ -113,14 +113,14 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
           />
           <DrawerMenu text="Applications" icon={<SiGoogleforms />}>
             <DrawerMenu text="Admissions Form" href="/dashboard/apply/form" />
-            <DrawerMenu text="Track Status" />
+            {/* <DrawerMenu text="Track Status" /> */}
           </DrawerMenu>
           <DrawerMenu text="Payments" icon={<CardIcon />}>
             <DrawerMenu
               text="View Receipts"
               href="/dashboard/payment/view-receipt"
             />
-            <DrawerMenu text="Print Receipts" />
+            {/* <DrawerMenu text="Print Receipts" /> */}
           </DrawerMenu>
         </nav>
       </div>

@@ -1,10 +1,11 @@
-import { notify } from "./toastNotification";
+import { notify } from "../utils/toastNotification";
 
 export const errorHandler = (
   error: any,
   customMessage = "An error occured",
   useCustomMessage = false
 ) => {
+  console.log(error);
   if (error?.response?.data?.errors) {
     let {
       response: {
@@ -38,7 +39,10 @@ export const errorHandler = (
   } else {
     const message = useCustomMessage
       ? customMessage
-      : error.response?.data?.message || error.message || customMessage;
+      : error.response?.data?.message?.msg ??
+        error.response?.data?.message ??
+        error.message ??
+        customMessage;
     notify(message, { type: "error" });
   }
 };

@@ -26,7 +26,7 @@ export const fetchFromStorage = (key: string, storageType = "session") => {
   }
 };
 
-export const clearStorage = (key: string) => {
+export const clearStorage = (key?: string) => {
   localStorage.clear();
   sessionStorage.clear();
   window.location.href = "/";

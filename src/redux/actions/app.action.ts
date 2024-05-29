@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // import AppSlice from "../slices/App.slice";
 import axiosServices from "../../services/axiosServices";
-import { errorHandler } from "../../utils/actionsErrorHandler";
+import { errorHandler } from "../errorHandler";
 
 export const getCurrentSession = createAsyncThunk(
   "app/getCurrentSession",

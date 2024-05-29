@@ -1,27 +1,23 @@
-import axios from "axios";
 import { toast } from "react-toastify";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { setToken } from "../../utils/storage";
-import { API_BASE_URL } from "../../constants/urls";
-import axiosServices from "../../services/axiosServices";
-import { errorHandler } from "../../utils/actionsErrorHandler";
-// import authAxiosService from "../../services/authAxiosService";
-
-type LoginPayload = {
-  mobile: string;
-  password: string;
-};
+import { errorHandler } from "../errorHandler";
+import {
+  LoginPayload,
+  RegisterPayload,
+  ResetPasswordPayload,
+  CompleteResetPasswordPayload
+} from "../types/auth.types";
+import axiosService from "../../services/axiosServices";
 
 export const login = createAsyncThunk<any, LoginPayload>(
   "auth/loginStatus",
   async (payload, { dispatch }) => {
     try {
-      const config = {};
-      const response: { data: { payload: any } } = await axios.post(
-        `${API_BASE_URL}/auth/login`,
-        payload,
-        config
+      const response: { data: { payload: any } } = await axiosService.post(
+        `/auth/login`,
+        payload
       );
       // console.log('auth', response);
       setToken(response?.data?.payload?.token);
@@ -35,11 +31,45 @@ export const login = createAsyncThunk<any, LoginPayload>(
   }
 );
 
+export const resetPassword = createAsyncThunk<any, ResetPasswordPayload>(
+  "auth/resetPassword",
+  async (payload, { dispatch }) => {
+    try {
+      const response: { data: { payload: any } } = await axiosService.post(
+        `/auth/reset-password`,
+        payload
+      );
+
+      return response?.data?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
+export const completeResetPassword = createAsyncThunk<any, CompleteResetPasswordPayload>(
+  "auth/completeResetPassword",
+  async (payload, { dispatch }) => {
+    try {
+      const response: { data: { payload: any } } = await axiosService.post(
+        `/auth/reset-password`,
+        payload
+      );
+
+      return response?.data?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
 export const getUserProfile = createAsyncThunk(
   "auth/getUserProfile",
   async (thunkAPI) => {
     try {
-      const res: { payload: any } = await axiosServices.get(`/get-profile`);
+      const res: { payload: any } = await axiosService.get(`/get-profile`);
       return res?.payload;
     } catch (error: any) {
       errorHandler(error);
@@ -48,18 +78,11 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
-type RegisterPayload = {};
-
 export const registerApi = createAsyncThunk<any, RegisterPayload>(
   "auth/register",
   async (payload, thunkAPI) => {
     try {
-      const config = {};
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/register`,
-        payload,
-        config
-      );
+      const response = await axiosService.post(`/auth/register`, payload);
       // console.log(response);
       return response?.data;
     } catch (error: any) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
@@ -16,6 +16,8 @@ import { notify } from "../utils/toastNotification";
 const CompleteResetPassword = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const schemaValidation = Yup.object({
     password: validations
@@ -81,7 +83,7 @@ const CompleteResetPassword = () => {
                 </p>
                 <div className="form_input_wrapper password-input">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -98,7 +100,7 @@ const CompleteResetPassword = () => {
 
                 <div className="form_input_wrapper password-input">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="confirmPassword"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -113,6 +115,16 @@ const CompleteResetPassword = () => {
                   {errors.confirmPassword && touched.confirmPassword && (
                     <span className="error">{errors.confirmPassword}</span>
                   )}
+                </div>
+
+                <div className="-mt-4 mb-6 px-1 w-full">
+                  <span
+                    className="inline-block text-xs uppercase font-semibold cursor-pointer"
+                    style={{ color: "lightslategray" }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide Password" : "Show Password"}
+                  </span>
                 </div>
 
                 <div className="login-btn">

@@ -52,7 +52,7 @@ const NavigationTab = ({
   return (
     <div className="flex flex-row md:flex-col backdrop p-6 gap-8 w-full md:w-auto h-auto md:h-full mb-3 md:mb-0 mr-0 md:mr-2 ">
       <button
-        className={`flex flex-col rounded-xl hover:shadow-sm shadow-xl hover:scale-95 transition text-center items-center justify-center w-full md:max-w-52 px-5 py-5 ${
+        className={`flex flex-col rounded-xl hover:shadow-sm shadow-lg hover:scale-98 transition text-center items-center justify-center w-full md:max-w-52 px-5 py-5 ${
           activeSection === SECTIONS.SECTION2
             ? "bg-orange-600 ring ring-orange-600 text-white"
             : "bg-white"
@@ -81,10 +81,10 @@ const NavigationTab = ({
       </button>
 
       <button
-        className={`flex flex-col rounded-xl hover:shadow-sm hover:scale-95 shadow-xl transition text-center items-center justify-center w-full md:max-w-52 px-5 py-5 ${
+        className={`flex flex-col rounded-xl hover:shadow-sm shadow-lg hover:scale-98 transition text-center items-center justify-center w-full md:max-w-52 px-5 py-5 ${
           activeSection === SECTIONS.SECTION1
             ? "bg-green-700 ring ring-green-700 text-white"
-            : "bg-white"
+            : "bg-white border"
         }`}
         onClick={() => setActiveSection(SECTIONS.SECTION1)}
         style={{ minHeight: "unset" }}

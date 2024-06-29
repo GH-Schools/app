@@ -15,15 +15,15 @@ export const login = createAsyncThunk<any, LoginPayload>(
   "auth/loginStatus",
   async (payload, { dispatch }) => {
     try {
-      const response: { data: { payload: any } } = await axiosService.post(
+      const response: { payload: any } = await axiosService.post(
         `/auth/login`,
         payload
       );
-      // console.log('auth', response);
-      setToken(response?.data?.payload?.token);
+      console.log('auth', response);
+      setToken(response?.payload?.token);
       await dispatch(getUserProfile());
 
-      return response?.data?.payload;
+      return response?.payload;
     } catch (error: any) {
       errorHandler(error);
       throw error;
@@ -35,12 +35,12 @@ export const resetPassword = createAsyncThunk<any, ResetPasswordPayload>(
   "auth/resetPassword",
   async (payload, { dispatch }) => {
     try {
-      const response: { data: { payload: any } } = await axiosService.post(
+      const response: { payload: any } = await axiosService.post(
         `/auth/reset-password`,
         payload
       );
 
-      return response?.data?.payload;
+      return response?.payload;
     } catch (error: any) {
       errorHandler(error);
       throw error;
@@ -52,12 +52,12 @@ export const completeResetPassword = createAsyncThunk<any, CompleteResetPassword
   "auth/completeResetPassword",
   async (payload, { dispatch }) => {
     try {
-      const response: { data: { payload: any } } = await axiosService.post(
+      const response: { payload: any } = await axiosService.post(
         `/auth/reset-password`,
         payload
       );
 
-      return response?.data?.payload;
+      return response?.payload;
     } catch (error: any) {
       errorHandler(error);
       throw error;

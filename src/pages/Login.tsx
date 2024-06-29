@@ -81,6 +81,7 @@ const Login = () => {
                     <span className="error">{errors.mobile}</span>
                   )}
                 </div>
+                
                 <div className="form_input_wrapper password-input">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -101,6 +102,7 @@ const Login = () => {
                 <div className="-mt-4 mb-6 px-1 w-full">
                   <span
                     className="inline-block text-xs uppercase font-semibold cursor-pointer"
+                    style={{ color: "lightslategray" }}
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? "Hide Password" : "Show Password"}

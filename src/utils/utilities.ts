@@ -1,3 +1,31 @@
+import { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+
+export function createQuery(
+  queryParams: { [key: string]: string | number | null } = {}
+) {
+  let queryString = "";
+
+  if (Object.keys(queryParams).length > 0) {
+    queryString = "?";
+
+    Object.keys(queryParams).forEach((key, index) => {
+      queryString +=
+        index === 0
+          ? `${key}=${queryParams[key]}`
+          : `&${key}=${queryParams[key]}`;
+    });
+  }
+  return queryString;
+}
+
+export function usePageQuery() {
+  const { search } = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(search), [search])
+  // console.log(search)
+  return searchParams;
+}
+
 export const formatAsMoney = (amount: number | string) => {
   return Number(amount).toLocaleString("en-us", {
     compactDisplay: "long",

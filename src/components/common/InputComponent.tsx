@@ -25,7 +25,7 @@ const InputComponent: React.FC<InputProps> = ({
           fontSize: "12px",
           fontWeight: 700,
           color: "#717783",
-          marginBottom: "3px",
+          marginBottom: "4px",
           textTransform: "capitalize",
         }}
       >
@@ -36,7 +36,7 @@ const InputComponent: React.FC<InputProps> = ({
         name={name}
         style={{
           fontSize: "14px",
-          padding: "10px 15px",
+          padding: "12px 15px",
           width: "100%",
           borderRadius: "3px",
           backgroundColor: "#F4F8FA",

@@ -64,7 +64,10 @@ function PaymentComplete() {
                 Redirecting to login in 0.9 seconds{" "}
               </p>
 
-              <button className="font-bold rounded-md uppercase bg-orange-600 text-white p-4">
+              <button
+                className="font-bold rounded-md uppercase bg-orange-600 text-white p-4"
+                onClick={() => navigate("/portal")}
+              >
                 Go to login
               </button>
             </div>

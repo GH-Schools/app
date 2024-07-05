@@ -31,32 +31,13 @@ const Admissions =  React.lazy(() => import("./pages/Admissions"));
 const ResetPassword =  React.lazy(() => import("./pages/ResetPassword"));
 const Dashboard =  React.lazy(() => import("./pages/dashboard/Dashboard"));
 const PaymentComplete =  React.lazy(() => import("./pages/PaymentComplete"));
-const Application =  React.lazy(() => import("./pages/dashboard/Application"));
+const ApplicationForm =  React.lazy(() => import("./pages/dashboard/ApplicationForm"));
 const CompleteResetPassword =  React.lazy(() => import("./pages/CompleteResetPassword"));
 const ViewPaymentReceipt = React.lazy(() => import( "./pages/dashboard/ViewPaymentReceipt"));
 
 // create a default container so we can override the styles
 const ToastContainer = (props: any) => (
   <DefaultToastContainer style={{ zIndex: "1900" }} {...props} />
-);
-
-const DefaultApp = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
 );
 
 function App() {
@@ -71,7 +52,6 @@ function App() {
               <Route index element={<Login />} />
               <Route path="password/reset" element={<ResetPassword />} />
               <Route path="password/create-new" element={<CompleteResetPassword />} />
-              <Route path="app" element={<DefaultApp />} />
               <Route path="admissions" element={<Admissions />} />
               <Route path="admissions/payment-success" element={<PaymentComplete />} />
             </Route>
@@ -86,7 +66,7 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="apply/form" element={<Application />} />
+              <Route path="apply/form" element={<ApplicationForm />} />
               <Route path="payment/view-receipt" element={<ViewPaymentReceipt />} />
             </Route>
 

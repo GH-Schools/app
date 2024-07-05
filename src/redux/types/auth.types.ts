@@ -13,6 +13,6 @@ export type ResetPasswordPayload = {
 
 export type CompleteResetPasswordPayload = {
   token: string;
-  password: string;
+  newPassword: string;
   confirmPassword: string;
 }

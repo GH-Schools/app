@@ -6,6 +6,7 @@ type ButtonProps = {
   className?: string;
   style?: { [x: string]: any };
   href?: string;
+  onClick?: React.EventHandler<any>;
 };
 
 const Button = ({

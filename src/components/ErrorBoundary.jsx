@@ -45,9 +45,9 @@ class ErrorBoundary extends Component {
             </div>
 
             <h2
-              className="text-center mt-3"
+              className="text-center mt-4"
               style={{
-                fontSize: "1.2rem",
+                fontSize: "1rem",
                 maxWidth: "620px",
                 paddingLeft: "1.5rem",
               }}

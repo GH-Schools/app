@@ -10,12 +10,15 @@ import { completeResetPassword } from "../redux/actions/auth.action";
 import { validations } from "../utils/validations";
 
 import logo from "../assets/favicon.png";
-import "./Login.scss";
+import { usePageQuery } from "../utils/utilities";
 import { notify } from "../utils/toastNotification";
+
+import "./Login.scss";
 
 const CompleteResetPassword = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+  const urlParams = usePageQuery();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -39,8 +42,8 @@ const CompleteResetPassword = () => {
             try {
               setSubmitting(true);
               const body = {
-                token: "",
-                password: values.password,
+                token: urlParams.get('token') ?? "",
+                newPassword: values.password,
                 confirmPassword: values.confirmPassword,
               };
               const response = await dispatch(completeResetPassword(body));

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { MdSearch } from "react-icons/md";
+// import { MdSearch } from "react-icons/md";
 import { AiOutlineUser as AvatarIcon } from "react-icons/ai";
 import { RxHamburgerMenu as MenuIcon } from "react-icons/rx";
-import CustomInput from "./common/CustomInput";
+// import CustomInput from "./common/CustomInput";
 import DropMenu, { EVENT_TYPES, PLACEMENT } from "./common/DropMenu";
 import { StoreState } from "../redux/reducers";
 import { useDispatch } from "react-redux";

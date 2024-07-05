@@ -13,6 +13,7 @@ export type InputProps = {
   min?: number;
   max?: number;
   type?: string;
+  disabled?: boolean;
   onChange?: (e?: any) => void;
   onBlur?: (e?: any) => void;
   touched?: any;

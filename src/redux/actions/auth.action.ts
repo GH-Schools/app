@@ -52,8 +52,8 @@ export const completeResetPassword = createAsyncThunk<any, CompleteResetPassword
   "auth/completeResetPassword",
   async (payload, { dispatch }) => {
     try {
-      const response: { payload: any } = await axiosService.post(
-        `/auth/reset-password`,
+      const response: { payload: any } = await axiosService.put(
+        `/auth/complete-password-reset`,
         payload
       );
 

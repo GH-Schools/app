@@ -20,7 +20,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 
 // Other assets
 import "react-toastify/dist/ReactToastify.min.css";
-import logo from "./logo.svg";
+// import logo from "./logo.svg";
 import "./App.css";
 
 // PAGES

@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ActionErrorType = Error | {};
 
 export type GenericObject = { [x: string]: any };
@@ -24,14 +26,17 @@ export type InputProps = {
 
 export interface SelectProps {
   name: string;
-  label: string;
+  label?: string;
   width: any;
   height?: any;
   sx?: any;
+  disabled?: boolean;
   multiple?: boolean | any;
   value?: string | string[];
+  onChange?: (e?: any) => void;
   onBlur?: (e?: any) => void;
   touched?: any;
   errors?: any;
   required?: boolean;
+  options: { name: string; value: string; selected?: boolean }[];
 }

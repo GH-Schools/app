@@ -3,17 +3,18 @@ import { mergeClassNames } from "../../utils/utilities";
 
 type ButtonProps = {
   text: string | React.ReactNode;
+  type?: "submit" | "reset" | "button";
+  href?: string;
   className?: string;
   style?: { [x: string]: any };
-  href?: string;
   onClick?: React.EventHandler<any>;
 };
 
 const Button = ({
   text,
-  className = "rounded-md text-black bg-white",
-  style = {},
   href,
+  style = {},
+  className = "rounded-md text-black bg-white",
   ...props
 }: ButtonProps) => {
   return !href ? (

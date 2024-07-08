@@ -32,12 +32,12 @@ function Header({ toggleHandler }: HeaderProps) {
   }, [dispatch]);
 
   return (
-    <header className="flex flex-row sm:flex-row gap-4 md:gap-5 px-6 sm:px-7 py-6 bg-white justify-between sm:items-center">
+    <header className="flex flex-row sm:flex-row gap-4 md:gap-5 px-6 sm:px-7 py-4 bg-white justify-between sm:items-center">
       <div className="flex flex-row items-center gap-3 w-full">
         <button className="block md:hidden" onClick={toggleHandler(true)}>
           <MenuIcon style={{ fontSize: "20px" }} />
         </button>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-lg font-bold">Dashboard</h1>
       </div>
 
       <div className="flex flex-row justify-between items-center gap-6 w-auto">

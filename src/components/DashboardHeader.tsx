@@ -24,7 +24,7 @@ function Header({ toggleHandler }: HeaderProps) {
   );
 
   console.log(academicSession);
-  console.log(authenticatedUser);
+  console.log(authenticatedUser?.firstName);
 
   useEffect(() => {
     dispatch(getCurrentSession());

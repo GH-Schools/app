@@ -64,6 +64,7 @@ const authSlice = createSlice({
 
       // User PROFILE GET
       .addCase(getUserProfile.fulfilled, (state, { payload }) => {
+        console.log(payload);
         setAuthUser(payload);
         state.userProfile = payload;
       })

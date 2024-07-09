@@ -13,13 +13,14 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 import { getMyPayments } from "../../redux/actions/payment.action";
+import { getAuthUser } from "../../utils/storage";
 
 function Application() {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-  // const authenticatedUser = useSelector(
-  //   (state: StoreState) => state?.Auth?.userProfile
-  // );
+  const authenticatedUser = useSelector(
+    (state: StoreState) => state?.Auth?.userProfile ?? getAuthUser()
+  );
 
   enum Steps {
     PERSONAL,
@@ -56,12 +57,13 @@ function Application() {
       <section className="flex flex-row gap-5" id="personal">
         <div className="flex flex-col flex-grow shadow-md rounded-xl gap-2 bg-white w-1/3 ">
           <Formik
+            enableReinitialize={true}
             initialValues={{
-              firstName: "",
-              middleName: "",
-              lastName: "",
-              email: "",
-              mobile1: "",
+              firstName: authenticatedUser?.firstName ?? "",
+              middleName: authenticatedUser?.middleName ?? "",
+              lastName: authenticatedUser?.lastName ?? "",
+              email: authenticatedUser?.email ?? "",
+              mobile1: authenticatedUser?.mobile ?? "",
               sex: "",
               dob: "",
               residentialAddress: "",

@@ -1,5 +1,5 @@
 import React from "react";
-import { BsExclamationCircle, BsExclamationCircleFill, BsExclamationTriangle, BsCheckCircle } from "react-icons/bs";
+import { BsExclamationCircle, BsExclamationTriangle, BsCheckCircle } from "react-icons/bs";
 import { GenericObject } from "../../interfaces";
 import { mergeClassNames } from "../../utils/utilities";
 

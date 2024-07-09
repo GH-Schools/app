@@ -5,7 +5,7 @@ import { StoreState } from "../../redux/reducers";
 
 import { SiGoogleforms } from "react-icons/si";
 import {
-  BsExclamationCircle,
+  // BsExclamationCircle,
   BsFillCreditCardFill as CardIcon,
 } from "react-icons/bs";
 import Notice from "../../components/common/Notice";
@@ -60,13 +60,14 @@ function Dashboard() {
           <div className="flex flex-col">
             <Notice
               variant="success"
-              title="Success:"
+              title="Info:"
               message={
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid pariatur ex aut dicta corporis in, fuga earum adipisci, vel eum, dolorum minima laudantium. Ad, ex temporibus debitis harum ullam error."
+                "You can now apply for admissions here"
               }
             >
-              {/* <Button
+              <Button
                 text={"Apply for Admission"}
+                href={'/dashboard/apply/form'}
                 className="text-center font-bold"
                 style={{
                   color: "white",
@@ -77,7 +78,7 @@ function Dashboard() {
                   backgroundColor: "#e7a94b",
                   textTransform: "capitalize",
                 }}
-              /> */}
+              />
             </Notice>
 
             {/* <Notice

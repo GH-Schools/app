@@ -4,7 +4,7 @@ import Drawer from "../components/Drawer";
 import Header from "../components/DashboardHeader";
 
 function DashboardLayout() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   console.log(open);
 

@@ -25,6 +25,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "preinstall": "yarn global add serve",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

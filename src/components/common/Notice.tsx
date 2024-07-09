@@ -14,7 +14,7 @@ interface NoticeProps {
   children?: React.ReactNode;
 }
 
-const theme = {
+export const theme = {
   success: {
     body: {
       backgroundColor: "#EBFFF7",
@@ -29,6 +29,7 @@ const theme = {
     ),
   },
   warn: {
+    // "#e7a94b"
     body: {
       border: "1px solid #F7F5E5",
       backgroundColor: "#FFFDED",

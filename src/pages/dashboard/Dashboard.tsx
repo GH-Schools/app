@@ -8,7 +8,7 @@ import {
   // BsExclamationCircle,
   BsFillCreditCardFill as CardIcon,
 } from "react-icons/bs";
-import Notice from "../../components/common/Notice";
+import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 import Button from "../../components/common/Button";
 
 const MetricsCard = ({
@@ -75,7 +75,7 @@ function Dashboard() {
                   fontWeight: 700,
                   padding: "10px",
                   borderRadius: "5px",
-                  backgroundColor: "#e7a94b",
+                  backgroundColor: NoticeTheme.success.title.color,
                   textTransform: "capitalize",
                 }}
               />

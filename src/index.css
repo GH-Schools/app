@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: TT Norms Web, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+}
+
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -16,7 +22,8 @@ html {
   --palette-color-contrast-4: #000;
   --palette-color-5: #f5f3bb;
   --palette-color-contrast-5: #000;
-  color: #494949;
+  --text-color: #131623;
+  color: var(--text-color);
 }
 
 button:disabled {
@@ -31,16 +38,8 @@ button:disabled {
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }
 
 .backdrop {
@@ -110,11 +109,10 @@ footer big {
   margin-bottom: 1rem;
 }
 
-
 @media (prefers-color-scheme: dark) {
   html {
-    --backdrop-color: #EFEFEF;
-    --palette-color-1: #1A1B25;
+    --backdrop-color: #efefef;
+    --palette-color-1: #1a1b25;
     --palette-color-contrast-1: #fff;
     --palette-color-2: #861657;
     --palette-color-contrast-2: #fff;
@@ -124,5 +122,6 @@ footer big {
     --palette-color-contrast-4: #fff;
     --palette-color-5: #f5f3bb;
     --palette-color-contrast-5: #000;
+    --text-color: #f9faff;
   }
 }

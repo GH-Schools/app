@@ -10,6 +10,7 @@ import {
 } from "react-icons/bs";
 import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 import Button from "../../components/common/Button";
+import { getAuthUser } from "../../utils/storage";
 
 const MetricsCard = ({
   title,
@@ -38,10 +39,12 @@ function Dashboard() {
     (state: StoreState) => state.App?.sessionInfo
   );
 
+  const authUser = getAuthUser();
+
   console.log(academicSession);
 
   // useEffect(() => {
-  //   dispatch(getCurrentSession());
+  //   dispatch(get());
   // }, [dispatch]);
 
   return (
@@ -49,8 +52,8 @@ function Dashboard() {
       <section className="flex flex-col gap-5">
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-6 pb-6 rounded-xl gap-2 bg-white w-full">
           <div className="flex flex-col mb-2">
-            <h1 className="font-bold text-4xl text-black mb-2.5">
-              Welcome Back, Annie!
+            <h1 className="font-bold text-4xl text-black mb-2.5 capitalize">
+              {`Welcome Back, ${authUser?.firstName}!`}
             </h1>
             <h4 className="text-gray-800 font-medium text-sm">
               Check out these announcements:

@@ -6,11 +6,46 @@ import axiosServices from "../../services/axiosServices";
 import { errorHandler } from "../errorHandler";
 import { createQuery } from "../../utils/createQuery";
 
-export const submitAdmissionForm = createAsyncThunk(
-  "dashboard/submitAdmissionForm",
-  async (thunkAPI) => {
+export const saveAdmissionPersonalProfile = createAsyncThunk(
+  "dashboard/saveAdmissionPersonalProfile",
+  async (payload: GenericObject, thunkAPI) => {
     try {
-      const res: { payload: any } = await axiosServices.get(`/admissions/new-form`);
+      const res: { payload: any } = await axiosServices.post(
+        `/admissions/save-personal-profile`,
+        payload
+      );
+      return res?.payload?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
+export const saveAdmissionEducation = createAsyncThunk(
+  "dashboard/saveAdmissionEducation",
+  async (payload: GenericObject, thunkAPI) => {
+    try {
+      const res: { payload: any } = await axiosServices.post(
+        `/admissions/save-education`,
+        payload
+      );
+      return res?.payload?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
+export const saveAdmissionWelfareInformation = createAsyncThunk(
+  "dashboard/saveAdmissionWelfareInformation",
+  async (payload: GenericObject, thunkAPI) => {
+    try {
+      const res: { payload: any } = await axiosServices.post(
+        `/admissions/save-welfare-information`,
+        payload
+      );
       return res?.payload?.payload;
     } catch (error: any) {
       errorHandler(error);

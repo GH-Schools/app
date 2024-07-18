@@ -1,19 +1,26 @@
-import { Formik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
+import { Formik } from "formik";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/common/Button";
+import React, { useEffect, useState } from "react";
 import {
   InputComponent,
   SelectComponent,
 } from "../../components/common/FormComponents";
-import { validations } from "../../utils/validations";
+import Button from "../../components/common/Button";
 import Notice from "../../components/common/Notice";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import TextSpinner from "../../components/TextSpinner";
+
 import { StoreState } from "../../redux/reducers";
 import { getMyPayments } from "../../redux/actions/payment.action";
 import { getAuthUser } from "../../utils/storage";
+import { validations } from "../../utils/validations";
+import {
+  saveAdmissionEducation,
+  saveAdmissionPersonalProfile,
+  saveAdmissionWelfareInformation,
+} from "../../redux/actions/dashboard.action";
 
 function Application() {
   const navigate = useNavigate();
@@ -27,16 +34,18 @@ function Application() {
     EDUCATION,
     HOSPITALITY,
   }
-  
+
   const [activeForm, setActiveForm] = useState(Steps.PERSONAL);
   const [combinedFormValues, setCombinedFormValues] = useState({});
-  const paymentInfo = useSelector((state: StoreState) => state?.Payment?.payments[0]);
-  
+  const paymentInfo = useSelector(
+    (state: StoreState) => state?.Payment?.payments[0]
+  );
+
   const disabledForms = {
     [Steps.PERSONAL]: activeForm !== Steps.PERSONAL || !paymentInfo,
     [Steps.EDUCATION]: activeForm !== Steps.EDUCATION || !paymentInfo,
     [Steps.HOSPITALITY]: activeForm !== Steps.HOSPITALITY || !paymentInfo,
-  }
+  };
 
   useEffect(() => {
     dispatch(getMyPayments({}));
@@ -62,17 +71,18 @@ function Application() {
               firstName: authenticatedUser?.firstName ?? "",
               middleName: authenticatedUser?.middleName ?? "",
               lastName: authenticatedUser?.lastName ?? "",
-              email: authenticatedUser?.email ?? "",
               mobile1: authenticatedUser?.mobile ?? "",
-              sex: "",
-              dob: "",
+              email: authenticatedUser?.email ?? "",
               residentialAddress: "",
               regionOfResidence: "",
-              nationality: "",
-              nationalIDType: "",
               nationalIDNumber: "",
+              nationalIDType: "",
+              nationality: authenticatedUser?.nationality ?? "",
               currentJob: "",
               language: "",
+              sex: authenticatedUser?.sex ?? "",
+              dob: authenticatedUser?.dob ?? "",
+              reference: paymentInfo?.reference,
             }}
             validationSchema={Yup.object({
               firstName: validations
@@ -93,11 +103,25 @@ function Application() {
                 .blank()
                 .required("National ID number is required"),
             })}
-            onSubmit={(values, helpers) => {
-              console.log(values);
-              navigate("/dashboard/apply/form#education");
-              setCombinedFormValues((prev) => ({ ...prev, ...values }));
-              setActiveForm(Steps.EDUCATION);
+            onSubmit={async (values, helpers) => {
+              try {
+                helpers.setSubmitting(true);
+                console.log(values);
+                const res = await dispatch(
+                  saveAdmissionPersonalProfile(values)
+                );
+                console.log(res);
+
+                if (res?.meta?.requestStatus === "fulfilled") {
+                  navigate("/dashboard/apply/form#education");
+                  setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                  setActiveForm(Steps.EDUCATION);
+                }
+              } catch (error) {
+                console.error(error);
+              } finally {
+                helpers.setSubmitting(false);
+              }
             }}
           >
             {({
@@ -105,12 +129,13 @@ function Application() {
               handleSubmit,
               handleBlur,
               resetForm,
+              isSubmitting,
               errors,
               touched,
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
-                <h3 className="font-bold text-xl mb-4 text-inherit">
+                <h3 className="font-bold text-2xl mb-5 text-inherit">
                   Personal Profile
                 </h3>
 
@@ -383,8 +408,13 @@ function Application() {
                       />
 
                       <Button
-                        type="submit"
-                        text="Save &amp; Continue"
+                        type={"submit"}
+                        text={
+                          <TextSpinner
+                            text="Save &amp; Continue"
+                            loading={isSubmitting}
+                          />
+                        }
                         style={styles.proceedBtn}
                       />
                     </>
@@ -399,7 +429,15 @@ function Application() {
       <section className="flex flex-row gap-5" id="education">
         <div className="flex flex-col flex-grow shadow-md rounded-xl gap-2 bg-white w-1/3 ">
           <Formik
+            enableReinitialize={true}
             initialValues={{
+              preferredCourse: "",
+              courseSession: "",
+              priorExperience: "",
+              priorExperienceSpecialization: "",
+              source: "",
+              reference: paymentInfo?.reference,
+              // mobile2: "",
               // Max of 3
               previousSchoolInfo: [
                 {
@@ -409,14 +447,6 @@ function Application() {
                   qualification: "",
                 },
               ],
-              preferredCourse: "",
-              courseSession: "",
-              priorExperience: "",
-              priorExperienceSpecialization: "",
-              source: "",
-              reference: paymentInfo?.reference,
-              // passportPhoto: "",
-              // mobile2: "",
             }}
             validationSchema={Yup.object({
               preferredCourse: validations
@@ -426,17 +456,48 @@ function Application() {
                 .blank()
                 .required("Referral source is required"),
             })}
-            onSubmit={(values, helpers) => {
-              console.log(values);
-              setCombinedFormValues((prev) => ({ ...prev, ...values }));
-              navigate("/dashboard/apply/form#hospitality");
-              setActiveForm(Steps.HOSPITALITY);
+            onSubmit={async (values, helpers) => {
+              try {
+                helpers.setSubmitting(true);
+                const { previousSchoolInfo, priorExperience, ...rest } = values;
+                const payload: { [x: string]: any } = { ...rest };
+
+                previousSchoolInfo.forEach((schoolInfo, index) => {
+                  payload[`nameOfSchoolAttended${index + 1}`] = schoolInfo.name;
+                  payload[`locationOfSchoolAttended${index + 1}`] =
+                    schoolInfo.locationOfSchool;
+                  payload[`yearAttended${index + 1}`] = schoolInfo.yearAttended;
+                  payload[`qualification${index + 1}`] =
+                    schoolInfo.qualification;
+                });
+
+                console.log(payload);
+
+                const res = await dispatch(
+                  saveAdmissionEducation({
+                    priorExperience: Boolean(priorExperience),
+                    ...payload,
+                  })
+                );
+                console.log(res);
+
+                if (res?.meta?.requestStatus === "fulfilled") {
+                  setCombinedFormValues((prev) => ({ ...prev, ...payload }));
+                  navigate("/dashboard/apply/form#hospitality");
+                  setActiveForm(Steps.HOSPITALITY);
+                }
+              } catch (error) {
+                console.error(error);
+              } finally {
+                helpers.setSubmitting(false);
+              }
             }}
           >
             {({
               handleChange,
               handleSubmit,
               handleBlur,
+              isSubmitting,
               resetForm,
               setValues,
               errors,
@@ -444,7 +505,7 @@ function Application() {
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
-                <h3 className="font-bold text-xl mb-4 text-inherit">
+                <h3 className="font-bold text-2xl mb-5 text-inherit">
                   Educational Information
                 </h3>
 
@@ -644,22 +705,25 @@ function Application() {
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
-                  <InputComponent
-                    label="Previous Experience"
+                  <SelectComponent
+                    label="Are you already into your field of application?"
                     name="priorExperience"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     errors={errors}
                     touched={touched}
                     value={values?.priorExperience}
-                    placeholder="E.g. Temiloluwa"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     disabled={disabledForms[Steps.EDUCATION]}
+                    options={[
+                      { name: "Yes", value: "true" },
+                      { name: "No", value: "false" },
+                    ]}
                   />
 
                   <InputComponent
-                    label="Specialization in Previous Experience:"
+                    label="If yes, please kindly state your area(s) of specialization:"
                     name="priorExperienceSpecialization"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -722,7 +786,12 @@ function Application() {
 
                       <Button
                         type="submit"
-                        text="Save &amp; Continue"
+                        text={
+                          <TextSpinner
+                            text="Save &amp; Continue"
+                            loading={isSubmitting}
+                          />
+                        }
                         style={styles.proceedBtn}
                       />
                     </>
@@ -737,25 +806,52 @@ function Application() {
       <section className="flex flex-row gap-5" id="hospitality">
         <div className="flex flex-col flex-grow shadow-md rounded-xl gap-2 bg-white w-1/3 ">
           <Formik
+            enableReinitialize={true}
             initialValues={{
               preferHostel: "false",
               hasMedicalCondition: "false",
-              medicalCondition: "",
+              medicalCondition: authenticatedUser?.medicalCondition ?? "",
               hasDisability: "false",
-              disability: "",
+              disability: authenticatedUser?.disability ?? "",
               sponsorName: "",
               sponsorRelationship: "",
               sponsorOccupation: "",
               sponsorAddress: "",
               sponsorMobile: "",
+              reference: paymentInfo?.reference,
             }}
-            onSubmit={(values, helpers) => {
-              console.log(values);
-              setCombinedFormValues((prev) => ({ ...prev, ...values }));
-              alert("Thanks a lot");
-              console.log(combinedFormValues);
-              // navigate("/dashboard/apply/form#education");
-              // setActiveForm(Steps.EDUCATION);
+            onSubmit={async (values, helpers) => {
+              try {
+                const {
+                  preferHostel,
+                  hasMedicalCondition,
+                  hasDisability,
+                  ...rest
+                } = values;
+                const payload: { [x: string]: any } = { ...rest };
+
+                helpers.setSubmitting(true);
+                console.log(payload);
+                const res = await dispatch(
+                  saveAdmissionWelfareInformation({
+                    preferHostel: Boolean(preferHostel),
+                    hasMedicalCondition: Boolean(hasMedicalCondition),
+                    hasDisability: Boolean(hasDisability),
+                    ...payload,
+                  })
+                );
+                console.log(res);
+
+                if (res?.meta?.requestStatus === "fulfilled") {
+                  setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                  alert("Thanks a lot");
+                  console.log(combinedFormValues);
+                }
+              } catch (error) {
+                console.error(error);
+              } finally {
+                helpers.setSubmitting(false);
+              }
             }}
           >
             {({
@@ -769,7 +865,7 @@ function Application() {
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
-                <h3 className="font-bold text-xl mb-4 text-inherit">
+                <h3 className="font-bold text-2xl mb-5 text-inherit">
                   Welfare &amp; Sponsorship Information
                 </h3>
 
@@ -792,12 +888,11 @@ function Application() {
                     width="100%"
                     disabled={disabledForms[Steps.HOSPITALITY]}
                     options={[
-                      { name: "- Choose an option -", value: "false" },
-                      { name: "Yes", value: "true" },
                       {
                         name: "No",
                         value: "false",
                       },
+                      { name: "Yes", value: "true" },
                     ]}
                   />
                 </div>
@@ -816,12 +911,11 @@ function Application() {
                     required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                     options={[
-                      { name: "- Choose an option -", value: "false" },
-                      { name: "Yes", value: "true" },
                       {
                         name: "No",
                         value: "false",
                       },
+                      { name: "Yes", value: "true" },
                     ]}
                   />
 
@@ -854,12 +948,11 @@ function Application() {
                     required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                     options={[
-                      { name: "- Choose an option -", value: "false" },
-                      { name: "Yes", value: "true" },
                       {
                         name: "No",
                         value: "false",
                       },
+                      { name: "Yes", value: "true" },
                     ]}
                   />
 

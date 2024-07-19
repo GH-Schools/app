@@ -17,17 +17,16 @@ import { getMyPayments } from "../../redux/actions/payment.action";
 import { getAuthUser } from "../../utils/storage";
 import { validations } from "../../utils/validations";
 import {
+  getMyAdmissionForm,
   saveAdmissionEducation,
   saveAdmissionPersonalProfile,
   saveAdmissionWelfareInformation,
 } from "../../redux/actions/dashboard.action";
+import { mergeClassNames } from "../../utils/utilities";
 
 function Application() {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-  const authenticatedUser = useSelector(
-    (state: StoreState) => state?.Auth?.userProfile ?? getAuthUser()
-  );
 
   enum Steps {
     PERSONAL,
@@ -37,9 +36,25 @@ function Application() {
 
   const [activeForm, setActiveForm] = useState(Steps.PERSONAL);
   const [combinedFormValues, setCombinedFormValues] = useState({});
+
+  const authenticatedUser = useSelector(
+    (state: StoreState) => state?.Auth?.userProfile ?? getAuthUser()
+  );
+
   const paymentInfo = useSelector(
     (state: StoreState) => state?.Payment?.payments[0]
   );
+
+  const academicSession = useSelector(
+    (state: StoreState) => state.App?.sessionInfo
+  );
+
+  const admissionInfo = useSelector(
+    (state: StoreState) => state?.Dashboard?.data?.[0]
+  );
+
+
+  console.log(admissionInfo);
 
   const disabledForms = {
     [Steps.PERSONAL]: activeForm !== Steps.PERSONAL || !paymentInfo,
@@ -49,7 +64,10 @@ function Application() {
 
   useEffect(() => {
     dispatch(getMyPayments({}));
-  }, [dispatch]);
+    if (academicSession?.data?.sessionId) {
+      dispatch(getMyAdmissionForm(academicSession?.data?.sessionId as string));
+    }
+  }, [academicSession?.data?.sessionId, dispatch]);
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
@@ -58,7 +76,7 @@ function Application() {
           variant="warn"
           title="Note:"
           message={
-            "This admissions form has been disabled because admissions for this session has ended!"
+            "This admissions form will be disabled after admissions for this session has ended!"
           }
         ></Notice>
       </div>
@@ -135,9 +153,22 @@ function Application() {
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
-                <h3 className="font-bold text-2xl mb-5 text-inherit">
-                  Personal Profile
-                </h3>
+                <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                  <h3 className="font-bold text-2xl mb-5 text-inherit">
+                    Personal Profile
+                  </h3>
+
+                  <div
+                    className={mergeClassNames(
+                      "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
+                      disabledForms[Steps.PERSONAL]
+                        ? "bg-gray-600"
+                        : "ring ring-[#21B591] bg-[#21B591]"
+                    )}
+                  >
+                    {"1"}
+                  </div>
+                </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <InputComponent
@@ -391,7 +422,7 @@ function Application() {
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 mt-4 items-center justify-end w-full">
+                <div className="flex flex-row sm:flex-row gap-3 sm:gap-6 mt-4 items-center justify-end w-full">
                   {!disabledForms[Steps.PERSONAL] && (
                     <>
                       <Button
@@ -505,9 +536,22 @@ function Application() {
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
-                <h3 className="font-bold text-2xl mb-5 text-inherit">
-                  Educational Information
-                </h3>
+                <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full mb-5">
+                  <h3 className="font-bold text-2xl text-inherit">
+                    Educational Information
+                  </h3>
+
+                  <div
+                    className={mergeClassNames(
+                      "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
+                      disabledForms[Steps.EDUCATION]
+                        ? "bg-gray-600"
+                        : "ring ring-[#21B591] bg-[#21B591]"
+                    )}
+                  >
+                    {"2"}
+                  </div>
+                </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b mt-3 mb-4">
                   <h3 className="font-bold text-sm pb-2 text-inherit">
@@ -765,7 +809,7 @@ function Application() {
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 mt-4 items-center justify-end w-full">
+                <div className="flex flex-row sm:flex-row gap-3 sm:gap-6 mt-4 items-center justify-end w-full">
                   {!disabledForms[Steps.EDUCATION] && (
                     <>
                       <Button
@@ -858,6 +902,7 @@ function Application() {
               handleChange,
               handleSubmit,
               handleBlur,
+              isSubmitting,
               resetForm,
               setValues,
               errors,
@@ -865,9 +910,22 @@ function Application() {
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
-                <h3 className="font-bold text-2xl mb-5 text-inherit">
-                  Welfare &amp; Sponsorship Information
-                </h3>
+                <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                  <h3 className="font-bold text-2xl mb-5 text-inherit">
+                    Welfare &amp; Sponsorship Information
+                  </h3>
+
+                  <div
+                    className={mergeClassNames(
+                      "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
+                      disabledForms[Steps.HOSPITALITY]
+                        ? "bg-gray-600"
+                        : "ring ring-[#21B591] bg-[#21B591]"
+                    )}
+                  >
+                    {"3"}
+                  </div>
+                </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b mt-3 mb-4">
                   <h3 className="font-bold text-sm pb-2 text-inherit">
@@ -1058,7 +1116,7 @@ function Application() {
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 mt-4 items-center justify-end w-full">
+                <div className="flex flex-row md:flex-row gap-3 md:gap-6 mt-4 items-center justify-end w-full">
                   {!disabledForms[Steps.HOSPITALITY] && (
                     <>
                       <Button
@@ -1079,7 +1137,12 @@ function Application() {
 
                       <Button
                         type="submit"
-                        text="Submit Application"
+                        text={
+                          <TextSpinner
+                            text="Submit Application"
+                            loading={isSubmitting}
+                          />
+                        }
                         style={styles.proceedBtn}
                       />
                     </>

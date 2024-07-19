@@ -12,27 +12,6 @@ import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 import Button from "../../components/common/Button";
 import { getAuthUser } from "../../utils/storage";
 
-const MetricsCard = ({
-  title,
-  icon,
-}: {
-  title: string;
-  icon?: React.ReactNode;
-}) => {
-  return (
-    <div className="flex flex-row flex-none gap-4 flex-grow shadow-sm px-5 py-6 rounded-2xl bg-gray--500 bg-red-800 text-red-900">
-      <div className="flex items-center justify-center p-1 rounded-full bg-gray--700 bg-red--900 bg-white w-[50px] h-[50px] flex-none">
-        {icon}
-      </div>
-
-      <div className="flex flex-col gap-2 text-white">
-        <h3 className="font-bold">{title}</h3>
-        <div className="flex text-xs font-normal">Lorem ipsum dolr</div>
-      </div>
-    </div>
-  );
-};
-
 function Dashboard() {
   // const dispatch = useDispatch<any>();
   const academicSession = useSelector(
@@ -53,7 +32,7 @@ function Dashboard() {
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-6 pb-6 rounded-xl gap-2 bg-white w-full">
           <div className="flex flex-col mb-2">
             <h1 className="font-bold text-4xl text-black mb-2.5 capitalize">
-              {`Welcome Back, ${authUser?.firstName}!`}
+              {`Welcome, ${authUser?.firstName}!`}
             </h1>
             <h4 className="text-gray-800 font-medium text-sm">
               Check out these announcements:
@@ -64,13 +43,11 @@ function Dashboard() {
             <Notice
               variant="success"
               title="Info:"
-              message={
-                "You can now apply for admissions here"
-              }
+              message={"You can now apply for admissions here"}
             >
               <Button
                 text={"Apply for Admission"}
-                href={'/dashboard/apply/form'}
+                href={"/dashboard/apply/form"}
                 className="text-center font-bold"
                 style={{
                   color: "white",
@@ -131,17 +108,29 @@ function Dashboard() {
         </div>
       </section>
 
-      <section className="flex flex-row gap-5 overflow-auto">
+      <section className="flex flex-row gap-5 overflow-auto pb-3">
         {[
-          { title: "Payments", icon: <CardIcon /> },
-          { title: "View Profile", icon: <SiGoogleforms /> },
-          { title: "Metric 3", icon: <CardIcon /> },
-        ].map(({ title, icon }, i) => (
-          <MetricsCard key={i} title={title} icon={icon} />
+          {
+            title: "Next Interview Date",
+            message: `Your next interview date has been scheduled for Friday, 23rd July, 2024`,
+            icon: <CardIcon />,
+          },
+          {
+            title: "Orientation Date",
+            message: `Date will be communicated`,
+            icon: <SiGoogleforms />,
+          },
+          {
+            title: "Lecture Resumption Date",
+            message: `Lecture Resumption Date`,
+            icon: <CardIcon />,
+          },
+        ].map(({ title, icon, message }, i) => (
+          <MetricsCard key={i} title={title} icon={`${i + 1}`} message={message} />
         ))}
       </section>
 
-      <section className="flex flex-row gap-5">
+      {/* <section className="flex flex-row gap-5">
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-4 pb-6 rounded-xl gap-2 bg-white w-3/5 ">
           <h3 className="font-bold text-lg">Metric</h3>
           <div className="flex items-center justify-center rounded-lg border w-full h-72">
@@ -150,18 +139,10 @@ function Dashboard() {
         </div>
 
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-6 pb-6 rounded-xl gap-2 bg-white">
-          {/* <h3 className="font-bold text-lg">Metric</h3> */}
           <div className="flex items-center justify-center rounded-lg border w-full h-72">
             loading...
           </div>
         </div>
-
-        {/* <div className="flex flex-col flex-grow shadow-sm px-6 pt-4 pb-6 rounded-xl gap-2 bg-white">
-          <h3 className="font-bold text-lg">Metric</h3>
-          <div className="flex items-center justify-center rounded-lg border w-full h-72">
-            loading...
-          </div>
-        </div> */}
       </section>
 
       <section className="flex flex-row gap-5">
@@ -178,9 +159,34 @@ function Dashboard() {
             loading...
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
+
+const MetricsCard = ({
+  title,
+  icon,
+  message,
+}: {
+  title: string;
+  message: React.ReactNode;
+  icon?: React.ReactNode;
+}) => {
+  return (
+    <div className="flex flex-col flex-none gap-4 flex-grow shadow-md px-5 py-5 rounded-2xl bg-gray--700 bg-green-600 bg-red--800 max-w-[32%]">
+      <div className="flex items-center justify-center p-1 rounded-full text-white text--green-600 bg-gray--700 bg-yellow--900 bg-gray-900 w-[35px] h-[35px] flex-none font-bold shadow-md">
+        {icon}
+      </div>
+
+      <div className="flex flex-col gap-2 text-white">
+        <h3 className="font-bold text-lg">{title}</h3>
+        <div className="flex text-xs font-medium text-left text-shadow-md">
+          {message}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Dashboard;

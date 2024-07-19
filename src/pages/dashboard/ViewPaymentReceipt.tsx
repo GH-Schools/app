@@ -31,10 +31,10 @@ function ViewPaymentReceipt() {
                   <Button
                     text="Download Receipt"
                     style={{
-                      backgroundColor: "dodgerblue",
+                      backgroundColor: "#21B591",
                       color: "white",
                       fontSize: "14px",
-                      fontWeight: 400,
+                      fontWeight: 600,
                       textTransform: "capitalize",
                     }}
                   />

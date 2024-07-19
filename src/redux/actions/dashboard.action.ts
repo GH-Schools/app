@@ -4,7 +4,7 @@ import { GenericObject } from "../../interfaces";
 // import AppSlice from "../slices/App.slice";
 import axiosServices from "../../services/axiosServices";
 import { errorHandler } from "../errorHandler";
-import { createQuery } from "../../utils/createQuery";
+// import { createQuery } from "../../utils/createQuery";
 
 export const saveAdmissionPersonalProfile = createAsyncThunk(
   "dashboard/saveAdmissionPersonalProfile",
@@ -54,12 +54,12 @@ export const saveAdmissionWelfareInformation = createAsyncThunk(
   }
 );
 
-export const getMyAdmissionForm = createAsyncThunk<any, GenericObject>(
+export const getMyAdmissionForm = createAsyncThunk<any, string>(
   "dashboard/getMyAdmissionForm",
-  async (queryParams: GenericObject) => {
+  async (sessionId: string) => {
     try {
       const response: { payload: any } = await axiosServices.get(
-        `/admissions/get-admissions-form${createQuery(queryParams)}`
+        `/admissions/get-admissions-form/${sessionId}`
       );
       return response?.payload;
     } catch (error: any) {

@@ -12,7 +12,7 @@ const DashboardSlice = createSlice({
     builder
       // Academic Session
       .addCase(getMyAdmissionForm.fulfilled, (state, { payload }) => {
-        console.log('fulfilled');
+        console.log('fulfilled', payload);
         state.isLoading = false;
         state.data = payload;
       })

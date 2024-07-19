@@ -54,7 +54,7 @@ const DrawerMenu = ({
   return children ? (
     <>
       <button className={buttonClass} onClick={onClickHandler} title={href} {...rest}>
-        <div className={"flex flex-row items-center mr-4"}>
+        <div className={"flex flex-row items-center mr-4 font-medium"}>
           <Icon />
           <span className="text-left text-sm">{text}</span>
         </div>
@@ -70,7 +70,7 @@ const DrawerMenu = ({
     </>
   ) : (
     <button className={buttonClass} onClick={onClickHandler} title={href} {...rest}>
-      <div className={`flex flex-row items-center mr-2`}>
+      <div className={`flex flex-row items-center mr-2 font-medium`}>
         <Icon />
         <span className="text-left text-sm">{text}</span>
       </div>
@@ -85,8 +85,9 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
     <div
       className={`flex flex-col fixed ${
         !open ? "left-[-100vw]" : "left-0"
-      } md:left-[unset] md:relative items-center p-6 md:w-[320px] w-[260px] h-full min-h-screen justify-between overflow-auto`}
+      } md:left-[unset] md:relative items-center p-6 md:w-[350px] w-[260px] h-full min-h-screen justify-between overflow-auto transition-all delay-0 duration-600 ease-in-out`}
       style={{
+        zIndex: "+9999",
         backgroundColor: "var(--palette-color-1)",
         color: "var(--palette-color-contrast-1)",
       }}

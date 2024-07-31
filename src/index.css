@@ -11,8 +11,9 @@
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
+  scroll-margin-top: 5px;
   --backdrop-color: #f7f7f9;
-  --palette-color-1: #090909;
+  --palette-color-1: #111817;
   --palette-color-contrast-1: #fff;
   --palette-color-2: #861657;
   --palette-color-contrast-2: #fff;

@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { GenericObject } from "../interfaces";
 
 export function createQuery(queryParams: GenericObject = {}) {
@@ -17,12 +19,19 @@ export function createQuery(queryParams: GenericObject = {}) {
 
 export function getQuery(queryString = "") {
   let queryParams: GenericObject = {};
-  queryString = queryString.replace('?', '');
+  queryString = queryString.replace("?", "");
 
-  queryString.split('&').forEach((keyValuePair) => {
-    const [key, value] = keyValuePair.split('=');
+  queryString.split("&").forEach((keyValuePair) => {
+    const [key, value] = keyValuePair.split("=");
     queryParams[key] = window.decodeURIComponent(value);
   });
 
   return queryParams;
+}
+
+export function usePageQuery() {
+  const { search } = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(search), [search]);
+  console.log(search);
+  return searchParams;
 }

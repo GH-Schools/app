@@ -13,7 +13,7 @@ import {
 import { StoreState } from "../redux/reducers";
 
 import Spinner from "../components/Spinner";
-import { useQuery } from "../utils/useQuery";
+import { usePageQuery as useQuery } from "../utils/queryUtils";
 import { validations } from "../utils/validations";
 
 import { PAYSTACK_PUBLIC_KEY } from "../constants/keys";

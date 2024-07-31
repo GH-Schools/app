@@ -7,18 +7,16 @@ import { GenericObject } from "../../interfaces";
 export type StoreState = {
   Auth: {
     login: { isLoading: boolean };
-    userProfile: {
-      [x: string]: any;
-    };
+    userProfile: GenericObject;
   };
-  App: { sessionInfo: { loading: boolean; data: any } };
+  App: { sessionInfo: { loading: boolean; data: GenericObject } };
   Payment: {
     isLoading: boolean;
     payments: GenericObject[];
   };
   Dashboard: {
-    data: {}[];
     isLoading: boolean;
+    data: GenericObject[];
   };
 };
 

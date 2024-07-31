@@ -7,7 +7,7 @@ type SpinnerProps = {
 };
 
 export default function Spinner(props: SpinnerProps) {
-  const { color = "text-blue-500", thickness = "border-2" } = props;
+  const { color = "text-blue-500", thickness = "border-t-2 border-r-2" } = props;
   let { size = "h-10 w-10" } = props;
 
   const style: { width?: string } = {};
@@ -20,7 +20,7 @@ export default function Spinner(props: SpinnerProps) {
   return (
     <div className={`flex justify-center items-center ${size}`} >
       <div
-        className={`animate-spin rounded-full ${thickness} ${color} h-full w-full` }
+        className={`animate-spin rounded-full ${thickness} ${color} h-[20px] w-[20px]` }
         style={style}
       />
     </div>

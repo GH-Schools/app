@@ -108,7 +108,7 @@ function Dashboard() {
         </div>
       </section>
 
-      <section className="flex flex-row gap-5 overflow-auto pb-3">
+      <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
         {[
           {
             title: "Next Interview Date",
@@ -174,8 +174,8 @@ const MetricsCard = ({
   icon?: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col flex-none gap-4 flex-grow shadow-md px-5 py-5 rounded-2xl bg-gray--700 bg-green-600 bg-red--800 max-w-[32%]">
-      <div className="flex items-center justify-center p-1 rounded-full text-white text--green-600 bg-gray--700 bg-yellow--900 bg-gray-900 w-[35px] h-[35px] flex-none font-bold shadow-md">
+    <div className="flex flex-row sm:flex-col flex-none gap-4 flex-grow shadow-md px-5 py-5 rounded-2xl bg-green-600 sm:max-w-[32%] min-w-[250px]">
+      <div className="flex items-center justify-center p-1 rounded-full text-white bg-gray-900 w-[35px] h-[35px] flex-none font-bold shadow-md">
         {icon}
       </div>
 

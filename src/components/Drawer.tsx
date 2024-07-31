@@ -19,10 +19,10 @@ type DrawerProps = {
 };
 
 type DrawerMenuProps = {
+  href?: string;
+  children?: React.ReactNode;
   text: React.ReactNode | JSX.Element;
   icon?: React.ReactNode | JSX.Element;
-  children?: React.ReactNode;
-  href?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -37,7 +37,8 @@ const DrawerMenu = ({
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const buttonClass = `flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]`;
+  const buttonClass =
+    "flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]";
 
   const Icon = () => (
     <div className="flex items-center justify-center min-w-[30px] min-h-[30px] mr-4 text-[1.375rem]">
@@ -53,7 +54,12 @@ const DrawerMenu = ({
 
   return children ? (
     <>
-      <button className={buttonClass} onClick={onClickHandler} title={href} {...rest}>
+      <button
+        className={buttonClass}
+        onClick={onClickHandler}
+        title={href}
+        {...rest}
+      >
         <div className={"flex flex-row items-center mr-4 font-medium"}>
           <Icon />
           <span className="text-left text-sm">{text}</span>
@@ -69,7 +75,12 @@ const DrawerMenu = ({
       {open && children}
     </>
   ) : (
-    <button className={buttonClass} onClick={onClickHandler} title={href} {...rest}>
+    <button
+      className={buttonClass}
+      onClick={onClickHandler}
+      title={href}
+      {...rest}
+    >
       <div className={`flex flex-row items-center mr-2 font-medium`}>
         <Icon />
         <span className="text-left text-sm">{text}</span>
@@ -85,11 +96,11 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
     <div
       className={`flex flex-col fixed ${
         !open ? "left-[-100vw]" : "left-0"
-      } md:left-[unset] md:relative items-center p-6 md:w-[350px] w-[260px] h-full min-h-screen justify-between overflow-auto transition-all delay-0 duration-600 ease-in-out`}
+      } md:left-[unset] md:relative items-center p-6 md:w-[350px] w-[260px] h-full min-h-screen justify-between overflow-auto transition-all delay-0 duration-600 ease-in-out shadow-md`}
       style={{
         zIndex: "+9999",
-        backgroundColor: "var(--palette-color-1)",
         color: "var(--palette-color-contrast-1)",
+        backgroundColor: "var(--palette-color-1)",
       }}
     >
       <div className="flex flex-col items-center w-full">
@@ -112,7 +123,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
             icon={<DashboardIcon />}
             href="/dashboard"
           />
-          <DrawerMenu text="Applications" icon={<SiGoogleforms />}>
+          <DrawerMenu text="My Applications" icon={<SiGoogleforms />}>
             <DrawerMenu text="Admissions Form" href="/dashboard/apply/form" />
             {/* <DrawerMenu text="Track Status" /> */}
           </DrawerMenu>

@@ -14,7 +14,7 @@ const DashboardSlice = createSlice({
       .addCase(getMyAdmissionForm.fulfilled, (state, { payload }) => {
         console.log('fulfilled', payload);
         state.isLoading = false;
-        state.data = payload;
+        state.data = state.data.concat([payload?.payload]);
       })
 
       .addCase(getMyAdmissionForm.pending, (state, action) => {

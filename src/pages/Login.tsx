@@ -54,6 +54,7 @@ const Login = () => {
               <img
                 src={logo}
                 alt="GH Schools"
+                // className="shadow-md"
                 style={{
                   margin: "0 auto 1.8rem",
                   display: "block",

@@ -7,10 +7,12 @@ import React, { useEffect, useState } from "react";
 import {
   InputComponent,
   SelectComponent,
+  FileUploadComponent,
 } from "../../components/common/FormComponents";
 import Button from "../../components/common/Button";
 import Notice from "../../components/common/Notice";
 import TextSpinner from "../../components/TextSpinner";
+import Lottie from "../../components/common/Lottie";
 
 import { StoreState } from "../../redux/reducers";
 import { getMyPayments } from "../../redux/actions/payment.action";
@@ -24,7 +26,35 @@ import {
 } from "../../redux/actions/dashboard.action";
 import { mergeClassNames } from "../../utils/utilities";
 
+import checkCircledLottie from "../../assets/lotties/check_circled.lottie.json";
+import { schoolCourses } from "../../constants/data";
+import { OptionProps } from "../../interfaces";
+
 function Application() {
+  const [completed, setCompleted] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
+      <div className="flex flex-col">
+        <Notice
+          variant="warn"
+          title="Note:"
+          message={
+            "This admissions form will be disabled after admissions for this session has ended!"
+          }
+        ></Notice>
+      </div>
+
+      {!completed ? <Form setCompleted={setCompleted} /> : <Success />}
+    </div>
+  );
+}
+
+const Form = ({
+  setCompleted,
+}: {
+  setCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
 
@@ -34,27 +64,28 @@ function Application() {
     HOSPITALITY,
   }
 
-  const [activeForm, setActiveForm] = useState(Steps.PERSONAL);
-  const [combinedFormValues, setCombinedFormValues] = useState({});
-
   const authenticatedUser = useSelector(
     (state: StoreState) => state?.Auth?.userProfile ?? getAuthUser()
   );
 
   const paymentInfo = useSelector(
-    (state: StoreState) => state?.Payment?.payments[0]
-  );
-
-  const academicSession = useSelector(
-    (state: StoreState) => state.App?.sessionInfo
+    (state: StoreState) => state?.Payment?.payments?.[0]
   );
 
   const admissionInfo = useSelector(
     (state: StoreState) => state?.Dashboard?.data?.[0]
   );
 
+  const admissionInfoIsLoading = useSelector(
+    (state: StoreState) => state?.Dashboard?.isLoading
+  );
 
-  console.log(admissionInfo);
+  const academicSession = useSelector(
+    (state: StoreState) => state.App?.sessionInfo
+  );
+
+  const [activeForm, setActiveForm] = useState(Steps.PERSONAL);
+  const [combinedFormValues, setCombinedFormValues] = useState({});
 
   const disabledForms = {
     [Steps.PERSONAL]: activeForm !== Steps.PERSONAL || !paymentInfo,
@@ -70,37 +101,34 @@ function Application() {
   }, [academicSession?.data?.sessionId, dispatch]);
 
   return (
-    <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
-      <div className="flex flex-col">
-        <Notice
-          variant="warn"
-          title="Note:"
-          message={
-            "This admissions form will be disabled after admissions for this session has ended!"
-          }
-        ></Notice>
-      </div>
-
+    <>
       <section className="flex flex-row gap-5" id="personal">
         <div className="flex flex-col flex-grow shadow-md rounded-xl gap-2 bg-white w-1/3 ">
           <Formik
             enableReinitialize={true}
             initialValues={{
-              firstName: authenticatedUser?.firstName ?? "",
-              middleName: authenticatedUser?.middleName ?? "",
-              lastName: authenticatedUser?.lastName ?? "",
-              mobile1: authenticatedUser?.mobile ?? "",
-              email: authenticatedUser?.email ?? "",
-              residentialAddress: "",
-              regionOfResidence: "",
-              nationalIDNumber: "",
-              nationalIDType: "",
+              firstName:
+                admissionInfo?.firstName ?? authenticatedUser?.firstName ?? "",
+              middleName:
+                admissionInfo?.middleName ??
+                authenticatedUser?.middleName ??
+                "",
+              lastName:
+                admissionInfo?.lastName ?? authenticatedUser?.lastName ?? "",
+              mobile1:
+                admissionInfo?.mobile1 ?? authenticatedUser?.mobile ?? "",
+              email: admissionInfo?.email ?? authenticatedUser?.email ?? "",
+              residentialArea: "",
+              residentialAddress: admissionInfo?.residentialAddress ?? "",
+              regionOfResidence: admissionInfo?.regionOfResidence ?? "",
+              nationalIDNumber: admissionInfo?.nationalIDNumber ?? "",
+              nationalIDType: admissionInfo?.nationalIDType ?? "",
               nationality: authenticatedUser?.nationality ?? "",
-              currentJob: "",
-              language: "",
-              sex: authenticatedUser?.sex ?? "",
-              dob: authenticatedUser?.dob ?? "",
-              reference: paymentInfo?.reference,
+              currentJob: admissionInfo?.currentJob ?? "",
+              language: admissionInfo?.language ?? "",
+              sex: admissionInfo?.sex ?? authenticatedUser?.sex ?? "",
+              dob: admissionInfo?.dob ?? authenticatedUser?.dob ?? "",
+              reference: admissionInfo?.reference ?? paymentInfo?.reference,
             }}
             validationSchema={Yup.object({
               firstName: validations
@@ -123,8 +151,8 @@ function Application() {
             })}
             onSubmit={async (values, helpers) => {
               try {
-                helpers.setSubmitting(true);
                 console.log(values);
+                helpers.setSubmitting(true);
                 const res = await dispatch(
                   saveAdmissionPersonalProfile(values)
                 );
@@ -132,6 +160,9 @@ function Application() {
 
                 if (res?.meta?.requestStatus === "fulfilled") {
                   navigate("/dashboard/apply/form#education");
+                  document
+                    .getElementById("education")
+                    ?.scrollIntoView({ behavior: "smooth" });
                   setCombinedFormValues((prev) => ({ ...prev, ...values }));
                   setActiveForm(Steps.EDUCATION);
                 }
@@ -166,8 +197,17 @@ function Application() {
                         : "ring ring-[#21B591] bg-[#21B591]"
                     )}
                   >
-                    {"1"}
+                    {<TextSpinner loading={admissionInfoIsLoading} text="1" />}
                   </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center w-full mt-2 mb-6">
+                  <FileUploadComponent
+                    name="passportPhoto"
+                    label="Click to add a picture"
+                    sx={{ borderRadius: "50%" }}
+                    inputSx={{ borderRadius: "50%" }}
+                  />
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
@@ -292,7 +332,7 @@ function Application() {
                     errors={errors}
                     touched={touched}
                     value={values?.language}
-                    placeholder="E.g. English"
+                    placeholder="E.g. English, Twi, Ga"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     disabled={disabledForms[Steps.PERSONAL]}
@@ -308,7 +348,7 @@ function Application() {
                     errors={errors}
                     touched={touched}
                     value={values?.residentialAddress}
-                    placeholder="E.g. Temiloluwa"
+                    placeholder="e.g. Winneba Rd P. O. Box GP 501, Accra, Ghana"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     disabled={disabledForms[Steps.PERSONAL]}
@@ -336,13 +376,13 @@ function Application() {
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <InputComponent
                     label="Area of Residence"
-                    name="firstName"
+                    name="residentialArea"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     errors={errors}
                     touched={touched}
-                    value={values?.firstName}
-                    placeholder="E.g. Temiloluwa"
+                    value={values?.residentialArea}
+                    placeholder="e.g, Kasoa, Gomoa, Effiduase, Kaneshie"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     disabled={disabledForms[Steps.PERSONAL]}
@@ -360,8 +400,15 @@ function Application() {
                     width="100%"
                     options={[
                       { name: "- Choose a region -", value: "" },
-                      { name: "Accra", value: "accra" },
-                      { name: "Ghana", value: "ghanian" },
+                      { name: "Ahafo region", value: "ahafo region" },
+                      { name: "Ashanti region", value: "ashanti region" },
+                      { name: "Bono East region", value: "bono east region" },
+                      { name: "Bono region", value: "bono region" },
+                      { name: "Central region", value: "central region" },
+                      { name: "Eastern region", value: "eastern region" },
+                      { name: "Northern region", value: "northern region" },
+                      { name: "Oti region", value: "oti region" },
+                      { name: "North East region", value: "north east region" },
                     ]}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
@@ -381,10 +428,17 @@ function Application() {
                     required={true}
                     options={[
                       { name: "- Choose an ID type -", value: "" },
-                      { name: "Driver's Licence", value: "driver's license" },
                       {
-                        name: "International Passport",
-                        value: "international passport",
+                        name: "Ghana Card",
+                        value: "ghana card",
+                      },
+                      {
+                        name: "NHIS",
+                        value: "NHIS",
+                      },
+                      {
+                        name: "Drivers license",
+                        value: "driver's license",
                       },
                     ]}
                     disabled={disabledForms[Steps.PERSONAL]}
@@ -398,7 +452,7 @@ function Application() {
                     errors={errors}
                     touched={touched}
                     value={values?.nationalIDNumber}
-                    placeholder="E.g. 12334322121"
+                    placeholder="e.g GHA-000937373-1"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     required={true}
@@ -462,14 +516,16 @@ function Application() {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              preferredCourse: "",
-              courseSession: "",
-              priorExperience: "",
-              priorExperienceSpecialization: "",
-              source: "",
+              preferredSchool:
+                admissionInfo?.preferredSchool ?? "gh media school",
+              preferredCourse: admissionInfo?.preferredCourse ?? "",
+              courseSession: admissionInfo?.courseSession ?? "",
+              priorExperience: admissionInfo?.priorExperience ?? "",
+              priorExperienceSpecialization:
+                admissionInfo?.priorExperienceSpecialization ?? "",
+              source: admissionInfo?.source ?? "",
               reference: paymentInfo?.reference,
               // mobile2: "",
-              // Max of 3
               previousSchoolInfo: [
                 {
                   name: "",
@@ -480,6 +536,9 @@ function Application() {
               ],
             }}
             validationSchema={Yup.object({
+              preferredSchool: validations
+                .blank()
+                .required("Preferred school is required"),
               preferredCourse: validations
                 .blank()
                 .required("Preferred course is required"),
@@ -490,7 +549,11 @@ function Application() {
             onSubmit={async (values, helpers) => {
               try {
                 helpers.setSubmitting(true);
-                const { previousSchoolInfo, priorExperience, ...rest } = values;
+                const {
+                  previousSchoolInfo,
+                  priorExperience,
+                  ...rest
+                } = values;
                 const payload: { [x: string]: any } = { ...rest };
 
                 previousSchoolInfo.forEach((schoolInfo, index) => {
@@ -510,11 +573,17 @@ function Application() {
                     ...payload,
                   })
                 );
-                console.log(res);
+                // console.log(res);
 
                 if (res?.meta?.requestStatus === "fulfilled") {
-                  setCombinedFormValues((prev) => ({ ...prev, ...payload }));
+                  setCombinedFormValues((prev) => ({
+                    ...prev,
+                    ...payload,
+                  }));
                   navigate("/dashboard/apply/form#hospitality");
+                  document
+                    .getElementById("hospitality")
+                    ?.scrollIntoView({ behavior: "smooth" });
                   setActiveForm(Steps.HOSPITALITY);
                 }
               } catch (error) {
@@ -529,10 +598,9 @@ function Application() {
               handleSubmit,
               handleBlur,
               isSubmitting,
-              resetForm,
               setValues,
-              errors,
               touched,
+              errors,
               values,
             }) => (
               <form className="rounded-lg py-8 px-8" onSubmit={handleSubmit}>
@@ -549,11 +617,11 @@ function Application() {
                         : "ring ring-[#21B591] bg-[#21B591]"
                     )}
                   >
-                    {"2"}
+                    {<TextSpinner loading={admissionInfoIsLoading} text="2" />}
                   </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b mt-3 mb-4">
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b-2 mt-3 mb-4">
                   <h3 className="font-bold text-sm pb-2 text-inherit">
                     Previous Education
                   </h3>
@@ -562,7 +630,12 @@ function Application() {
                 {values?.previousSchoolInfo.map((schoolInfo, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full"
+                    className={mergeClassNames(
+                      "flex flex-col md:flex-row gap-0 md:gap-5 items-start justify-between w-full",
+                      index !== 0
+                        ? "border-t md:border-t-0 mt-3 md:mt-0 pt-2 md:pt-0"
+                        : ""
+                    )}
                   >
                     <InputComponent
                       label={`School Name ${index + 1}`}
@@ -572,7 +645,7 @@ function Application() {
                       errors={errors}
                       touched={touched}
                       value={schoolInfo?.name}
-                      placeholder="E.g. Temiloluwa"
+                      placeholder="e.g Accra Academy Senior High school"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
                       required={index === 0}
@@ -587,9 +660,12 @@ function Application() {
                       errors={errors}
                       touched={touched}
                       value={schoolInfo?.yearAttended}
-                      placeholder="E.g. Temiloluwa"
+                      placeholder="E.g. 2022"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
+                      type="number"
+                      min={1960}
+                      max={9999}
                       required={index === 0}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
@@ -602,7 +678,7 @@ function Application() {
                       errors={errors}
                       touched={touched}
                       value={schoolInfo?.locationOfSchool}
-                      placeholder="E.g. Accra"
+                      placeholder="e.g. Winneba Rd P. O. Box GP 501, Accra, Ghana"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
                       required={index === 0}
@@ -621,8 +697,18 @@ function Application() {
                       width="100%"
                       options={[
                         { name: "- Choose a qualification -", value: "" },
-                        { name: "Bachelor of Science (B.Sc.)", value: "B.Sc." },
-                        { name: "Masters of Science (M.Sc.)", value: "M.Sc." },
+                        {
+                          name: "B.E.C.E",
+                          value: "BECE",
+                        },
+                        {
+                          name: "WASSCE",
+                          value: "WASSCE",
+                        },
+                        {
+                          name: "Degree",
+                          value: "Degree",
+                        },
                       ]}
                       required={index === 0}
                       disabled={disabledForms[Steps.EDUCATION]}
@@ -660,17 +746,17 @@ function Application() {
 
                 {values.previousSchoolInfo.length < 3 && (
                   <Button
-                    text="Add Education"
+                    text="+ Add Education"
                     style={{
-                      marginTop: "10px",
+                      // marginTop: "1px",
                       marginBottom: "10px",
                       padding: "10px",
                       backgroundColor: "transparent",
-                      border: "1px solid dodgerblue",
+                      border: "1px solid transparent",
                       textTransform: "capitalize",
                       color: "dodgerblue",
                       fontSize: "12px",
-                      fontWeight: 600,
+                      fontWeight: 400,
                     }}
                     onClick={() => {
                       setValues((prevValues) => ({
@@ -689,10 +775,34 @@ function Application() {
                   />
                 )}
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b mt-3 mb-4">
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b-2 mt-3 mb-4">
                   <h3 className="font-bold text-sm pb-2 text-inherit">
                     Other Information
                   </h3>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                  <SelectComponent
+                    label="Select a School:"
+                    name="preferredSchool"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    touched={touched}
+                    errors={errors}
+                    value={values?.preferredSchool}
+                    sx={{ marginBottom: "10px" }}
+                    width="100%"
+                    required={true}
+                    disabled={disabledForms[Steps.EDUCATION]}
+                    options={([] as OptionProps[]).concat(
+                      Object.keys(schoolCourses).map((each) => {
+                        return {
+                          name: each.toUpperCase(),
+                          value: each?.toLowerCase(),
+                        };
+                      })
+                    )}
+                  />
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
@@ -710,20 +820,17 @@ function Application() {
                     disabled={disabledForms[Steps.EDUCATION]}
                     options={[
                       { name: "- Choose a course -", value: "" },
-                      { name: "GH Media", value: "media" },
-                      {
-                        name: "GH Fashion",
-                        value: "fashion",
-                      },
-                      {
-                        name: "GH Cosmetology",
-                        value: "cosmetology",
-                      },
-                    ]}
+                    ].concat(
+                      schoolCourses?.[values.preferredSchool]?.courses.map(
+                        (each) => {
+                          return { name: each, value: each?.toLowerCase() };
+                        }
+                      )
+                    )}
                   />
 
                   <SelectComponent
-                    label="Preferred Course Session"
+                    label="Preferred Course Session/Duration"
                     name="courseSession"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -734,17 +841,14 @@ function Application() {
                     width="100%"
                     disabled={disabledForms[Steps.EDUCATION]}
                     options={[
-                      { name: "- Choose a seesion -", value: "" },
-                      { name: "GH Media", value: "media" },
-                      {
-                        name: "GH Fashion",
-                        value: "fashion",
-                      },
-                      {
-                        name: "GH Cosmetology",
-                        value: "cosmetology",
-                      },
-                    ]}
+                      { name: "- Choose a session -", value: "" },
+                    ].concat(
+                      schoolCourses?.[values.preferredSchool]?.sessions.map(
+                        (each) => {
+                          return { name: each, value: each?.toLowerCase() };
+                        }
+                      )
+                    )}
                   />
                 </div>
 
@@ -796,14 +900,30 @@ function Application() {
                     disabled={disabledForms[Steps.EDUCATION]}
                     options={[
                       { name: "- Choose an option -", value: "" },
-                      { name: "Google", value: "media" },
                       {
                         name: "Television",
                         value: "fashion",
                       },
                       {
-                        name: "Referral from someone",
-                        value: "cosmetology",
+                        name: "Radio",
+                        value: "radio",
+                      },
+                      {
+                        name: "Facebook",
+                        value: "facebook",
+                      },
+                      {
+                        name: "Instagram",
+                        value: "instagram",
+                      },
+                      { name: "Internet", value: "internet" },
+                      {
+                        name: "Referral - from friend, family or former student",
+                        value: "referral",
+                      },
+                      {
+                        name: "Others",
+                        value: "other",
                       },
                     ]}
                   />
@@ -824,6 +944,9 @@ function Application() {
                         }}
                         onClick={() => {
                           navigate("/dashboard/apply/form#personal");
+                          document
+                            .getElementById("personal")
+                            ?.scrollIntoView({ behavior: "smooth" });
                           setActiveForm(Steps.PERSONAL);
                         }}
                       />
@@ -852,16 +975,28 @@ function Application() {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              preferHostel: "false",
-              hasMedicalCondition: "false",
-              medicalCondition: authenticatedUser?.medicalCondition ?? "",
-              hasDisability: "false",
-              disability: authenticatedUser?.disability ?? "",
-              sponsorName: "",
-              sponsorRelationship: "",
-              sponsorOccupation: "",
-              sponsorAddress: "",
-              sponsorMobile: "",
+              hasMedicalCondition:
+                admissionInfo?.hasMedicalCondition ??
+                authenticatedUser?.hasMedicalCondition ??
+                "false",
+              medicalCondition:
+                admissionInfo?.medicalCondition ??
+                authenticatedUser?.medicalCondition ??
+                "",
+              hasDisability:
+                admissionInfo?.hasDisability ??
+                authenticatedUser?.hasDisability ??
+                "false",
+              disability:
+                admissionInfo?.disability ??
+                authenticatedUser?.disability ??
+                "",
+              sponsorRelationship: admissionInfo?.sponsorRelationship ?? "",
+              sponsorOccupation: admissionInfo?.sponsorOccupation ?? "",
+              preferHostel: admissionInfo?.preferHostel ?? "false",
+              sponsorAddress: admissionInfo?.sponsorAddress ?? "",
+              sponsorMobile: admissionInfo?.sponsorMobile ?? "",
+              sponsorName: admissionInfo?.sponsorName ?? "",
               reference: paymentInfo?.reference,
             }}
             onSubmit={async (values, helpers) => {
@@ -888,6 +1023,7 @@ function Application() {
 
                 if (res?.meta?.requestStatus === "fulfilled") {
                   setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                  setCompleted(true);
                   alert("Thanks a lot");
                   console.log(combinedFormValues);
                 }
@@ -923,11 +1059,11 @@ function Application() {
                         : "ring ring-[#21B591] bg-[#21B591]"
                     )}
                   >
-                    {"3"}
+                    {<TextSpinner loading={admissionInfoIsLoading} text="3" />}
                   </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b mt-3 mb-4">
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b-2 mt-3 mb-4">
                   <h3 className="font-bold text-sm pb-2 text-inherit">
                     Hospitality &amp; Welfare
                   </h3>
@@ -1029,7 +1165,7 @@ function Application() {
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b mt-3 mb-4">
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b-2 mt-3 mb-4">
                   <h3 className="font-bold text-sm pb-2 text-inherit">
                     Sponsorship &amp; Information
                   </h3>
@@ -1065,6 +1201,9 @@ function Application() {
                       { name: "- Choose relationship -", value: "" },
                       { name: "Father", value: "father" },
                       { name: "Mother", value: "mother" },
+                      { name: "Siblings", value: "siblings" },
+                      { name: "Friend", value: "friend" },
+                      { name: "Acquaintance", value: "acquaintance" },
                     ]}
                   />
                 </div>
@@ -1078,7 +1217,7 @@ function Application() {
                     errors={errors}
                     touched={touched}
                     value={values?.sponsorOccupation}
-                    placeholder="E.g. Engineer"
+                    placeholder="e.g farmer, civil servant, banker etc"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     disabled={disabledForms[Steps.HOSPITALITY]}
@@ -1131,6 +1270,9 @@ function Application() {
                         }}
                         onClick={() => {
                           navigate("/dashboard/apply/form#education");
+                          document
+                            .getElementById("education")
+                            ?.scrollIntoView({ behavior: "smooth" });
                           setActiveForm(Steps.EDUCATION);
                         }}
                       />
@@ -1153,9 +1295,38 @@ function Application() {
           </Formik>
         </div>
       </section>
-    </div>
+    </>
   );
-}
+};
+
+const Success = () => {
+  return (
+    <section className="flex flex-row items-center justify-center gap-5">
+      <div className="flex flex-col flex-grow justify-center items-center text-center shadow-md rounded-xl gap-2.5 bg-white w-1/3 py-8 px-8 min-h-[350px]">
+        <Lottie
+          data={checkCircledLottie}
+          loop={true}
+          width={150}
+          height={100}
+        />
+
+        <h3 className="font-bold text-xl mb-2 text-inherit capitalize">
+          Admission form has been submitted successfully!
+        </h3>
+
+        <div
+          className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full max-w-xl text-sm"
+          style={{ color: "#7a7a7a" }}
+        >
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
+          facilis earum aliquid voluptate. Unde consectetur odio expedita
+          doloribus ea doloremque, distinctio non tenetur delectus, veritatis,
+          accusantium animi. Iusto, sequi ut.
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const styles = {
   proceedBtn: {

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import axiosServices from "../../services/axiosServices";
 import { errorHandler } from "../errorHandler";
-import { createQuery } from "../../utils/createQuery";
+import { createQuery } from "../../utils/queryUtils";
 import { GenericObject } from "../../interfaces";
 import { SubmitPaymentPayload, VerifyPaymentPayload } from "../types/payment.types";
 

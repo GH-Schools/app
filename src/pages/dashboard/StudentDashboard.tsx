@@ -47,7 +47,7 @@ function StudentDashboard() {
             >
               <Button
                 text={"Apply for Admission"}
-                href={"/dashboard/apply/form"}
+                href={"/student/dashboard/apply/form"}
                 className="text-center font-bold"
                 style={{
                   color: "white",

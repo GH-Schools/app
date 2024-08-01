@@ -50,84 +50,89 @@ const Login = () => {
             handleSubmit,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit}>
-              <img
-                src={logo}
-                alt="GH Schools"
-                // className="shadow-md"
-                style={{
-                  margin: "0 auto 1.8rem",
-                  display: "block",
-                  width: "15%",
-                }}
-              />
-
+            <form
+              className="flex md:flex-row flex-col items-center justify-between"
+              onSubmit={handleSubmit}
+            >
               <div id="login" className="form_wrapper">
-                <p className="text-lg text-black font-semibold text-center">
-                  Sign In
-                </p>
-                <div className="form_input_wrapper">
-                  <input
-                    type="tel"
-                    name="mobile"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.mobile}
-                    placeholder="Enter mobile number"
-                    className={
-                      errors.mobile && touched.mobile ? "input-error" : ""
-                    }
-                  />
-                  {errors.mobile && touched.mobile && (
-                    <span className="error">{errors.mobile}</span>
-                  )}
-                </div>
-                
-                <div className="form_input_wrapper password-input">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                    placeholder="Enter password"
-                    className={
-                      errors.password && touched.password ? "input-error" : ""
-                    }
-                  />
-                  {errors.password && touched.password && (
-                    <span className="error">{errors.password}</span>
-                  )}
-                </div>
+                <img
+                  src={logo}
+                  alt="GH Schools"
+                  className="w-[100px] md:w-[120px]"
+                  style={{
+                    margin: "0 auto 1.5rem",
+                    display: "block",
+                    // width: "15%",
+                  }}
+                />
+                <div className="flex flex-col">
+                  <p className="text-lg text-black font-semibold text-center w-full">
+                    Sign In To Portal
+                  </p>
 
-                <div className="-mt-4 mb-6 px-1 w-full">
-                  <span
-                    className="inline-block text-xs uppercase font-semibold cursor-pointer"
-                    style={{ color: "lightslategray" }}
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "Hide Password" : "Show Password"}
-                  </span>
-                </div>
+                  <div className="form_input_wrapper">
+                    <input
+                      type="tel"
+                      name="mobile"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.mobile}
+                      placeholder="Enter mobile number"
+                      className={
+                        errors.mobile && touched.mobile ? "input-error" : ""
+                      }
+                    />
+                    {errors.mobile && touched.mobile && (
+                      <span className="error">{errors.mobile}</span>
+                    )}
+                  </div>
 
-                <div className="login-btn">
-                  <button
-                    type="submit"
-                    className="font-semibold uppercase bg-orange-600"
-                  >
-                    <TextSpinner loading={isSubmitting} text="Login" />
-                  </button>
-                </div>
+                  <div className="form_input_wrapper password-input">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                      placeholder="Enter password"
+                      className={
+                        errors.password && touched.password ? "input-error" : ""
+                      }
+                    />
+                    {errors.password && touched.password && (
+                      <span className="error">{errors.password}</span>
+                    )}
+                  </div>
 
-                <div className="text-sm text-black text-center mt-8">
-                  <span>Can't remember login?</span>{" "}
-                  <a
-                    href="/portal/password/reset"
-                    className="text-green-700 font-semibold"
-                    style={{ textDecoration: "underline" }}
-                  >
-                    Reset Password
-                  </a>
+                  <div className="-mt-4 mb-6 px-1 w-full">
+                    <span
+                      className="inline-block text-xs uppercase font-semibold cursor-pointer"
+                      style={{ color: "lightslategray" }}
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? "Hide Password" : "Show Password"}
+                    </span>
+                  </div>
+
+                  <div className="login-btn">
+                    <button
+                      type="submit"
+                      className="font-semibold uppercase bg-orange-600"
+                    >
+                      <TextSpinner loading={isSubmitting} text="Login" />
+                    </button>
+                  </div>
+
+                  <div className="text-sm text-black text-center mt-8">
+                    <span>Can't remember login?</span>{" "}
+                    <a
+                      href="/portal/password/reset"
+                      className="text-green-700 font-semibold"
+                      style={{ textDecoration: "underline" }}
+                    >
+                      Reset Password
+                    </a>
+                  </div>
                 </div>
               </div>
             </form>

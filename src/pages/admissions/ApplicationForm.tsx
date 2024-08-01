@@ -53,7 +53,7 @@ function Application() {
           >
             <Button
               text={"Download PDF"}
-              // href={"/dashboard/apply/form"}
+              // href={"/student/dashboard/apply/form"}
               className="text-center font-bold"
               style={{
                 color: "white",
@@ -218,7 +218,7 @@ const Form = ({
                     setCombinedFormValues((prev) => ({ ...prev, ...values }));
                     setActiveForm(null);
                   } else {
-                    navigate("/dashboard/apply/form#education");
+                    navigate("/student/dashboard/apply/form#education");
                     document
                       .getElementById("education")
                       ?.scrollIntoView({ behavior: "smooth" });
@@ -637,7 +637,7 @@ const Form = ({
                     setCombinedFormValues((prev) => ({ ...prev, ...payload }));
                     setActiveForm(null);
                   } else {
-                    navigate("/dashboard/apply/form#hospitality");
+                    navigate("/student/dashboard/apply/form#hospitality");
                     document
                       .getElementById("hospitality")
                       ?.scrollIntoView({ behavior: "smooth" });
@@ -1001,7 +1001,7 @@ const Form = ({
                           fontWeight: 600,
                         }}
                         onClick={() => {
-                          navigate("/dashboard/apply/form#personal");
+                          navigate("/student/dashboard/apply/form#personal");
                           document
                             .getElementById("personal")
                             ?.scrollIntoView({ behavior: "smooth" });
@@ -1330,7 +1330,7 @@ const Form = ({
                           fontWeight: 600,
                         }}
                         onClick={() => {
-                          navigate("/dashboard/apply/form#education");
+                          navigate("/student/dashboard/apply/form#education");
                           document
                             .getElementById("education")
                             ?.scrollIntoView({ behavior: "smooth" });

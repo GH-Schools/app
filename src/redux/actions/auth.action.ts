@@ -31,6 +31,26 @@ export const login = createAsyncThunk<any, LoginPayload>(
   }
 );
 
+export const adminLogin = createAsyncThunk<any, LoginPayload>(
+  "auth/adminLogin",
+  async (payload, { dispatch }) => {
+    try {
+      const response: { payload: any } = await axiosService.post(
+        `/admin/login`,
+        payload
+      );
+      console.log("auth", response);
+      setToken(response?.payload?.token);
+      await dispatch(getUserProfile());
+
+      return response?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
 export const resetPassword = createAsyncThunk<any, ResetPasswordPayload>(
   "auth/resetPassword",
   async (payload, { dispatch }) => {

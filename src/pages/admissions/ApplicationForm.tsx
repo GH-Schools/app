@@ -139,10 +139,10 @@ const Form = ({
 
   useEffect(() => {
     dispatch(getMyPayments({}));
-    if (academicSession?.data?.sessionId) {
-      dispatch(getMyAdmissionForm(academicSession?.data?.sessionId as string));
+    if (authenticatedUser?.userId) {
+      dispatch(getMyAdmissionForm(authenticatedUser?.userId as string));
     }
-  }, [academicSession?.data?.sessionId, dispatch]);
+  }, [authenticatedUser?.userId, dispatch]);
 
   useEffect(() => {
     if (

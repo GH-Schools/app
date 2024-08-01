@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { notify } from "../../utils/toastNotification";
-import { login as loginAPI, getUserProfile } from "../actions/auth.action";
+import {
+  login as loginAPI,
+  adminLogin,
+  getUserProfile,
+} from "../actions/auth.action";
 import {
   clearStorage,
   getAuthUser,
@@ -43,17 +47,16 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     // CLIENT LOGIN
     builder
-      .addCase(
-        loginAPI.fulfilled,
-        (state, { payload: { token } }) => {
-          // cVVhRMV3
-          // console.log("fulfilled", token);
-          state.login.isLoading = false;
+      .addCase(loginAPI.fulfilled, (state, { payload: { token } }) => {
+        // cVVhRMV3
+        // console.log("fulfilled", token);
+        state.login.isLoading = false;
+        notify("Login success", { type: "success" });
+        if (token) {
           setToken(token);
-          notify("Login success", { type: "success" });
-          window.location.href = "/dashboard";
+          window.location.href = "/student/dashboard";
         }
-      )
+      })
       .addCase(loginAPI.pending, (state, action) => {
         state.login.isLoading = true;
       })
@@ -68,11 +71,28 @@ const authSlice = createSlice({
         setAuthUser(payload);
         state.userProfile = payload;
       })
-
       .addCase(getUserProfile.pending, (state, action) => {
         state.login.isLoading = true;
       })
       .addCase(getUserProfile.rejected, (state, { error }) => {
+        console.log("rejected");
+        state.login.isLoading = false;
+      })
+
+      // Admin login
+      .addCase(adminLogin.fulfilled, (state, { payload: { token } }) => {
+        // console.log("fulfilled", token);
+        state.login.isLoading = false;
+        notify("Login success", { type: "success" });
+        if (token) {
+          setToken(token);
+          window.location.href = "/admin/dashboard";
+        }
+      })
+      .addCase(adminLogin.pending, (state, action) => {
+        state.login.isLoading = true;
+      })
+      .addCase(adminLogin.rejected, (state, { error }) => {
         console.log("rejected");
         state.login.isLoading = false;
       });

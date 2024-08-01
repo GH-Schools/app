@@ -12,7 +12,7 @@ import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 import Button from "../../components/common/Button";
 import { getAuthUser } from "../../utils/storage";
 
-function Dashboard() {
+function StudentDashboard() {
   // const dispatch = useDispatch<any>();
   const academicSession = useSelector(
     (state: StoreState) => state.App?.sessionInfo
@@ -189,4 +189,4 @@ const MetricsCard = ({
   );
 };
 
-export default Dashboard;
+export default StudentDashboard;

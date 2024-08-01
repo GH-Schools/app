@@ -1,5 +1,6 @@
-import authSlice from "../slices/Auth.slice";
 import AppSlice from "../slices/App.slice";
+import authSlice from "../slices/Auth.slice";
+import userSlice from "../slices/User.slice";
 import paymentSlice from "../slices/Payment.slice";
 import dashboardSlice from "../slices/Dashboard.slice";
 import { GenericObject } from "../../interfaces";
@@ -18,11 +19,16 @@ export type StoreState = {
     isLoading: boolean;
     data: GenericObject[];
   };
+  User: {
+    isLoading: boolean;
+    data: GenericObject[];
+  };
 };
 
 export const reducers = {
   App: AppSlice.reducer,
   Auth: authSlice.reducer,
+  User: userSlice.reducer,
   Payment: paymentSlice.reducer,
   Dashboard: dashboardSlice.reducer,
 };

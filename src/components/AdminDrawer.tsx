@@ -4,8 +4,11 @@ import {
   MdExitToApp,
   // MdDashboard,
 } from "react-icons/md";
-import { SiGoogleforms } from "react-icons/si";
-import { RxDashboard as DashboardIcon } from "react-icons/rx";
+// import { SiGoogleforms } from "react-icons/si";
+import {
+  RxDashboard as DashboardIcon,
+  RxBell as InterviewIcon,
+} from "react-icons/rx";
 import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
 
 import DrawerMenu from "./DrawerMenu";
@@ -48,16 +51,25 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
           <DrawerMenu
             text="Overview"
             icon={<DashboardIcon />}
-            href="/student/dashboard"
+            href="/admin/dashboard"
           />
-          <DrawerMenu text="My Applications" icon={<SiGoogleforms />}>
-            <DrawerMenu text="Admissions Form" href="/student/dashboard/apply/form" />
-            {/* <DrawerMenu text="Track Status" /> */}
+
+          <DrawerMenu text="Student Management" icon={<InterviewIcon />}>
+            <DrawerMenu
+              text="Manage Students"
+              href="/admin/dashboard/students"
+            />
+
+            <DrawerMenu
+              text="Manage Applicants"
+              href="/admin/dashboard/applicants"
+            />
           </DrawerMenu>
+
           <DrawerMenu text="Payments" icon={<CardIcon />}>
             <DrawerMenu
               text="View Receipts"
-              href="/student/dashboard/payment/view-receipt"
+              href="/admin/dashboard/payment/view-receipt"
             />
             {/* <DrawerMenu text="Print Receipts" /> */}
           </DrawerMenu>
@@ -68,7 +80,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
         <DrawerMenu
           text="Log Out"
           icon={<MdExitToApp />}
-          onClick={() => navigate("/portal")}
+          onClick={() => navigate("/admin-portal")}
         />
       </nav>
     </div>

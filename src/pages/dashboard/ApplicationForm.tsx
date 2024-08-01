@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineEdit } from "react-icons/ai";
 import React, { useEffect, useState } from "react";
 import {
   InputComponent,
@@ -10,12 +11,11 @@ import {
   FileUploadComponent,
 } from "../../components/common/FormComponents";
 import Button from "../../components/common/Button";
-import Notice from "../../components/common/Notice";
-import TextSpinner from "../../components/TextSpinner";
 import Lottie from "../../components/common/Lottie";
+import TextSpinner from "../../components/TextSpinner";
+import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 
 import { StoreState } from "../../redux/reducers";
-import { getMyPayments } from "../../redux/actions/payment.action";
 import { getAuthUser } from "../../utils/storage";
 import { validations } from "../../utils/validations";
 import {
@@ -24,23 +24,55 @@ import {
   saveAdmissionPersonalProfile,
   saveAdmissionWelfareInformation,
 } from "../../redux/actions/dashboard.action";
-import { mergeClassNames } from "../../utils/utilities";
+import { getMyPayments } from "../../redux/actions/payment.action";
 
 import checkCircledLottie from "../../assets/lotties/check_circled.lottie.json";
 import { schoolCourses } from "../../constants/data";
 import { OptionProps } from "../../interfaces";
 
+import { notify } from "../../utils/toastNotification";
+import { mergeClassNames } from "../../utils/utilities";
+
 function Application() {
   const [completed, setCompleted] = useState(false);
+
+  const admissionInfo = useSelector(
+    (state: StoreState) => state?.Dashboard?.data?.[0]
+  );
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
       <div className="flex flex-col">
+        {admissionInfo?.hasCompletedForm && (
+          <Notice
+            variant="success"
+            title="Next Steps:"
+            message={
+              "Success! You can now download a copy of your admission form for your reference"
+            }
+          >
+            <Button
+              text={"Download PDF"}
+              // href={"/dashboard/apply/form"}
+              className="text-center font-bold"
+              style={{
+                color: "white",
+                fontSize: "10px",
+                fontWeight: 700,
+                padding: "10px",
+                borderRadius: "5px",
+                backgroundColor: NoticeTheme.success.title.color,
+                textTransform: "capitalize",
+              }}
+            />
+          </Notice>
+        )}
+
         <Notice
           variant="warn"
           title="Note:"
           message={
-            "This admissions form will be disabled after admissions for this session has ended!"
+            "Please note that this admissions form will be disabled after admissions for this session has ended!"
           }
         ></Notice>
       </div>
@@ -84,13 +116,25 @@ const Form = ({
     (state: StoreState) => state.App?.sessionInfo
   );
 
-  const [activeForm, setActiveForm] = useState(Steps.PERSONAL);
+  const [activeForm, setActiveForm] = useState<Steps | null>(
+    admissionInfo?.hasCompletedForm ? null : Steps.PERSONAL
+  );
   const [combinedFormValues, setCombinedFormValues] = useState({});
 
   const disabledForms = {
-    [Steps.PERSONAL]: activeForm !== Steps.PERSONAL || !paymentInfo,
-    [Steps.EDUCATION]: activeForm !== Steps.EDUCATION || !paymentInfo,
-    [Steps.HOSPITALITY]: activeForm !== Steps.HOSPITALITY || !paymentInfo,
+    [Steps.PERSONAL]:
+      activeForm !== Steps.PERSONAL || !paymentInfo || admissionInfoIsLoading,
+    [Steps.EDUCATION]:
+      activeForm !== Steps.EDUCATION || !paymentInfo || admissionInfoIsLoading,
+    [Steps.HOSPITALITY]:
+      activeForm !== Steps.HOSPITALITY ||
+      !paymentInfo ||
+      admissionInfoIsLoading,
+  };
+
+  const editForm = (step: Steps) => (ev: any) => {
+    ev.preventDefault();
+    setActiveForm(step);
   };
 
   useEffect(() => {
@@ -99,6 +143,15 @@ const Form = ({
       dispatch(getMyAdmissionForm(academicSession?.data?.sessionId as string));
     }
   }, [academicSession?.data?.sessionId, dispatch]);
+
+  useEffect(() => {
+    if (
+      academicSession?.data?.sessionId &&
+      admissionInfo?.hasCompletedForm === true
+    ) {
+      setActiveForm(null);
+    }
+  }, [academicSession?.data?.sessionId, admissionInfo?.hasCompletedForm]);
 
   return (
     <>
@@ -159,12 +212,19 @@ const Form = ({
                 console.log(res);
 
                 if (res?.meta?.requestStatus === "fulfilled") {
-                  navigate("/dashboard/apply/form#education");
-                  document
-                    .getElementById("education")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                  setCombinedFormValues((prev) => ({ ...prev, ...values }));
-                  setActiveForm(Steps.EDUCATION);
+                  notify("Saved Successfully!", { type: "success" });
+
+                  if (admissionInfo?.hasCompletedForm) {
+                    setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                    setActiveForm(null);
+                  } else {
+                    navigate("/dashboard/apply/form#education");
+                    document
+                      .getElementById("education")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                    setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                    setActiveForm(Steps.EDUCATION);
+                  }
                 }
               } catch (error) {
                 console.error(error);
@@ -189,16 +249,13 @@ const Form = ({
                     Personal Profile
                   </h3>
 
-                  <div
-                    className={mergeClassNames(
-                      "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
-                      disabledForms[Steps.PERSONAL]
-                        ? "bg-gray-600"
-                        : "ring ring-[#21B591] bg-[#21B591]"
-                    )}
-                  >
-                    {<TextSpinner loading={admissionInfoIsLoading} text="1" />}
-                  </div>
+                  <SectionIndicator
+                    isActive={!disabledForms[Steps.PERSONAL]}
+                    isComplete={admissionInfo?.hasCompletedForm}
+                    isLoading={admissionInfoIsLoading}
+                    sectionNumber={1}
+                    activateFormHandler={editForm(Steps.PERSONAL)}
+                  />
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center w-full mt-2 mb-6">
@@ -542,6 +599,9 @@ const Form = ({
               preferredCourse: validations
                 .blank()
                 .required("Preferred course is required"),
+              courseSession: validations
+                .blank()
+                .required("Preferred session is required"),
               source: validations
                 .blank()
                 .required("Referral source is required"),
@@ -549,11 +609,7 @@ const Form = ({
             onSubmit={async (values, helpers) => {
               try {
                 helpers.setSubmitting(true);
-                const {
-                  previousSchoolInfo,
-                  priorExperience,
-                  ...rest
-                } = values;
+                const { previousSchoolInfo, priorExperience, ...rest } = values;
                 const payload: { [x: string]: any } = { ...rest };
 
                 previousSchoolInfo.forEach((schoolInfo, index) => {
@@ -576,15 +632,18 @@ const Form = ({
                 // console.log(res);
 
                 if (res?.meta?.requestStatus === "fulfilled") {
-                  setCombinedFormValues((prev) => ({
-                    ...prev,
-                    ...payload,
-                  }));
-                  navigate("/dashboard/apply/form#hospitality");
-                  document
-                    .getElementById("hospitality")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                  setActiveForm(Steps.HOSPITALITY);
+                  notify("Saved Successfully!", { type: "success" });
+                  if (admissionInfo?.hasCompletedForm) {
+                    setCombinedFormValues((prev) => ({ ...prev, ...payload }));
+                    setActiveForm(null);
+                  } else {
+                    navigate("/dashboard/apply/form#hospitality");
+                    document
+                      .getElementById("hospitality")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                    setCombinedFormValues((prev) => ({ ...prev, ...payload }));
+                    setActiveForm(Steps.HOSPITALITY);
+                  }
                 }
               } catch (error) {
                 console.error(error);
@@ -609,16 +668,13 @@ const Form = ({
                     Educational Information
                   </h3>
 
-                  <div
-                    className={mergeClassNames(
-                      "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
-                      disabledForms[Steps.EDUCATION]
-                        ? "bg-gray-600"
-                        : "ring ring-[#21B591] bg-[#21B591]"
-                    )}
-                  >
-                    {<TextSpinner loading={admissionInfoIsLoading} text="2" />}
-                  </div>
+                  <SectionIndicator
+                    isActive={!disabledForms[Steps.EDUCATION]}
+                    isComplete={admissionInfo?.hasCompletedForm}
+                    isLoading={admissionInfoIsLoading}
+                    sectionNumber={2}
+                    activateFormHandler={editForm(Steps.EDUCATION)}
+                  />
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b-2 mt-3 mb-4">
@@ -758,7 +814,8 @@ const Form = ({
                       fontSize: "12px",
                       fontWeight: 400,
                     }}
-                    onClick={() => {
+                    onClick={(ev) => {
+                      ev.preventDefault();
                       setValues((prevValues) => ({
                         ...prevValues,
                         previousSchoolInfo:
@@ -836,6 +893,7 @@ const Form = ({
                     onBlur={handleBlur}
                     errors={errors}
                     touched={touched}
+                    required={true}
                     value={values?.courseSession}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
@@ -1022,10 +1080,16 @@ const Form = ({
                 console.log(res);
 
                 if (res?.meta?.requestStatus === "fulfilled") {
-                  setCombinedFormValues((prev) => ({ ...prev, ...values }));
-                  setCompleted(true);
-                  alert("Thanks a lot");
-                  console.log(combinedFormValues);
+                  notify("Saved Successfully!", { type: "success" });
+                  if (admissionInfo?.hasCompletedForm) {
+                    setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                    setActiveForm(null);
+                  } else {
+                    setCombinedFormValues((prev) => ({ ...prev, ...values }));
+                    setCompleted(true);
+                    alert("Thanks a lot");
+                    console.log(combinedFormValues);
+                  }
                 }
               } catch (error) {
                 console.error(error);
@@ -1051,16 +1115,13 @@ const Form = ({
                     Welfare &amp; Sponsorship Information
                   </h3>
 
-                  <div
-                    className={mergeClassNames(
-                      "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
-                      disabledForms[Steps.HOSPITALITY]
-                        ? "bg-gray-600"
-                        : "ring ring-[#21B591] bg-[#21B591]"
-                    )}
-                  >
-                    {<TextSpinner loading={admissionInfoIsLoading} text="3" />}
-                  </div>
+                  <SectionIndicator
+                    isActive={!disabledForms[Steps.HOSPITALITY]}
+                    isComplete={admissionInfo?.hasCompletedForm}
+                    isLoading={admissionInfoIsLoading}
+                    sectionNumber={3}
+                    activateFormHandler={editForm(Steps.HOSPITALITY)}
+                  />
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full border-b-2 mt-3 mb-4">
@@ -1325,6 +1386,41 @@ const Success = () => {
         </div>
       </div>
     </section>
+  );
+};
+
+const SectionIndicator = ({
+  isComplete,
+  isActive,
+  isLoading,
+  sectionNumber,
+  activateFormHandler,
+}: {
+  isComplete: boolean;
+  isActive: boolean;
+  isLoading: boolean;
+  sectionNumber: number;
+  activateFormHandler: (ev?: any) => void;
+}) => {
+  return !isComplete ? (
+    <div
+      className={mergeClassNames(
+        "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
+        !isActive ? "bg-gray-600" : "ring ring-[#21B591] bg-[#21B591]"
+      )}
+    >
+      {<TextSpinner loading={isLoading} text={`${sectionNumber}`} />}
+    </div>
+  ) : (
+    <button
+      onClick={activateFormHandler}
+      className={mergeClassNames(
+        "flex items-center justify-center border-2 gap-2 border-white text-md font-bold text-[#21B591] transition delay-200 ease-in duration-300"
+      )}
+    >
+      <AiOutlineEdit />
+      <span>Edit</span>
+    </button>
   );
 };
 

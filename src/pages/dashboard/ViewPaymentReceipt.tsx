@@ -21,8 +21,8 @@ function ViewPaymentReceipt() {
   return (
     <div className="flex flex-col gap-7 my-5 mx-5">
       {!paymentInfo?.isLoading ? (
-        paymentInfo?.payments.map((payment) => (
-          <section className="flex flex-row gap-5">
+        paymentInfo?.payments.map((payment, i) => (
+          <section className="flex flex-row gap-5" key={payment?.payId ?? i}>
             <div className="flex flex-col flex-grow shadow-sm px-4 py-4 rounded-xl gap-2 bg-white w-1/3 ">
               <div className="rounded-lg border py-4 px-5">
                 <div className="flex flex-row justify-between items-start mb-4">

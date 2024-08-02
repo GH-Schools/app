@@ -20,6 +20,7 @@ import { getAuthUser } from "../../utils/storage";
 import { validations } from "../../utils/validations";
 import {
   getMyAdmissionForm,
+  downloadAdmissionForm,
   saveAdmissionEducation,
   saveAdmissionPersonalProfile,
   saveAdmissionWelfareInformation,
@@ -35,6 +36,7 @@ import { mergeClassNames } from "../../utils/utilities";
 
 function Application() {
   const [completed, setCompleted] = useState(false);
+  const dispatch = useDispatch<any>();
 
   const admissionInfo = useSelector(
     (state: StoreState) => state?.Dashboard?.data?.[0]
@@ -53,7 +55,11 @@ function Application() {
           >
             <Button
               text={"Download PDF"}
-              // href={"/student/dashboard/apply/form"}
+              onClick={() =>
+                dispatch(
+                  downloadAdmissionForm({ formId: admissionInfo?.formId })
+                )
+              }
               className="text-center font-bold"
               style={{
                 color: "white",
@@ -68,13 +74,13 @@ function Application() {
           </Notice>
         )}
 
-        <Notice
+        {/* <Notice
           variant="warn"
           title="Note:"
           message={
             "Please note that this admissions form will be disabled after admissions for this session has ended!"
           }
-        ></Notice>
+        ></Notice> */}
       </div>
 
       {!completed ? <Form setCompleted={setCompleted} /> : <Success />}
@@ -576,7 +582,7 @@ const Form = ({
               preferredSchool:
                 admissionInfo?.preferredSchool ?? "gh media school",
               preferredCourse: admissionInfo?.preferredCourse ?? "",
-              courseSession: admissionInfo?.courseSession ?? "",
+              courseSession: admissionInfo?.session ?? "",
               priorExperience: admissionInfo?.priorExperience ?? "",
               priorExperienceSpecialization:
                 admissionInfo?.priorExperienceSpecialization ?? "",

@@ -50,19 +50,21 @@ const AdminLogin = () => {
             handleSubmit,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit}>
-              <img
-                src={logo}
-                alt="GH Schools"
-                // className="shadow-md"
-                style={{
-                  margin: "0 auto 1.8rem",
-                  display: "block",
-                  width: "15%",
-                }}
-              />
-
+            <form
+              className="flex md:flex-row flex-col items-center justify-between"
+              onSubmit={handleSubmit}
+            >
               <div id="login" className="form_wrapper">
+                <img
+                  src={logo}
+                  alt="GH Schools"
+                  className="w-[100px] md:w-[120px]"
+                  style={{
+                    margin: "0 auto 1.5rem",
+                    display: "block",
+                    // width: "15%",
+                  }}
+                />
                 <p className="text-lg text-black font-semibold text-center">
                   Admin Sign-In
                 </p>
@@ -82,7 +84,7 @@ const AdminLogin = () => {
                     <span className="error">{errors.mobile}</span>
                   )}
                 </div>
-                
+
                 <div className="form_input_wrapper password-input">
                   <input
                     type={showPassword ? "text" : "password"}

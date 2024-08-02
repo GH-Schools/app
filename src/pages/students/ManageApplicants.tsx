@@ -48,7 +48,11 @@ function ManageApplicants() {
     },
     {
       Header: "Phone Number",
-      accessor: "mobile",
+      accessor: "mobile1",
+    },
+    {
+      Header: "Alt. Phone Number",
+      accessor: "mobile2",
     },
     {
       Header: "Nationality",

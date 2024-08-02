@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { GenericObject } from "../../interfaces";
 
@@ -5,6 +6,8 @@ import { GenericObject } from "../../interfaces";
 import axiosServices from "../../services/axiosServices";
 import { errorHandler } from "../errorHandler";
 import { createQuery } from "../../utils/queryUtils";
+import { API_BASE_URL as BASE_URL } from "../../constants/urls";
+import { getToken } from "../../utils/storage";
 
 export const saveAdmissionPersonalProfile = createAsyncThunk(
   "dashboard/saveAdmissionPersonalProfile",
@@ -54,6 +57,22 @@ export const saveAdmissionWelfareInformation = createAsyncThunk(
   }
 );
 
+export const updateAdmissionForm = createAsyncThunk(
+  "dashboard/updateAdmissionForm",
+  async (payload: GenericObject, thunkAPI) => {
+    try {
+      const res: { payload: any } = await axiosServices.put(
+        `/admissions/update-form`,
+        payload
+      );
+      return res?.payload?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
 export const getMyAdmissionForm = createAsyncThunk<any, string>(
   "dashboard/getMyAdmissionForm",
   async (userId: string) => {
@@ -92,6 +111,36 @@ export const getAllAdmissionForms = createAsyncThunk<any, GenericObject>(
         `/admissions/get-all-forms${createQuery(queryParams)}`
       );
       return response?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
+export const downloadAdmissionForm = createAsyncThunk<any, GenericObject>(
+  "dashboard/downloadAdmissionForm",
+  async (payload: GenericObject) => {
+    try {
+      const accessToken = getToken();
+
+      const res = await axios.post(`${BASE_URL}/admissions/download`, payload, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      console.log(res.headers["Content-Disposition"]);
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "AdmissionForm.pdf"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); // cleanup
+      window.URL.revokeObjectURL(url);
     } catch (error: any) {
       errorHandler(error);
       throw error;

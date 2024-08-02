@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
-import { getMyPayments } from "../../redux/actions/payment.action";
+import {
+  getMyPayments,
+  downloadPaymentReceipt,
+} from "../../redux/actions/payment.action";
 import Button from "../../components/common/Button";
 
 function ViewPaymentReceipt() {
@@ -26,10 +29,15 @@ function ViewPaymentReceipt() {
             <div className="flex flex-col flex-grow shadow-sm px-4 py-4 rounded-xl gap-2 bg-white w-1/3 ">
               <div className="rounded-lg border py-4 px-5">
                 <div className="flex flex-row justify-between items-start mb-4">
-                  <h3 className="font-bold text-xl">Payment Information</h3>
+                  <h3 className="font-bold text-2xl">Payment Information</h3>
 
                   <Button
                     text="Download Receipt"
+                    onClick={() =>
+                      dispatch(
+                        downloadPaymentReceipt({ payId: payment?.payId })
+                      )
+                    }
                     style={{
                       backgroundColor: "#21B591",
                       color: "white",

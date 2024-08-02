@@ -48,7 +48,7 @@ const authSlice = createSlice({
     // CLIENT LOGIN
     builder
       .addCase(loginAPI.fulfilled, (state, { payload: { token } }) => {
-        // cVVhRMV3
+        // HeEnu0Wq
         // console.log("fulfilled", token);
         state.login.isLoading = false;
         notify("Login success", { type: "success" });

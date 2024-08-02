@@ -14,7 +14,7 @@ const DashboardSlice = createSlice({
       .addCase(getMyAdmissionForm.fulfilled, (state, { payload }) => {
         console.log('fulfilled', payload);
         state.isLoading = false;
-        state.data = state.data.concat([payload?.payload]);
+        state.data = [payload?.payload];
       })
       .addCase(getMyAdmissionForm.pending, (state, action) => {
         console.log('pending');
@@ -29,7 +29,7 @@ const DashboardSlice = createSlice({
       .addCase(getSingleAdmissionForm.fulfilled, (state, { payload }) => {
         console.log('fulfilled', payload);
         state.isLoading = false;
-        state.data = state.data.concat([payload?.payload]);
+        state.data = [payload?.payload];
       })
       .addCase(getSingleAdmissionForm.pending, (state, action) => {
         console.log('pending');

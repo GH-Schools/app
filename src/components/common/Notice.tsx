@@ -31,8 +31,8 @@ export const theme = {
   warn: {
     // "#e7a94b"
     body: {
-      border: "1px solid #F7F5E5",
-      backgroundColor: "#FFFDED",
+      border: "1px solid #F5F3E3",
+      backgroundColor: "#FDFBEB",
     },
     title: {
       color: "#e7a94b",

@@ -11,6 +11,7 @@ import { validations } from "../utils/validations";
 
 import logo from "../assets/favicon.png";
 import "./Login.scss";
+import { mergeClassNames } from "../utils/utilities";
 
 const Login = () => {
   const dispatch = useDispatch<any>();
@@ -78,9 +79,10 @@ const Login = () => {
                       onBlur={handleBlur}
                       value={values.mobile}
                       placeholder="Enter mobile number"
-                      className={
+                      className={mergeClassNames(
+                        "border",
                         errors.mobile && touched.mobile ? "input-error" : ""
-                      }
+                      )}
                     />
                     {errors.mobile && touched.mobile && (
                       <span className="error">{errors.mobile}</span>
@@ -95,9 +97,10 @@ const Login = () => {
                       onBlur={handleBlur}
                       value={values.password}
                       placeholder="Enter password"
-                      className={
+                      className={mergeClassNames(
+                        "border",
                         errors.password && touched.password ? "input-error" : ""
-                      }
+                      )}
                     />
                     {errors.password && touched.password && (
                       <span className="error">{errors.password}</span>
@@ -123,11 +126,11 @@ const Login = () => {
                     </button>
                   </div>
 
-                  <div className="text-sm text-black text-center mt-8">
+                  <div className="text-xs font-semibold uppercase text-gray-600 text-center mt-8">
                     <span>Can't remember login?</span>{" "}
                     <a
                       href="/portal/password/reset"
-                      className="text-green-700 font-semibold"
+                      className="text-green-700"
                       style={{ textDecoration: "underline" }}
                     >
                       Reset Password

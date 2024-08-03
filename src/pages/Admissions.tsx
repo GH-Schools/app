@@ -28,6 +28,8 @@ import { getCurrentSession } from "../redux/actions/app.action";
 
 import "./Admissions.scss";
 import { notify } from "../utils/toastNotification";
+import TextSpinner from "../components/TextSpinner";
+import { mergeClassNames } from "../utils/utilities";
 
 enum SECTIONS {
   SECTION1,
@@ -143,7 +145,7 @@ const Section1 = ({ isActive }: SectionProps) => {
         } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
       >
         <section
-          className={`card flex flex-row flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full px-12 py-8 mb-5`}
+          className={`card flex flex-row flex-none rounded-xl shadow-md text-center items-center justify-center bg-white w-full px-12 py-8 mb-5`}
           style={{ minHeight: "unset" }}
         >
           <div
@@ -152,7 +154,7 @@ const Section1 = ({ isActive }: SectionProps) => {
             <h2 className="font-bold text-xl md:text-2xl text-black">
               Select A Payment Method Below
             </h2>
-            <p className="md:mt-3 mt-1 text-gray-500 font-medium text-base">
+            <p className="md:mt-3 mt-1 text-gray-600 font-normal text-base">
               {`Admission form into GH Schools costs GHC ${registrationCost}.00`}
             </p>
           </div>
@@ -162,12 +164,12 @@ const Section1 = ({ isActive }: SectionProps) => {
           </div>
         </section>
 
-        <section className="card flex flex-col flex-none rounded-2xl shadow-md items-center justify-center bg-white w-full px-12 py-8 mb-5">
+        <section className="card flex flex-col flex-none rounded-xl shadow-md items-center justify-center bg-white w-full px-12 py-8 mb-5">
           <h2 className="font-bold text-xl w-full capitalize text-black">
             Pay for your fees online via - mobile or bank card option by filling
             the form below
           </h2>
-          <p className="mt-4 text-base">
+          <p className="mt-4 text-base font-normal text-gray-600">
             Kindly provide your first and last name (surname) below. For
             example, if your first name is Abigail and last name (surname) is
             Osei, enter in the field below: Abigail Osei. Also note that, your
@@ -217,12 +219,7 @@ const Section1 = ({ isActive }: SectionProps) => {
                     email: values?.email,
                     amount: registrationCost * 100,
                     currency: "GHS",
-                    channels: [
-                      "card",
-                      "bank",
-                      "mobile_money",
-                      "bank_transfer",
-                    ],
+                    channels: ["card", "bank", "mobile_money", "bank_transfer"],
                     metadata: {
                       name: `${values?.first_name} ${values?.last_name}`,
                       phone: values?.mobile,
@@ -392,12 +389,12 @@ const Section1 = ({ isActive }: SectionProps) => {
           </div>
         </section>
 
-        <section className="card flex flex-col flex-none rounded-2xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
-          <p className="mb-4 text-base">Need more help?</p>
+        <section className="card flex flex-col flex-none rounded-xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
+          <p className="mb-4 text-base text-gray-600">Need more help?</p>
           <h2 className="font-bold capitalize text-xl text-black">
             Contact our admissions office (Mon-Fri | 8AM-5PM)
           </h2>
-          <p className="mt-4 text-base">
+          <p className="mt-4 text-base text-gray-600">
             Our admissions office are available from Monday to Friday, between
             the hours of 8AM to 5PM. For enquiries or assistance, kindly contact
             on:
@@ -443,6 +440,8 @@ const Section2 = ({
     (state: StoreState) => state?.Auth?.login?.isLoading
   );
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const schemaValidation = Yup.object({
     mobile: validations.mobile("Mobile").required("Mobile is required"),
     password: validations
@@ -456,22 +455,11 @@ const Section2 = ({
         isActive ? "flex" : "hidden"
       } flex-col items-center w-full p-6 backdrop min-h-[500px] overflow-auto`}
     >
-      <section className="card flex flex-row flex-none rounded-2xl shadow-md text-center items-center justify-center bg-white w-full px-8 py-14 mb-5">
-        {/* <img
-          src={logo}
-          alt="tradebuza"
-          width={"200px"}
-          className="hidden sm:block sm:[150px] md:w-[200px]"
-          style={{
-            margin: "1.8rem 0rem 0.2rem 5%",
-            // width: "25%",
-          }}
-        /> */}
-
+      <section className="card flex flex-row flex-none rounded-xl shadow-md text-center items-center justify-center bg-white w-full px-8 py-14 mb-5">
         <div
           className="hidden sm:flex items-center justify-center sm:[150px] md:w-[200px] text-[150px] bg-gray-100 border border-gray-300 fill-gray-400 p-8 rounded-xl"
           style={{
-            margin: "1.8rem 5% 0.2rem 0",
+            margin: "0.2rem 5% 0.2rem 0",
             // width: "25%",
           }}
         >
@@ -521,13 +509,14 @@ const Section2 = ({
                   <input
                     type="tel"
                     name="mobile"
-                    onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.mobile}
+                    onChange={handleChange}
                     placeholder="Enter mobile number"
-                    className={
+                    className={mergeClassNames(
+                      "border",
                       errors.mobile && touched.mobile ? "input-error" : ""
-                    }
+                    )}
                     disabled={!isActive}
                   />
                   {errors.mobile && touched.mobile && (
@@ -537,21 +526,32 @@ const Section2 = ({
 
                 <div className="flex flex-col items-start form_input_wrapper password-input">
                   <input
-                    type="password"
                     name="password"
-                    onChange={handleChange}
                     onBlur={handleBlur}
+                    onChange={handleChange}
                     value={values.password}
                     placeholder="Enter password"
                     autoComplete="current-password"
-                    className={
-                      errors.password && touched.password ? "input-error" : ""
-                    }
+                    type={showPassword ? "text" : "password"}
                     disabled={!isActive}
+                    className={mergeClassNames(
+                      "border",
+                      errors.password && touched.password ? "input-error" : ""
+                    )}
                   />
                   {errors.password && touched.password && (
                     <span className="error">{errors.password}</span>
                   )}
+                </div>
+
+                <div className="text-left -mt-4 mb-6 px-1 w-full">
+                  <span
+                    className="inline-block text-xs uppercase font-semibold cursor-pointer"
+                    style={{ color: "lightslategray" }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide Password" : "Show Password"}
+                  </span>
                 </div>
 
                 <div className="login-btn">
@@ -560,16 +560,16 @@ const Section2 = ({
                     className="font-bold text-sm uppercase bg-orange-600 hover:shadow-sm shadow-lg hover:scale-95 transition"
                     disabled={!isActive}
                   >
-                    {isLoading ? (
-                      <Spinner size={20} color="secondary" />
-                    ) : (
-                      "Login"
-                    )}
+                    <TextSpinner loading={isLoading} text="Login" />
                   </button>
                 </div>
 
                 <div className="mt-4 w-full text-center md:text-left">
-                  <a href="/portal/password/reset" className="text-md">
+                  <a
+                    href="/portal/password/reset"
+                    className="text-xs font-semibold uppercase text-green-800"
+                    // style={{ color: "lightslategray" }}
+                  >
                     Forgot password?
                   </a>
                 </div>
@@ -579,7 +579,7 @@ const Section2 = ({
         </Formik>
       </section>
 
-      <section className="card flex flex-col flex-none rounded-2xl shadow-md items-center justify-center bg-green-800 text-slate-50 w-full p-8 mb-5">
+      <section className="card flex flex-col flex-none rounded-xl shadow-md items-center justify-center bg-green-800 text-slate-50 w-full p-8 mb-5">
         {/* <p className="mb-4">NEED MORE HELP?</p> */}
         <h2 className="font-bold text-xl capitalize">
           Don't have an account yet?
@@ -608,7 +608,7 @@ const Section2 = ({
         </button>
       </section>
 
-      <section className="card flex flex-col flex-none rounded-2xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
+      <section className="card flex flex-col flex-none rounded-xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
         <p className="mb-4 text-base">Need more help?</p>
         <h2 className="font-bold capitalize text-2xl text-black">
           Contact our admissions office (Mon-Fri | 8AM-5PM)

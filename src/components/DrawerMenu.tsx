@@ -1,9 +1,6 @@
 import React, { MouseEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  MdExpandLess,
-  MdExpandMore,
-} from "react-icons/md";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
 
 type DrawerMenuProps = {
   href?: string;
@@ -17,15 +14,12 @@ const DrawerMenu = ({
   children,
   text,
   icon,
-  href = "#",
   onClick,
+  href = "#",
   ...rest
 }: DrawerMenuProps) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
-  const buttonClass =
-    "flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]";
 
   const Icon = () => (
     <div className="flex items-center justify-center min-w-[30px] min-h-[30px] mr-4 text-[1.375rem]">
@@ -42,7 +36,9 @@ const DrawerMenu = ({
   return children ? (
     <>
       <button
-        className={buttonClass}
+        className={
+          "flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]"
+        }
         onClick={onClickHandler}
         title={href}
         {...rest}
@@ -63,7 +59,9 @@ const DrawerMenu = ({
     </>
   ) : (
     <button
-      className={buttonClass}
+      className={
+        "flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]"
+      }
       onClick={onClickHandler}
       title={href}
       {...rest}

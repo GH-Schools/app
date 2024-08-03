@@ -174,12 +174,12 @@ const MetricsCard = ({
   icon?: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-row sm:flex-col flex-none gap-4 flex-grow shadow-md px-5 py-5 rounded-2xl bg-green-600 sm:max-w-[32%] min-w-[250px]">
+    <div className="flex flex-row sm:flex-col justify-start sm:justify-initial items-center flex-none gap-6 sm:gap-4 flex-grow shadow-md px-5 py-5 rounded-xl sm:rounded-2xl bg-green-600 sm:max-w-[32%] min-w-[250px]">
       <div className="flex items-center justify-center p-1 rounded-full text-white bg-gray-900 w-[35px] h-[35px] flex-none font-bold shadow-md">
         {icon}
       </div>
 
-      <div className="flex flex-col gap-2 text-white">
+      <div className="flex flex-col gap-2 text-white items-start sm:items-center">
         <h3 className="font-bold text-lg">{title}</h3>
         <div className="flex text-xs font-medium text-left text-shadow-md">
           {message}

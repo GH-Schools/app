@@ -17,6 +17,7 @@ import { StoreState } from "../../redux/reducers";
 import { validations } from "../../utils/validations";
 import {
   getMyAdmissionForm,
+  downloadAdmissionForm,
   saveAdmissionEducation,
   saveAdmissionPersonalProfile,
   saveAdmissionWelfareInformation,
@@ -29,6 +30,7 @@ import { notify } from "../../utils/toastNotification";
 import { mergeClassNames } from "../../utils/utilities";
 
 function ViewApplicationForm() {
+  const dispatch = useDispatch<any>();
   const [, setCompleted] = useState(false);
 
   const admissionInfo = useSelector(
@@ -45,6 +47,11 @@ function ViewApplicationForm() {
 
               <Button
                 text="Download Form"
+                onClick={() =>
+                  dispatch(
+                    downloadAdmissionForm({ formId: admissionInfo?.formId })
+                  )
+                }
                 style={{
                   backgroundColor: "#21B591",
                   color: "white",
@@ -81,21 +88,21 @@ function ViewApplicationForm() {
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
                 label="Email Address"
-                value={admissionInfo?.email}
+                value={admissionInfo?.email ?? '--'}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
                 label="Mobile"
-                value={admissionInfo?.User?.mobile}
+                value={admissionInfo?.User?.mobile ?? '--'}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
                 label="Payment Reference"
-                value={admissionInfo?.paymentReference}
+                value={admissionInfo?.paymentReference ?? '--'}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
@@ -103,22 +110,22 @@ function ViewApplicationForm() {
 
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
-                label="Nationality"
-                value={admissionInfo?.User?.nationality ?? "--"}
+                label="Preferred School"
+                value={admissionInfo?.preferredSchool ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Amount"
-                value={admissionInfo?.amount}
+                label="Preferred Course"
+                value={admissionInfo?.preferredCourse ?? '--'}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Currency"
-                value={admissionInfo?.currency}
+                label="Preferred Course Session/Duration"
+                value={admissionInfo?.session ?? '--'}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />

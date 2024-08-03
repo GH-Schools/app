@@ -5,8 +5,10 @@ import { StoreState } from "../../redux/reducers";
 
 // import { SiGoogleforms } from "react-icons/si";
 import {
-  BsHouse as UserIcon,
-  BsFillCreditCardFill as CardIcon,
+  BsPeople as UserIcon,
+  BsFileEarmarkText as CardIcon,
+  // BsFillCreditCardFill as CardIcon,
+  BsCalendarWeek as EventIcon
 } from "react-icons/bs";
 import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 import Button from "../../components/common/Button";
@@ -42,13 +44,13 @@ function AdminDashboard() {
 
           <div className="flex flex-col">
             <Notice
-              variant="success"
-              title="Info:"
-              message={"You can now apply for admissions here"}
+              variant="warn"
+              title="Schedule Notification:"
+              message={"You have 3 pending interviews today"}
             >
               <Button
-                text={"Apply for Admission"}
-                href={"/dashboard/apply/form"}
+                text={"Check Schedule"}
+                // href={"/dashboard/apply/form"}
                 className="text-center font-bold"
                 style={{
                   color: "white",
@@ -56,7 +58,7 @@ function AdminDashboard() {
                   fontWeight: 700,
                   padding: "10px",
                   borderRadius: "5px",
-                  backgroundColor: NoticeTheme.success.title.color,
+                  backgroundColor: NoticeTheme.warn.title.color,
                   textTransform: "capitalize",
                 }}
               />
@@ -118,13 +120,13 @@ function AdminDashboard() {
           },
           {
             title: "250.00 K",
-            message: `Aspirants`,
+            message: `Total Applications`,
             icon: <CardIcon fontSize={28} />,
           },
           {
-            title: "Lecture Resumption Date",
-            message: `Lecture Resumption Date`,
-            icon: 1111,
+            title: "3",
+            message: `Upcoming Events`,
+            icon: <EventIcon fontSize={28} />,
           },
         ].map(({ title, icon, message }, i) => (
           <MetricsCard
@@ -133,8 +135,8 @@ function AdminDashboard() {
             icon={icon}
             message={message}
             style={{
-              alignItems: "center",
-              justifyContent: "center",
+              // alignItems: "center",
+              // justifyContent: "center",
             }}
           />
         ))}
@@ -187,14 +189,14 @@ const MetricsCard = ({
 }) => {
   return (
     <div
-      className="flex flex-row sm:flex-col flex-none gap-4 flex-grow shadow-md px-5 py-5 rounded-2xl bg-green-600 sm:max-w-[32%] min-w-[250px]"
+      className="flex flex-row sm:flex-col justify-start sm:justify-initial items-center flex-none gap-6 sm:gap-4 flex-grow shadow-md px-5 py-5 rounded-xl sm:rounded-2xl bg-yellow-600 sm:max-w-[32%] min-w-[250px]"
       style={{ ...style }}
     >
-      <div className="flex items-center justify-center p-1 rounded-full text-white bg-green-900 w-[85px] h-[85px] flex-none font-bold shadow-sm">
+      <div className="flex items-center justify-center p-1 rounded-full text-white bg-yellow-900 w-[85px] h-[85px] flex-none font-bold shadow-sm">
         {icon}
       </div>
 
-      <div className="flex flex-col gap-2 text-white items-center justify-center text-center">
+      <div className="flex flex-col gap-2 text-white items-start sm:items-center justify-center text-center">
         <h3 className="font-bold text-xl">{title}</h3>
         <div className="flex text-xs font-medium text-inherit text-shadow-md">
           {message}

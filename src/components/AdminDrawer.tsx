@@ -4,15 +4,16 @@ import {
   MdExitToApp,
   // MdDashboard,
 } from "react-icons/md";
-// import { SiGoogleforms } from "react-icons/si";
 import {
   RxDashboard as DashboardIcon,
-  RxBell as InterviewIcon,
+  // RxBell as InterviewIcon,
 } from "react-icons/rx";
+import { AiOutlineUser as StudentIcon } from "react-icons/ai";
 import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
 
 import DrawerMenu from "./DrawerMenu";
 import logo from "../assets/favicon.png";
+import { mergeClassNames } from "../utils/utilities";
 
 type DrawerProps = {
   open: boolean;
@@ -24,65 +25,79 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
 
   return (
     <div
-      className={`flex flex-col fixed ${
-        !open ? "left-[-100vw]" : "left-0"
-      } md:left-[unset] md:relative items-center p-6 md:w-[350px] w-[260px] h-full min-h-screen justify-between overflow-auto transition-all delay-0 duration-600 ease-in-out shadow-md`}
+      className={mergeClassNames(
+        `flex flex-col justify-between items-start fixed md:relative w-[100%] md:w-[400px]`,
+        !open ? "left-[-100vw]" : "left-0",
+        `md:left-[unset] h-full min-h-screen shadow-md`
+      )}
       style={{
         zIndex: "+9999",
-        color: "var(--palette-color-contrast-1)",
-        backgroundColor: "var(--palette-color-1)",
+        backgroundColor: "#0006",
       }}
     >
-      <div className="flex flex-col items-center w-full">
-        <div className="flex justify-end w-full pb-2 md:hidden">
-          <button onClick={toggleHandler(false)}>{<MdClose />}</button>
-        </div>
+      <div
+        className={mergeClassNames(
+          `flex flex-col justify-between items-center relative md:w-[100%] w-[300px]`,
+          !open ? "left-[-100vw]" : "left-0",
+          `md:left-[unset] p-6 h-full min-h-screen overflow-auto transition-all delay-0 duration-600 ease-in-out shadow-md`
+        )}
+        style={{
+          zIndex: "+9999",
+          color: "var(--palette-color-contrast-1)",
+          backgroundColor: "var(--palette-color-1)",
+        }}
+      >
+        <div className="flex flex-col items-center w-full">
+          <div className="flex justify-end w-full pb-2 md:hidden">
+            <button onClick={toggleHandler(false)}>{<MdClose />}</button>
+          </div>
 
-        <img
-          src={logo}
-          alt="log"
-          width={"100px"}
-          height={"100px"}
-          className="py-2"
-          style={{ objectFit: "contain" }}
-        />
-
-        <nav className="flex flex-col w-full py-4">
-          <DrawerMenu
-            text="Overview"
-            icon={<DashboardIcon />}
-            href="/admin/dashboard"
+          <img
+            src={logo}
+            alt="log"
+            width={"100px"}
+            height={"100px"}
+            className="py-2"
+            style={{ objectFit: "contain" }}
           />
 
-          <DrawerMenu text="Student Management" icon={<InterviewIcon />}>
+          <nav className="flex flex-col w-full py-4">
             <DrawerMenu
-              text="Manage Students"
-              href="/admin/dashboard/students"
+              text="Overview"
+              icon={<DashboardIcon />}
+              href="/admin/dashboard"
             />
 
-            <DrawerMenu
-              text="Manage Applicants"
-              href="/admin/dashboard/applicants"
-            />
-          </DrawerMenu>
+            <DrawerMenu text="Student Management" icon={<StudentIcon />}>
+              <DrawerMenu
+                text="Manage Students"
+                href="/admin/dashboard/students"
+              />
 
-          <DrawerMenu text="Payments" icon={<CardIcon />}>
-            <DrawerMenu
-              text="View Receipts"
-              href="/admin/dashboard/payment/view-receipt"
-            />
-            {/* <DrawerMenu text="Print Receipts" /> */}
-          </DrawerMenu>
+              <DrawerMenu
+                text="Manage Applicants"
+                href="/admin/dashboard/applicants"
+              />
+            </DrawerMenu>
+
+            <DrawerMenu text="Payments" icon={<CardIcon />}>
+              <DrawerMenu
+                text="View Receipts"
+                href="/admin/dashboard/payment/view-receipt"
+              />
+              {/* <DrawerMenu text="Print Receipts" /> */}
+            </DrawerMenu>
+          </nav>
+        </div>
+
+        <nav className="flex flex-col w-full py-2">
+          <DrawerMenu
+            text="Log Out"
+            icon={<MdExitToApp />}
+            onClick={() => navigate("/admin-portal")}
+          />
         </nav>
       </div>
-
-      <nav className="flex flex-col w-full py-2">
-        <DrawerMenu
-          text="Log Out"
-          icon={<MdExitToApp />}
-          onClick={() => navigate("/admin-portal")}
-        />
-      </nav>
     </div>
   );
 }

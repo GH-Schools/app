@@ -36,7 +36,7 @@ export const validations = {
     Yup.string().matches(
       /(\d{4}(-|\/|\\)\d{1,2}(-|\/|\\)\d{1,2})|(\d{1,2}(-|\/|\\)\d{1,2}(-|\/|\\)\d{4})/gi
     ),
-  mobile: (paramName: string) => Yup.string().matches(/[0-9)(+]/gi, "Invalid number"),
+  mobile: (paramName: string) => Yup.string().matches(/^[0-9)(+]+$/gi, "Invalid mobile number"),
   bvn: (paramName: string) =>
     Yup.string()
       .matches(/\d{11}/g, "Invalid BVN")

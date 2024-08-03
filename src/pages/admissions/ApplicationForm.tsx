@@ -1093,8 +1093,9 @@ const Form = ({
                   } else {
                     setCombinedFormValues((prev) => ({ ...prev, ...values }));
                     setCompleted(true);
-                    alert("Thanks a lot");
+                    // alert("Thanks a lot");
                     console.log(combinedFormValues);
+                    dispatch(getMyAdmissionForm(authenticatedUser?.userId as string));
                   }
                 }
               } catch (error) {

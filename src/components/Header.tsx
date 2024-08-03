@@ -51,7 +51,7 @@ function Header() {
 
       <div
         id="mobile-drop-down-menu"
-        className="flex sm:hidden hover:flex opacity-0 hover:opacity-100 flex-col items-center justify-center px-7 pt-3 pb-3 bg-white absolute top-full shadow-lg w-full text-sm font-semibold text-center"
+        className="hidden sm:hidden hover:hidden opacity-0 hover:opacity-100 flex-col items-center justify-center px-7 pt-3 pb-3 bg-white absolute top-full shadow-lg w-full text-sm font-semibold text-center"
       >
         <a
           href="/portal"

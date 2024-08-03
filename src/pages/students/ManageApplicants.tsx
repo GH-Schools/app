@@ -4,15 +4,16 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { StoreState } from "../../redux/reducers";
 
-// import { SiGoogleforms } from "react-icons/si";
+import { BsFileEarmarkText as PendingIcon } from "react-icons/bs";
 import {
-  BsHouse as UserIcon,
-  BsFillCreditCardFill as CardIcon,
+  BsFileCheck as ReviewedIcon,
+  BsFileEarmarkX as BlacklistedIcon,
 } from "react-icons/bs";
 
 import { GenericObject } from "../../interfaces";
 import PlainTable from "../../components/tables/PlainTable";
 import { getAllAdmissionForms } from "../../redux/actions/dashboard.action";
+import { mergeClassNames } from "../../utils/utilities";
 
 function ManageApplicants() {
   const dispatch = useDispatch<any>();
@@ -85,27 +86,31 @@ function ManageApplicants() {
           {
             title: "11.11 K",
             message: `Pending Applications`,
-            icon: <UserIcon fontSize={28} />,
+            icon: <PendingIcon fontSize={28} />,
+            color: "bg-yellow-600",
           },
           {
             title: "250.00 K",
             message: `Reviewed Applications`,
-            icon: <CardIcon fontSize={28} />,
+            icon: <ReviewedIcon fontSize={28} />,
+            color: "bg-green-600",
           },
           {
             title: "1,000",
             message: `Blacklisted Applications`,
-            icon: <UserIcon fontSize={28} />,
+            icon: <BlacklistedIcon fontSize={28} />,
+            color: "bg-red-600",
           },
-        ].map(({ title, icon, message }, i) => (
+        ].map(({ title, icon, message, color }, i) => (
           <MetricsCard
             key={i}
             title={title}
             icon={icon}
             message={message}
+            bgColorClass={color}
             style={{
-              alignItems: "center",
-              justifyContent: "center",
+              // alignItems: "center",
+              // justifyContent: "center",
             }}
           />
         ))}
@@ -121,7 +126,7 @@ function ManageApplicants() {
               isLoading={users?.isLoading}
               sx={{ width: "100%" }}
               onRowClick={(data) => {
-                navigate(`/admin/dashboard/applicants/${data?.formId}`)
+                navigate(`/admin/dashboard/applicants/${data?.formId}`);
               }}
             />
           </div>
@@ -136,24 +141,31 @@ const MetricsCard = ({
   title,
   style,
   message,
+  bgColorClass,
 }: {
   title: string;
   message: React.ReactNode;
   icon?: React.ReactNode;
   style?: GenericObject;
+  bgColorClass?: string;
 }) => {
   return (
     <div
-      className="flex flex-row sm:flex-col flex-none gap-4 flex-grow shadow-md px-5 py-5 rounded-2xl bg-white sm:max-w-[32%] min-w-[250px]"
+      className="flex flex-row sm:flex-col justify-start sm:justify-initial items-center flex-none gap-6 sm:gap-4 flex-grow shadow-md px-5 py-5 rounded-xl sm:rounded-2xl bg-white sm:max-w-[32%] min-w-[250px]"
       style={{ ...style }}
     >
-      <div className="flex items-center justify-center p-1 rounded-full text-white bg-gray-900 w-[85px] h-[85px] flex-none font-bold shadow-sm">
+      <div
+        className={mergeClassNames(
+          "flex items-center justify-center p-1 rounded-full text-white w-[85px] h-[85px] flex-none font-bold shadow-sm",
+          bgColorClass ?? "bg-yellow-600"
+        )}
+      >
         {icon}
       </div>
 
-      <div className="flex flex-col gap-2 text-black items-center justify-center text-center">
+      <div className="flex flex-col gap-2 text-black items-start sm:items-center justify-center">
         <h3 className="font-bold text-xl">{title}</h3>
-        <div className="flex text-xs font-medium text-inherit text-shadow-md">
+        <div className="flex text-xs font-medium text-gray-700 text-shadow-md">
           {message}
         </div>
       </div>

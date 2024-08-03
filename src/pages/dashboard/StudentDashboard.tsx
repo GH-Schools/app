@@ -181,7 +181,7 @@ const MetricsCard = ({
 
       <div className="flex flex-col gap-2 text-white items-start sm:items-center">
         <h3 className="font-bold text-lg">{title}</h3>
-        <div className="flex text-xs font-medium text-left text-shadow-md">
+        <div className="flex text-xs font-medium text-left sm:text-center text-shadow-md">
           {message}
         </div>
       </div>

@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMyPayments, submitPayment } from "../actions/payment.action";
+import {
+  getAllPayments,
+  getMyPayments,
+  submitPayment,
+} from "../actions/payment.action";
 
 const initialState = {
   isLoading: false,
@@ -35,6 +39,21 @@ const paymentSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getMyPayments.rejected, (state, { error }) => {
+        console.log("rejected");
+        state.isLoading = false;
+      });
+
+    // GET ADMIN PAYMENTS
+    builder
+      .addCase(getAllPayments.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.isLoading = false;
+        state.payments = payload?.payload;
+      })
+      .addCase(getAllPayments.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllPayments.rejected, (state, { error }) => {
         console.log("rejected");
         state.isLoading = false;
       });

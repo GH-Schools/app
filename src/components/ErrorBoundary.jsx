@@ -56,7 +56,7 @@ class ErrorBoundary extends Component {
               page or{" "}
               <a
                 className=""
-                href="mailto: contact@tradebuza.com"
+                href="mailto: contact@ghschools.online"
                 style={{ color: "#009688", textDecoration: "underline" }}
               >
                 contact support
@@ -64,7 +64,7 @@ class ErrorBoundary extends Component {
               if error persists.
             </h2>
             <Button
-              href="/dashboard"
+              href="/student/dashboard"
               text="Return To Dashboard"
               style={{
                 fontSize: "14px",

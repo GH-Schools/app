@@ -9,7 +9,7 @@ import {
   // RxBell as InterviewIcon,
 } from "react-icons/rx";
 import { AiOutlineUser as StudentIcon } from "react-icons/ai";
-import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
+import { BsCreditCard as CardIcon, BsCalendar2Week as EventsIcon } from "react-icons/bs";
 
 import DrawerMenu from "./DrawerMenu";
 import logo from "../assets/favicon.png";
@@ -82,10 +82,22 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
 
             <DrawerMenu text="Payments" icon={<CardIcon />}>
               <DrawerMenu
-                text="View Receipts"
-                href="/admin/dashboard/payment/view-receipt"
+                text="Manage Payments"
+                href="/admin/dashboard/payments"
               />
               {/* <DrawerMenu text="Print Receipts" /> */}
+            </DrawerMenu>
+
+            <DrawerMenu text="Events &amp; Schedules" icon={<EventsIcon />}>
+              <DrawerMenu
+                text="Create New Schedule"
+                href="/admin/dashboard/schedules/create"
+              />
+
+              <DrawerMenu
+                text="Manage Schedules"
+                href="/admin/dashboard/schedules"
+              />
             </DrawerMenu>
           </nav>
         </div>

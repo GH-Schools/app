@@ -35,6 +35,9 @@ const PaymentComplete =  React.lazy(() => import("./pages/PaymentComplete"));
 const ManageStudents =  React.lazy(() => import("./pages/students/ManageStudents"));
 const AdminDashboard =  React.lazy(() => import("./pages/dashboard/AdminDashboard"));
 const ManageApplicants =  React.lazy(() => import("./pages/students/ManageApplicants"));
+const ManagePayments =  React.lazy(() => import("./pages/payment/admin/ManagePayments"));
+const ManageSchedules =  React.lazy(() => import("./pages/event & schedules/ManageSchedules"));
+const AddSchedule =  React.lazy(() => import("./pages/event & schedules/AddSchedule"));
 const ViewApplication =  React.lazy(() => import("./pages/students/ViewApplicationForm"));
 const ApplicationForm =  React.lazy(() => import("./pages/admissions/ApplicationForm"));
 const StudentDashboard =  React.lazy(() => import("./pages/dashboard/StudentDashboard"));
@@ -95,7 +98,11 @@ function App() {
               <Route path="students" element={<ManageStudents />} />
               <Route path="applicants" element={<ManageApplicants />} />
               <Route path="applicants/:formId" element={<ViewApplication />} />
-              <Route path="payment/view-receipt" element={<ViewPaymentReceipt />} />
+              <Route path="payments" element={<ManagePayments />} />
+              <Route path="payment/:payId" element={<ViewPaymentReceipt />} />
+              <Route path="schedules" element={<ManageSchedules />} />
+              <Route path="schedules/create" element={<AddSchedule />} />
+              {/* <Route path="schedules/:eventId" element={<ViewPaymentReceipt />} /> */}
             </Route>
 
             <Route path="*" element={<NoPage />} />

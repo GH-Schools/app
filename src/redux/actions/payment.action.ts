@@ -57,6 +57,21 @@ export const getMyPayments = createAsyncThunk<any, GenericObject>(
   }
 );
 
+export const getAllPayments = createAsyncThunk<any, GenericObject>(
+  "payment/getAllPayments",
+  async (queryParams: GenericObject) => {
+    try {
+      const response: { payload: any } = await axiosServices.get(
+        `/payment/get-all-payments${createQuery(queryParams)}`
+      );
+      return response?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
 export const downloadPaymentReceipt = createAsyncThunk<any, GenericObject>(
   "payment/downloadPaymentReceipt",
   async (payload: GenericObject) => {

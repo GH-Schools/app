@@ -7,13 +7,12 @@ import { StoreState } from "../../redux/reducers";
 import { BsFileEarmarkText as PendingIcon } from "react-icons/bs";
 import {
   BsFileCheck as ReviewedIcon,
-  BsFileEarmarkX as BlacklistedIcon,
+  // BsFileEarmarkX as BlacklistedIcon,
 } from "react-icons/bs";
 
-import { GenericObject } from "../../interfaces";
 import PlainTable from "../../components/tables/PlainTable";
+import MetricsCard from "../../components/cards/MetricsCard";
 import { getAllAdmissionForms } from "../../redux/actions/dashboard.action";
-import { mergeClassNames } from "../../utils/utilities";
 
 function ManageApplicants() {
   const dispatch = useDispatch<any>();
@@ -84,22 +83,22 @@ function ManageApplicants() {
       <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
         {[
           {
-            title: "11.11 K",
-            message: `Pending Applications`,
+            title: `${data?.length}`,
+            message: `Total Applications`,
             icon: <PendingIcon fontSize={28} />,
-            color: "bg-yellow-600",
+            color: "bg-gray-400",
           },
           {
             title: "250.00 K",
-            message: `Reviewed Applications`,
+            message: `Interviewed Applicants`,
             icon: <ReviewedIcon fontSize={28} />,
             color: "bg-green-600",
           },
           {
             title: "1,000",
-            message: `Blacklisted Applications`,
-            icon: <BlacklistedIcon fontSize={28} />,
-            color: "bg-red-600",
+            message: `Pending Applications`,
+            icon: <PendingIcon fontSize={28} />,
+            color: "bg-yellow-600",
           },
         ].map(({ title, icon, message, color }, i) => (
           <MetricsCard
@@ -135,42 +134,5 @@ function ManageApplicants() {
     </div>
   );
 }
-
-const MetricsCard = ({
-  icon,
-  title,
-  style,
-  message,
-  bgColorClass,
-}: {
-  title: string;
-  message: React.ReactNode;
-  icon?: React.ReactNode;
-  style?: GenericObject;
-  bgColorClass?: string;
-}) => {
-  return (
-    <div
-      className="flex flex-row sm:flex-col justify-start sm:justify-initial items-center flex-none gap-6 sm:gap-4 flex-grow shadow-md px-5 py-5 rounded-xl sm:rounded-2xl bg-white sm:max-w-[32%] min-w-[250px]"
-      style={{ ...style }}
-    >
-      <div
-        className={mergeClassNames(
-          "flex items-center justify-center p-1 rounded-full text-white w-[85px] h-[85px] flex-none font-bold shadow-sm",
-          bgColorClass ?? "bg-yellow-600"
-        )}
-      >
-        {icon}
-      </div>
-
-      <div className="flex flex-col gap-2 text-black items-start sm:items-center justify-center">
-        <h3 className="font-bold text-xl">{title}</h3>
-        <div className="flex text-xs font-medium text-gray-700 text-shadow-md">
-          {message}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default ManageApplicants;

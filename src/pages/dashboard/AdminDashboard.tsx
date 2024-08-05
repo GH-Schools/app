@@ -146,18 +146,12 @@ function AdminDashboard() {
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-4 pb-6 rounded-xl gap-2 bg-white w-3/5 ">
           <h3 className="font-bold text-lg">Recent Activities</h3>
           <div className="flex items-center justify-center rounded-lg border w-full h-72">
-            loading...
+            Coming Soon...
           </div>
         </div>
-
-        {/* <div className="flex flex-col flex-grow shadow-sm px-6 pt-6 pb-6 rounded-xl gap-2 bg-white">
-          <div className="flex items-center justify-center rounded-lg border w-full h-72">
-            loading...
-          </div>
-        </div> */}
       </section>
 
-      <section className="flex flex-row gap-5">
+      {/* <section className="flex flex-row gap-5">
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-4 pb-6 rounded-xl gap-2 bg-white">
           <h3 className="font-bold text-lg">Metric</h3>
           <div className="flex items-center justify-center rounded-lg border w-full h-64">
@@ -171,7 +165,7 @@ function AdminDashboard() {
             loading...
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

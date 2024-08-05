@@ -73,17 +73,24 @@ export const updateAdmissionForm = createAsyncThunk(
   }
 );
 
-export const getMyAdmissionForm = createAsyncThunk<any, string>(
+export const getMyAdmissionForm = createAsyncThunk<
+  any,
+  { userId: string; silent?: boolean }
+>(
   "dashboard/getMyAdmissionForm",
-  async (userId: string) => {
+  async ({ userId, silent }: { userId: string; silent?: boolean }) => {
     try {
       const response: { payload: any } = await axiosServices.get(
         `/admissions/get-admissions-form/${userId}`
       );
       return response?.payload;
     } catch (error: any) {
-      errorHandler(error);
-      throw error;
+      if (!silent) {
+        errorHandler(error);
+        throw error;
+      } else {
+        console.error(error);
+      }
     }
   }
 );

@@ -50,7 +50,7 @@ function Application() {
             variant="success"
             title="Next Steps:"
             message={
-              "Success! You can now download a copy of your admission form for your reference"
+              "Success! You can now download a copy of your admission form for your reference. We do not require you to bring a printed copy, as we are paperless."
             }
           >
             <Button
@@ -146,7 +146,12 @@ const Form = ({
   useEffect(() => {
     dispatch(getMyPayments({}));
     if (authenticatedUser?.userId) {
-      dispatch(getMyAdmissionForm(authenticatedUser?.userId as string));
+      dispatch(
+        getMyAdmissionForm({
+          userId: authenticatedUser?.userId as string,
+          silent: true,
+        })
+      );
     }
   }, [authenticatedUser?.userId, dispatch]);
 
@@ -747,7 +752,7 @@ const Form = ({
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
-                    <SelectComponent
+                    <InputComponent
                       label={`Qualification ${index + 1}`}
                       name={`previousSchoolInfo[${index}].qualification`}
                       onChange={handleChange}
@@ -757,21 +762,22 @@ const Form = ({
                       value={schoolInfo?.qualification}
                       sx={{ marginBottom: "10px" }}
                       width="100%"
-                      options={[
-                        { name: "- Choose a qualification -", value: "" },
-                        {
-                          name: "B.E.C.E",
-                          value: "BECE",
-                        },
-                        {
-                          name: "WASSCE",
-                          value: "WASSCE",
-                        },
-                        {
-                          name: "Degree",
-                          value: "Degree",
-                        },
-                      ]}
+                      placeholder="Type a qualification e.g. BECE, WASSCE, Degree"
+                      // options={[
+                      //   { name: "- Choose a qualification -", value: "" },
+                      //   {
+                      //     name: "B.E.C.E",
+                      //     value: "BECE",
+                      //   },
+                      //   {
+                      //     name: "WASSCE",
+                      //     value: "WASSCE",
+                      //   },
+                      //   {
+                      //     name: "Degree",
+                      //     value: "Degree",
+                      //   },
+                      // ]}
                       required={index === 0}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
@@ -1095,7 +1101,11 @@ const Form = ({
                     setCompleted(true);
                     // alert("Thanks a lot");
                     console.log(combinedFormValues);
-                    dispatch(getMyAdmissionForm(authenticatedUser?.userId as string));
+                    dispatch(
+                      getMyAdmissionForm({
+                        userId: authenticatedUser?.userId as string,
+                      })
+                    );
                   }
                 }
               } catch (error) {
@@ -1254,7 +1264,7 @@ const Form = ({
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
 
-                  <SelectComponent
+                  <InputComponent
                     label="Relationship With Sponsor"
                     name="sponsorRelationship"
                     onChange={handleChange}
@@ -1265,14 +1275,15 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     disabled={disabledForms[Steps.HOSPITALITY]}
-                    options={[
-                      { name: "- Choose relationship -", value: "" },
-                      { name: "Father", value: "father" },
-                      { name: "Mother", value: "mother" },
-                      { name: "Siblings", value: "siblings" },
-                      { name: "Friend", value: "friend" },
-                      { name: "Acquaintance", value: "acquaintance" },
-                    ]}
+                    placeholder="Type relationship here e.g. father, friend..."
+                    // options={[
+                    //   { name: "- Choose relationship -", value: "" },
+                    //   { name: "Father", value: "father" },
+                    //   { name: "Mother", value: "mother" },
+                    //   { name: "Siblings", value: "siblings" },
+                    //   { name: "Friend", value: "friend" },
+                    //   { name: "Acquaintance", value: "acquaintance" },
+                    // ]}
                   />
                 </div>
 

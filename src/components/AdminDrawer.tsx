@@ -63,7 +63,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
 
           <nav className="flex flex-col w-full py-4">
             <DrawerMenu
-              text="Overview"
+              text="Dashboard"
               icon={<DashboardIcon />}
               href="/admin/dashboard"
             />
@@ -89,13 +89,13 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
             </DrawerMenu>
 
             <DrawerMenu text="Events &amp; Schedules" icon={<EventsIcon />}>
-              <DrawerMenu
+              {/* <DrawerMenu
                 text="Create New Schedule"
                 href="/admin/dashboard/schedules/create"
-              />
+              /> */}
 
               <DrawerMenu
-                text="Manage Schedules"
+                text="All Schedules"
                 href="/admin/dashboard/schedules"
               />
             </DrawerMenu>

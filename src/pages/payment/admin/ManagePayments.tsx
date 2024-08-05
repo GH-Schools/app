@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { StoreState } from "../../../redux/reducers";
 
 // import { SiGoogleforms } from "react-icons/si";
@@ -11,10 +12,11 @@ import {
 } from "react-icons/bs";
 
 import PlainTable from "../../../components/tables/PlainTable";
-import { getAllPayments } from "../../../redux/actions/payment.action";
 import MetricsCard from "../../../components/cards/MetricsCard";
+import { getAllPayments } from "../../../redux/actions/payment.action";
 
 function ManagePayments() {
+  const navigate = useNavigate();
   const dispatch = useDispatch<any>();
   const academicSession = useSelector(
     (state: StoreState) => state.App?.sessionInfo
@@ -114,6 +116,9 @@ function ManagePayments() {
               columns={column}
               isLoading={paymentInfo?.isLoading}
               sx={{ width: "100%" }}
+              onRowClick={(data) => {
+                navigate(`/admin/dashboard/payment/${data?.payId}`);
+              }}
             />
           </div>
         </div>

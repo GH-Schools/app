@@ -42,6 +42,7 @@ const ViewApplication =  React.lazy(() => import("./pages/students/ViewApplicati
 const ApplicationForm =  React.lazy(() => import("./pages/admissions/ApplicationForm"));
 const StudentDashboard =  React.lazy(() => import("./pages/dashboard/StudentDashboard"));
 const CompleteResetPassword =  React.lazy(() => import("./pages/CompleteResetPassword"));
+const ViewPaymentInfo = React.lazy(() => import( "./pages/payment/admin/ViewPaymentInfo"));
 const ViewPaymentReceipt = React.lazy(() => import( "./pages/payment/ViewPaymentReceipt"));
 
 // create a default container so we can override the styles
@@ -99,10 +100,9 @@ function App() {
               <Route path="applicants" element={<ManageApplicants />} />
               <Route path="applicants/:formId" element={<ViewApplication />} />
               <Route path="payments" element={<ManagePayments />} />
-              <Route path="payment/:payId" element={<ViewPaymentReceipt />} />
+              <Route path="payment/:payId" element={<ViewPaymentInfo />} />
               <Route path="schedules" element={<ManageSchedules />} />
               <Route path="schedules/create" element={<AddSchedule />} />
-              {/* <Route path="schedules/:eventId" element={<ViewPaymentReceipt />} /> */}
             </Route>
 
             <Route path="*" element={<NoPage />} />

@@ -88,21 +88,21 @@ function ViewApplicationForm() {
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
                 label="Email Address"
-                value={admissionInfo?.email ?? '--'}
+                value={admissionInfo?.email ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
                 label="Mobile"
-                value={admissionInfo?.User?.mobile ?? '--'}
+                value={admissionInfo?.User?.mobile ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
                 label="Payment Reference"
-                value={admissionInfo?.paymentReference ?? '--'}
+                value={admissionInfo?.paymentReference ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
@@ -118,14 +118,14 @@ function ViewApplicationForm() {
 
               <FieldComponent
                 label="Preferred Course"
-                value={admissionInfo?.preferredCourse ?? '--'}
+                value={admissionInfo?.preferredCourse ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
                 label="Preferred Course Session/Duration"
-                value={admissionInfo?.session ?? '--'}
+                value={admissionInfo?.session ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
@@ -186,7 +186,7 @@ const Form = ({
   useEffect(() => {
     // dispatch(getMyPayments({}));
     if (params?.formId) {
-      dispatch(getMyAdmissionForm(params?.formId as string));
+      dispatch(getMyAdmissionForm({ userId: params?.formId as string }));
     }
   }, [params?.formId, dispatch]);
 
@@ -201,7 +201,10 @@ const Form = ({
 
   return (
     <section className="flex flex-col md:flex-row gap-0.5 bg-white shadow-md rounded-xl max-w-full overflow-x-auto">
-      <section className="flex flex-row flex-none gap-5 w-full md:w-1/2" id="personal">
+      <section
+        className="flex flex-row flex-none gap-5 w-full md:w-1/2"
+        id="personal"
+      >
         <div className="flex flex-col flex-grow shadow-sm gap-2 bg-white">
           <Formik
             enableReinitialize={true}
@@ -608,7 +611,10 @@ const Form = ({
         </div>
       </section>
 
-      <section className="flex flex-row flex-none gap-5 w-full md:w-1/2" id="hospitality">
+      <section
+        className="flex flex-row flex-none gap-5 w-full md:w-1/2"
+        id="hospitality"
+      >
         <div className="flex flex-col flex-grow shadow-sm gap-2 bg-white">
           <Formik
             enableReinitialize={true}
@@ -923,7 +929,10 @@ const Form = ({
         </div>
       </section>
 
-      <section className="flex flex-row flex-none gap-5 w-full md:w-3/5" id="education">
+      <section
+        className="flex flex-row flex-none gap-5 w-full md:w-3/5"
+        id="education"
+      >
         <div className="flex flex-col flex-grow shadow-sm gap-2 bg-white">
           <Formik
             enableReinitialize={true}

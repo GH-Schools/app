@@ -2,8 +2,8 @@ import AppSlice from "../slices/App.slice";
 import authSlice from "../slices/Auth.slice";
 import userSlice from "../slices/User.slice";
 import paymentSlice from "../slices/Payment.slice";
-import dashboardSlice from "../slices/Dashboard.slice";
 import scheduleSlice from "../slices/Schedule.slice";
+import dashboardSlice from "../slices/Dashboard.slice";
 import { GenericObject } from "../../interfaces";
 
 export type StoreState = {

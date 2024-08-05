@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 
 type DrawerMenuProps = {
@@ -11,14 +11,14 @@ type DrawerMenuProps = {
 };
 
 const DrawerMenu = ({
-  children,
   text,
   icon,
   onClick,
+  children,
   href = "#",
   ...rest
 }: DrawerMenuProps) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const Icon = () => (
@@ -28,9 +28,11 @@ const DrawerMenu = ({
   );
 
   const onClickHandler = (ev: any) => {
-    return onClick && typeof onClick === "function"
-      ? onClick(ev)
-      : navigate(href);
+    if (onClick && typeof onClick === "function") {
+      onClick(ev);
+    } else {
+      window.location.href = href;
+    }
   };
 
   return children ? (

@@ -60,7 +60,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
 
           <nav className="flex flex-col w-full py-4">
             <DrawerMenu
-              text="Overview"
+              text="Dashboard"
               icon={<DashboardIcon />}
               href="/student/dashboard"
             />

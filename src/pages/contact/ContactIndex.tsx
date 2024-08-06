@@ -142,7 +142,7 @@ const FieldComponent: React.FC<{
 }> = ({ width, label, sx = {}, value = "", icon, ...rest }) => {
   return (
     <div
-      className="flex flex-col gap-2 items-center text-lg"
+      className="flex flex-col items-start text-lg"
       style={{ width, ...sx }}
     >
       <div className="flex flex-row gap-1 mb-1 w-full">

@@ -56,7 +56,7 @@ class ErrorBoundary extends Component {
               page or{" "}
               <a
                 className=""
-                href="mailto: contact@ghschools.online"
+                href="mailto:admissions@ghschools.online"
                 style={{ color: "#009688", textDecoration: "underline" }}
               >
                 contact support

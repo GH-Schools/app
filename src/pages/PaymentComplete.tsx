@@ -14,11 +14,12 @@ import "./Admissions.scss";
 
 function PaymentComplete() {
   const navigate = useNavigate();
+  const time = 20;
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       navigate("/portal");
-    }, 20000);
+    }, time * 1000);
     return () => window.clearTimeout(timeout);
   }, [navigate]);
 
@@ -50,18 +51,18 @@ function PaymentComplete() {
 
               <p>
                 Congratulations, you've succesfully completed the registration
-                process
+                process.
               </p>
               <p>
                 <ol>
-                  <li>hhhh</li>
+                  {/* <li>hhhh</li> */}
                 </ol>
               </p>
               <p
                 className="pt-4 pb-6"
                 style={{ color: "#393A4A", fontSize: "14px" }}
               >
-                Redirecting to login in 0.9 seconds{" "}
+                {`Redirecting to login in ${time} seconds`}{" "}
               </p>
 
               <button

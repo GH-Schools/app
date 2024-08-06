@@ -32,18 +32,19 @@ const AdminLogin =  React.lazy(() => import("./pages/AdminLogin"));
 const Admissions =  React.lazy(() => import("./pages/Admissions"));
 const ResetPassword =  React.lazy(() => import("./pages/ResetPassword"));
 const PaymentComplete =  React.lazy(() => import("./pages/PaymentComplete"));
+const ContactIndex = React.lazy(() => import( "./pages/contact/ContactIndex"));
 const ManageStudents =  React.lazy(() => import("./pages/students/ManageStudents"));
 const AdminDashboard =  React.lazy(() => import("./pages/dashboard/AdminDashboard"));
+const AddSchedule =  React.lazy(() => import("./pages/event & schedules/AddSchedule"));
+const ApplicationForm =  React.lazy(() => import("./pages/admissions/ApplicationForm"));
 const ManageApplicants =  React.lazy(() => import("./pages/students/ManageApplicants"));
 const ManagePayments =  React.lazy(() => import("./pages/payment/admin/ManagePayments"));
-const ManageSchedules =  React.lazy(() => import("./pages/event & schedules/ManageSchedules"));
-const AddSchedule =  React.lazy(() => import("./pages/event & schedules/AddSchedule"));
-const ViewApplication =  React.lazy(() => import("./pages/students/ViewApplicationForm"));
-const ApplicationForm =  React.lazy(() => import("./pages/admissions/ApplicationForm"));
 const StudentDashboard =  React.lazy(() => import("./pages/dashboard/StudentDashboard"));
 const CompleteResetPassword =  React.lazy(() => import("./pages/CompleteResetPassword"));
+const ViewApplication =  React.lazy(() => import("./pages/students/ViewApplicationForm"));
 const ViewPaymentInfo = React.lazy(() => import( "./pages/payment/admin/ViewPaymentInfo"));
 const ViewPaymentReceipt = React.lazy(() => import( "./pages/payment/ViewPaymentReceipt"));
+const ManageSchedules =  React.lazy(() => import("./pages/event & schedules/ManageSchedules"));
 
 // create a default container so we can override the styles
 const ToastContainer = (props: any) => (
@@ -84,6 +85,7 @@ function App() {
               <Route index element={<StudentDashboard />} />
               <Route path="apply/form" element={<ApplicationForm />} />
               <Route path="payment/view-receipt" element={<ViewPaymentReceipt />} />
+              <Route path="contact-us" element={<ContactIndex />} />
             </Route>
 
             {/* DASHBOARD */}

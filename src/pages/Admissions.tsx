@@ -247,7 +247,7 @@ const Section1 = ({ isActive }: SectionProps) => {
                           if (res?.meta?.requestStatus === "fulfilled") {
                             resetForm();
                             alert(
-                              "Thanks for doing business with us! Come back soon!!"
+                              "Thank you for completing your application payment. You will receive an SMS shortly with your portal username and default password."
                             );
                             navigate("/portal/admissions/payment-success");
                           }

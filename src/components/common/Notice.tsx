@@ -85,6 +85,7 @@ function Notice({
           <span
             className="ml-2"
             style={{
+              whiteSpace: "nowrap",
               fontSize: "12px",
               fontWeight: 700,
               ...theme[variant].title,

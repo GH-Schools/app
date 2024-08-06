@@ -3,10 +3,14 @@ import {
   MdClose,
   MdExitToApp,
   // MdDashboard,
+  MdOutlineHelpCenter as SupportIcon,
 } from "react-icons/md";
-import { SiGoogleforms } from "react-icons/si";
+// import { SiGoogleforms } from "react-icons/si";
 import { RxDashboard as DashboardIcon } from "react-icons/rx";
-import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
+import {
+  BsCreditCard as CardIcon,
+  BsFileEarmarkText as ApplicationIcon,
+} from "react-icons/bs";
 
 import DrawerMenu from "./DrawerMenu";
 import logo from "../assets/favicon.png";
@@ -64,7 +68,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
               icon={<DashboardIcon />}
               href="/student/dashboard"
             />
-            <DrawerMenu text="My Applications" icon={<SiGoogleforms />}>
+            <DrawerMenu text="My Applications" icon={<ApplicationIcon />}>
               <DrawerMenu
                 text="Admissions Form"
                 href="/student/dashboard/apply/form"
@@ -82,6 +86,11 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
         </div>
 
         <nav className="flex flex-col w-full py-2">
+          <DrawerMenu
+            text="Contact Center"
+            icon={<SupportIcon />}
+            href="/student/dashboard/contact-us"
+          />
           <DrawerMenu
             text="Log Out"
             icon={<MdExitToApp />}

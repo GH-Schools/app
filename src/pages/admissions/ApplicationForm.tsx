@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import {
   InputComponent,
   SelectComponent,
-  FileUploadComponent,
+  // FileUploadComponent,
 } from "../../components/common/FormComponents";
 import Button from "../../components/common/Button";
 import Lottie from "../../components/common/Lottie";
@@ -48,9 +48,9 @@ function Application() {
         {admissionInfo?.hasCompletedForm && (
           <Notice
             variant="success"
-            title="Next Steps:"
+            title="Info:"
             message={
-              "Success! You can now download a copy of your admission form for your reference. We do not require you to bring a printed copy, as we are paperless."
+              "Success! You can now download a PDF copy of your admission form for your reference. We do not require you to bring a printed copy, as we are paperless."
             }
           >
             <Button
@@ -62,6 +62,7 @@ function Application() {
               }
               className="text-center font-bold"
               style={{
+                whitSpace: "nowrap",
                 color: "white",
                 fontSize: "10px",
                 fontWeight: 700,
@@ -206,12 +207,12 @@ const Form = ({
                 .required("Mobile Number is required"),
               sex: validations.blank().required("Sex is required"),
               dob: validations.blank().required("Date of birth is required"),
-              nationalIDType: validations
-                .blank()
-                .required("National ID type is required"),
-              nationalIDNumber: validations
-                .blank()
-                .required("National ID number is required"),
+              // nationalIDType: validations
+              //   .blank()
+              //   .required("National ID type is required"),
+              // nationalIDNumber: validations
+              //   .blank()
+              //   .required("National ID number is required"),
             })}
             onSubmit={async (values, helpers) => {
               try {
@@ -269,14 +270,14 @@ const Form = ({
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center w-full mt-2 mb-6">
+                {/* <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center w-full mt-2 mb-6">
                   <FileUploadComponent
                     name="passportPhoto"
                     label="Click to add a picture"
                     sx={{ borderRadius: "50%" }}
                     inputSx={{ borderRadius: "50%" }}
                   />
-                </div>
+                </div> */}
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <InputComponent
@@ -291,7 +292,7 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     required={true}
-                    disabled={disabledForms[Steps.PERSONAL]}
+                    disabled={disabledForms[Steps.PERSONAL] || !!values?.firstName}
                   />
 
                   <InputComponent
@@ -320,7 +321,7 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     required={true}
-                    disabled={disabledForms[Steps.PERSONAL]}
+                    disabled={disabledForms[Steps.PERSONAL] || !!values?.lastName}
                   />
                 </div>
 
@@ -477,6 +478,7 @@ const Form = ({
                       { name: "Northern region", value: "northern region" },
                       { name: "Oti region", value: "oti region" },
                       { name: "North East region", value: "north east region" },
+                      { name: "Outside Ghana", value: "outside ghana" },
                     ]}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
@@ -493,7 +495,7 @@ const Form = ({
                     value={values?.nationalIDType}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
-                    required={true}
+                    required={false}
                     options={[
                       { name: "- Choose an ID type -", value: "" },
                       {
@@ -507,6 +509,10 @@ const Form = ({
                       {
                         name: "Drivers license",
                         value: "driver's license",
+                      },
+                      {
+                        name: "Others",
+                        value: "others",
                       },
                     ]}
                     disabled={disabledForms[Steps.PERSONAL]}
@@ -523,7 +529,7 @@ const Form = ({
                     placeholder="e.g GHA-000937373-1"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
-                    required={true}
+                    required={false}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -1397,10 +1403,11 @@ const Success = () => {
           className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full max-w-xl text-sm"
           style={{ color: "#7a7a7a" }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-          facilis earum aliquid voluptate. Unde consectetur odio expedita
-          doloribus ea doloremque, distinctio non tenetur delectus, veritatis,
-          accusantium animi. Iusto, sequi ut.
+          Admission application is being processed and you will soon receive a
+          call from the front desk as soon as your interview date has been
+          scheduled. Visit your dashboard to see the next interview dates and
+          other important dates. If you have any questions, do not hesitate to
+          reach out to the front desk.
         </div>
       </div>
     </section>

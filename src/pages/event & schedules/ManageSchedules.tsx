@@ -126,7 +126,7 @@ const Calendar = () => {
 
   return (
     <div className="flex flex-col w-full gap-2.5 m-0.5 rounded-md overflow-hidden">
-      <div className="flex flex-row justify-center items-center rounded-md w-full p-1 gap-3 bg--[#21B591] bg-green-600">
+      <div className="flex flex-row justify-center items-center rounded-md w-full p-1 gap-3 bg--[#21B591] bg-gray-300">
         <Button
           text={<BackIcon />}
           href={`/admin/dashboard`}

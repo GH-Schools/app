@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 import { getMyPayments } from "../../redux/actions/payment.action";
 import { GenericObject } from "../../interfaces";
-import { AiPin } from "react-icons/ai";
+import { BsMap as LocationIcon } from "react-icons/bs";
 
 function ContactIndex() {
   const dispatch = useDispatch<any>();
@@ -39,7 +39,7 @@ function ContactIndex() {
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
                   <FieldComponent
-                    icon={<AiOutlineEdit style={{ fontSize: "18px" }} />}
+                    icon={<LocationIcon style={{ fontSize: "18px" }} />}
                     label="Location"
                     value={payment?.User?.firstName}
                     sx={{ marginBottom: "10px" }}

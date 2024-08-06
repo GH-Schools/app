@@ -4,7 +4,10 @@ import { useDispatch } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 import { StoreState } from "../../redux/reducers";
 
-import { IoCaretBack as BackIcon, IoCaretForward as FrontIcon } from 'react-icons/io5'
+import {
+  IoCaretBack as BackIcon,
+  IoCaretForward as FrontIcon,
+} from "react-icons/io5";
 
 import Button from "../../components/common/Button";
 import PlainTable from "../../components/tables/PlainTable";
@@ -51,6 +54,7 @@ function ManageSchedules() {
   ];
 
   const data = useMemo(() => schedules?.data ?? [], [schedules?.data]);
+  const today = new Date();
 
   useEffect(() => {
     dispatch(getAllSchedules({}));
@@ -108,7 +112,11 @@ function ManageSchedules() {
             />
           </div>
           <div className="flex rounded-lg w-full">
-            <Calendar />
+            <Calendar
+              day={today.getDate()}
+              month={today.getMonth()}
+              year={today.getFullYear()}
+            />
           </div>
         </div>
       </section>
@@ -116,24 +124,46 @@ function ManageSchedules() {
   );
 }
 
-const Calendar = () => {
-  const today = new Date();
-  const data = generateDateRowsAndColumns(today.getMonth());
+const Calendar = ({
+  day,
+  month,
+  year,
+}: {
+  day: number;
+  month: number;
+  year: number;
+}) => {
+  const chosenDate = new Date(year, month, day);
+  const data = generateDateRowsAndColumns(chosenDate.getMonth());
 
-  const dateStyle = (data: any) => {
-    return data === null ? "border border-darkgray-600 bg-gray-300" : "border";
+  const dateStyle = (data: any, currentDate: Date) => {
+    const today = new Date(year, month, day);
+
+    switch (true) {
+      case data &&
+        data === today.getDate() &&
+        currentDate.getMonth() === today.getMonth() &&
+        currentDate.getFullYear() === today.getFullYear():
+        return "border border-orange-400 text-orange-600";
+
+      case data === null:
+        return "border border-darkgray-600 bg-gray-300";
+
+      default:
+        return "border";
+    }
   };
 
   return (
     <div className="flex flex-col w-full gap-2.5 m-0.5 rounded-md overflow-hidden">
-      <div className="flex flex-row justify-center items-center rounded-md w-full p-1 gap-3 bg--[#21B591] bg-slate-500">
+      <div className="flex flex-row justify-center text-black items-center rounded-md w-full p-1 gap-3 bg--[#21B591] bg-gray-200">
         <Button
           text={<BackIcon />}
           href={`/admin/dashboard`}
           className="text-center font-bold w-[35px] h-[35px] rounded-full"
           style={{
             backgroundColor: "transparent",
-            color: "white",
+            color: "inherit",
             // color: "#21B591",
             fontSize: "12px",
             fontWeight: 700,
@@ -141,14 +171,14 @@ const Calendar = () => {
             textTransform: "capitalize",
           }}
         />
-        <span className="text-sm font-semibold text-white">August 2024</span>
+        <span className="text-sm font-semibold text-inherit">August 2024</span>
         <Button
           text={<FrontIcon />}
           href={`/admin/dashboard`}
           className="text-center font-bold w-[35px] h-[35px] rounded-full"
           style={{
             backgroundColor: "transparent",
-            color: "white",
+            color: "inherit",
             // color: "#21B591",
             fontSize: "12px",
             fontWeight: 700,
@@ -167,8 +197,8 @@ const Calendar = () => {
                 return (
                   <button
                     className={mergeClassNames(
-                      "ignore-default-styles text-left p-2 min-h-[45px] flex-grow text-sm rounded-md",
-                      dateStyle(d)
+                      "ignore-default-styles text-left p-2 min-h-[65px] flex-grow text-sm rounded-md",
+                      dateStyle(d, chosenDate)
                     )}
                     disabled={d === null}
                   >

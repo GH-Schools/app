@@ -50,7 +50,7 @@ function AdminDashboard() {
             >
               <Button
                 text={"Check Schedule"}
-                // href={"/dashboard/apply/form"}
+                href={"/admin/dashboard/schedules"}
                 className="text-center font-bold"
                 style={{
                   color: "white",

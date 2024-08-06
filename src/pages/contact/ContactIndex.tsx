@@ -145,7 +145,7 @@ const FieldComponent: React.FC<{
       className="flex flex-col items-start text-lg"
       style={{ width, ...sx }}
     >
-      <div className="flex flex-row gap-1 mb-1 w-full">
+      <div className="flex flex-row items-center gap-2 mb-1 w-full">
         {icon}
         <span
           style={{

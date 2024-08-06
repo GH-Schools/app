@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 import { getMyPayments } from "../../redux/actions/payment.action";
 import { GenericObject } from "../../interfaces";
-import { BsMap as LocationIcon } from "react-icons/bs";
+import { BsPinMap as LocationIcon } from "react-icons/bs";
 
 function ContactIndex() {
   const dispatch = useDispatch<any>();
@@ -142,37 +142,34 @@ const FieldComponent: React.FC<{
 }> = ({ width, label, sx = {}, value = "", icon, ...rest }) => {
   return (
     <div
-      className="flex flex-row gap-2 items-center text-lg"
+      className="flex flex-col gap-2 items-center text-lg"
       style={{ width, ...sx }}
     >
-      {icon}
-      <div className="w-full">
+      <div className="flex flex-row gap-1 mb-1 w-full">
+        {icon}
         <span
           style={{
             width: "auto",
             fontSize: "12px",
             fontWeight: 500,
             color: "#818793",
-            marginBottom: "3px",
+            // marginBottom: "3px",
             textTransform: "capitalize",
           }}
         >
           {label}
         </span>
-        <div
-          style={{
-            fontSize: "14px",
-            fontWeight: 700,
-            padding: "5px 0px",
-            width: "100%",
-            // borderRadius: "3px",
-            // textTransform: "capitalize",
-            // backgroundColor: "#F6FAFC",
-          }}
-          {...rest}
-        >
-          {value}
-        </div>
+      </div>
+
+      <div
+        style={{
+          fontSize: "14px",
+          fontWeight: 700,
+          padding: "5px 0px",
+        }}
+        {...rest}
+      >
+        {value}
       </div>
     </div>
   );

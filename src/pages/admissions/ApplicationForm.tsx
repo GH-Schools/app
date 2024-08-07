@@ -42,6 +42,10 @@ function Application() {
     (state: StoreState) => state?.Dashboard?.data?.[0]
   );
 
+  const paymentInfo = useSelector(
+    (state: StoreState) => state?.Payment
+  );
+
   return (
     <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
       <div className="flex flex-col">
@@ -69,6 +73,32 @@ function Application() {
                 padding: "10px",
                 borderRadius: "5px",
                 backgroundColor: NoticeTheme.success.title.color,
+                textTransform: "capitalize",
+              }}
+            />
+          </Notice>
+        )}
+
+        {!paymentInfo?.payments?.[0] && !paymentInfo?.isLoading && (
+          <Notice
+            variant="error"
+            title="Error:"
+            message={
+              "We could not find payment information for this account"
+            }
+          >
+            <Button
+              text={"Contact Support"}
+              href="/student/dashboard/contact-us"
+              className="text-center font-bold"
+              style={{
+                whitSpace: "nowrap",
+                color: "white",
+                fontSize: "10px",
+                fontWeight: 700,
+                padding: "10px",
+                borderRadius: "5px",
+                backgroundColor: NoticeTheme.error.title.color,
                 textTransform: "capitalize",
               }}
             />

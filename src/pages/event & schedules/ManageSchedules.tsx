@@ -144,13 +144,13 @@ const Calendar = ({
         data === today.getDate() &&
         currentDate.getMonth() === today.getMonth() &&
         currentDate.getFullYear() === today.getFullYear():
-        return "border border-orange-400 text-orange-600";
+        return "border hover:bg-green-400 hover:text-white border-orange-400 text-orange-600 ";
 
       case data === null:
-        return "border border-darkgray-600 bg-gray-300";
+        return "border hover:bg-green-400 hover:text-white border-darkgray-600 bg-gray-300";
 
       default:
-        return "border";
+        return "border hover:bg-green-400 hover:text-white";
     }
   };
 

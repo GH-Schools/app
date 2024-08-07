@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import "./Home.scss";
 import Button from "../components/common/Button";
 import logo from "../assets/favicon.png";
+import GHMedia from "../assets/GHMedia.png";
+import GHFashion from "../assets/GHFashion.png";
+import GHCatering from "../assets/GHCatering.png";
+import GHCosmetology from "../assets/GHCosmetolgy.png";
+import GHTechnology from "../assets/GHTechnology.png";
 
 function Home() {
   const [animate] = useState(false);
@@ -11,35 +16,35 @@ function Home() {
       name: "Fashion School",
       description:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis tenetur quas architecto sunt inventore maxime aut dignissimos unde. Minus necessitatibus ad, fugiat ipsum laborum dolorum accusamus est id blanditiis exercitationem!",
-      logo,
+      logo: GHFashion,
       textColor: "text-white",
     },
     {
       name: "Catering School",
       description:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis tenetur quas architecto sunt inventore maxime aut dignissimos unde. Minus necessitatibus ad, fugiat ipsum laborum dolorum accusamus est id blanditiis exercitationem!",
-      logo,
+      logo: GHCatering,
       textColor: "text-black",
     },
     {
       name: "Cosmetology School",
       description:
         "If you have the personal passion for improving people’s confidence and appearance, our industry standard course is right for you: make up & eye enhancement, manicure & pedicure, nail technology, salon & spa management, hair technology, body enhancement",
-      logo,
+      logo: GHCosmetology,
       textColor: "text-black",
     },
     {
       name: "Media School",
       description:
         'GH Media School was established by Mr. Leslie Addo-Listowell, out of a mother company called "Media Tribe Studio 233", a multimedia company with a special focus on the production of branded and non-branded content for TV Stations across the country.',
-      logo,
+      logo: GHMedia,
       textColor: "text-white",
     },
     {
       name: "Technology School",
       description:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis tenetur quas architecto sunt inventore maxime aut dignissimos unde. Minus necessitatibus ad, fugiat ipsum laborum dolorum accusamus est id blanditiis exercitationem!",
-      logo,
+      logo: GHTechnology,
       textColor: "text-white",
     },
   ];

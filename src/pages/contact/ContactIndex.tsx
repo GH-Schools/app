@@ -89,7 +89,7 @@ function ContactIndex() {
               />
             </div>
 
-            <div className="flex flex-col gap-0 items-center justify-between w-full mt-2">
+            <div className="flex flex-col gap-0 items-center justify-between w-full mt-2 overflow-auto">
               <div
                 className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center bg-slate-100 w-full border rounded-md text-sm"
                 style={{ marginBottom: "12px" }}

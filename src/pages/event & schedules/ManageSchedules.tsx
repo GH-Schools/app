@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { IoReload as SwapIcon, } from "react-icons/io5";
+import { IoReload as SwapIcon } from "react-icons/io5";
 import { StoreState } from "../../redux/reducers";
 
 import Button from "../../components/common/Button";
@@ -109,7 +109,7 @@ function ManageSchedules() {
                 }}
               />
             </div>
-            <div className="flex rounded-lg w-full">
+            <div className="flex rounded-lg w-full gap-2">
               <Calendar
                 day={today.getDate()}
                 month={today.getMonth()}
@@ -130,6 +130,27 @@ function ManageSchedules() {
                   }) as CalendarEvent[]
                 }
               />
+
+              {/* <Calendar
+                day={today.getDate()}
+                month={today.getMonth() + 1}
+                year={today.getFullYear()}
+                setPrev={setPrev}
+                setNext={setNext}
+                events={
+                  data.map((schedule) => {
+                    return {
+                      title: schedule?.title,
+                      date: new Date(schedule?.dueDate),
+                      color:
+                        schedule.eventType !== "INTERVIEW" ? "gray" : "orange",
+                      metadata: {
+                        ...schedule,
+                      },
+                    };
+                  }) as CalendarEvent[]
+                }
+              /> */}
             </div>
           </div>
         </section>

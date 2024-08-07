@@ -96,7 +96,7 @@ const Calendar = ({
           }}
         />
       </div>
-      <div className="flex flex-row w-full gap-0.5">
+      <div className="flex flex-row w-full gap-0.5 overflow-auto">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
           (dateCol, columnIndex) => (
             <div className="flex flex-col flex-grow gap-0.5">

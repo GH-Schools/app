@@ -31,7 +31,7 @@ function AddSchedule() {
             }}
             validationSchema={Yup.object({
               title: validations.name("Title").required("Title is required"),
-              type: validations.blank().required("Type is required"),
+              type: validations.blank().required("Category is required"),
               dueDate: validations.blank().required("Due date is required"),
             })}
             onSubmit={async (values, helpers) => {
@@ -71,7 +71,7 @@ function AddSchedule() {
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <SelectComponent
-                    label="Schedule Type"
+                    label="Schedule Category"
                     name="type"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -82,8 +82,10 @@ function AddSchedule() {
                     width="100%"
                     required={true}
                     options={[
-                      { name: "- Choose a schedule type -", value: "" },
+                      { name: "- Choose a schedule category -", value: "" },
                       { name: "Interview", value: "INTERVIEW" },
+                      { name: "Lecture", value: "LECTURE" },
+                      { name: "Orientation", value: "ORIENTATION" },
                       { name: "Custom", value: "CUSTOM" },
                     ]}
                   />

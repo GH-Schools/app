@@ -1,30 +1,55 @@
-import React from "react"; // { useEffect }
+import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
+import { GenericObject } from "../../interfaces";
 
 import { SiGoogleforms } from "react-icons/si";
-import {
-  // BsExclamationCircle,
-  BsFillCreditCardFill as CardIcon,
-} from "react-icons/bs";
-import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
+import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
+
+import { getAllSchedules } from "../../redux/actions/schedule.action";
+
 import Button from "../../components/common/Button";
+import TextSpinner from "../../components/TextSpinner";
+import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
+
 import { getAuthUser } from "../../utils/storage";
 
 function StudentDashboard() {
-  // const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<any>();
   const academicSession = useSelector(
     (state: StoreState) => state.App?.sessionInfo
   );
 
+  const scheduleInfo = useSelector((state: StoreState) => state.Schedule);
+  const schedules = useMemo(
+    () => scheduleInfo?.data ?? [],
+    [scheduleInfo?.data]
+  );
+
   const authUser = getAuthUser();
 
-  console.log(academicSession);
+  let dateSchedules: GenericObject = {
+    INTERVIEW: null,
+    LECTURE: null,
+    ORIENTATION: null,
+  };
+  console.log(academicSession, schedules, dateSchedules);
 
-  // useEffect(() => {
-  //   dispatch(get());
-  // }, [dispatch]);
+  dateSchedules = schedules
+    .filter((sch) => Date.now() <= new Date(sch.dueDate).getTime())
+    .reduce((aggregated, eachSchedule) => {
+      return {
+        ...aggregated,
+        [eachSchedule.eventType]: new Date(
+          eachSchedule.dueDate
+        ).toLocaleString(),
+      };
+    }, dateSchedules);
+
+  useEffect(() => {
+    dispatch(getAllSchedules({}));
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5">
@@ -112,21 +137,40 @@ function StudentDashboard() {
         {[
           {
             title: "Next Interview Date",
-            message: `Your next interview date has been scheduled for Friday, 23rd July, 2024`,
+            message: dateSchedules?.INTERVIEW
+              ? `Your next interview date has been scheduled for ${
+                  dateSchedules?.INTERVIEW ?? "Friday, 23rd July, 2024"
+                }`
+              : "Next interview date will be communicated",
             icon: <CardIcon />,
           },
           {
             title: "Orientation Date",
-            message: `Date will be communicated`,
+            message: dateSchedules?.ORIENTATION
+              ? `Your orientation date has been scheduled for ${
+                  dateSchedules?.ORIENTATION ?? "Friday, 23rd July, 2024"
+                }`
+              : "Orientation date will be communicated",
             icon: <SiGoogleforms />,
           },
           {
             title: "Lecture Resumption Date",
-            message: `Lecture Resumption Date`,
+            message: dateSchedules?.LECTURE
+              ? `Commencement of lecture has been scheduled for ${
+                  dateSchedules?.LECTURE ?? "Friday, 23rd July, 2024"
+                }`
+              : "Lecture date will be communicated",
             icon: <CardIcon />,
           },
         ].map(({ title, icon, message }, i) => (
-          <MetricsCard key={i} title={title} icon={`${i + 1}`} message={message} />
+          <MetricsCard
+            key={i}
+            title={title}
+            icon={
+              <TextSpinner text={`${i + 1}`} loading={scheduleInfo.isLoading} />
+            }
+            message={scheduleInfo.isLoading ? "Loading..." : message}
+          />
         ))}
       </section>
 

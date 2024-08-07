@@ -42,7 +42,7 @@ const Calendar = ({
 
     switch (true) {
       case data === null:
-        return mergeClassNames(defaultClass, "border-darkgray-600 bg-gray-300");
+        return mergeClassNames(defaultClass, "border-darkgray-600 bg-gray-300 cursor-default");
 
       case data &&
         data === today.getDate() &&
@@ -50,13 +50,13 @@ const Calendar = ({
         currentDate.getFullYear() === today.getFullYear():
         return mergeClassNames(
           defaultClass,
-          "hover:border-0 hover:bg-green-600 hover:text-white border-green-500 text-green-600 font-bold"
+          "hover:border-1 hover:bg-green-600 hover:text-white border-green-500 text-green-600 font-bold"
         );
 
       default:
         return mergeClassNames(
           defaultClass,
-          "hover:border-0 hover:bg-green-600 hover:text-white"
+          "hover:border-1 hover:bg-green-600 hover:text-white"
         );
     }
   };

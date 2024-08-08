@@ -37,9 +37,9 @@ const PlainTable = (props: PlainTableProps) => {
 
   return (
     <div className="mt-2 mb-5 flex flex-col overflow-x-auto" style={sx}>
-      <div className="-my-2">
-        <div className="py-2 align-middle inline-block min-w-full">
-          <div className="overflow-hidden border-gray-200">
+      <div className="-my-2 h-full">
+        <div className="py-2 align-middle inline-block min-w-full h-full">
+          <div className="overflow-hidden border-gray-200 h-full">
             <table
               {...getTableProps()}
               className="min-w-full divide-y divide-gray-200"

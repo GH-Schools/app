@@ -105,14 +105,13 @@ function ContactIndex() {
                   referrerPolicy="no-referrer-when-downgrade"
                 >
                   <a
-                  href="https://maps.app.goo.gl/pbFfcnTJoVm9KRXE7"
-                  target={"_blank"}
-                  rel="noreferrer"
-                >
-                  View location on map
-                </a>
+                    href="https://maps.app.goo.gl/pbFfcnTJoVm9KRXE7"
+                    target={"_blank"}
+                    rel="noreferrer"
+                  >
+                    View location on map
+                  </a>
                 </iframe>
-                
               </div>
             </div>
           </div>

@@ -70,7 +70,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
 
             <DrawerMenu text="Student Management" icon={<StudentIcon />}>
               <DrawerMenu
-                text="Manage Students"
+                text="Manage Users"
                 href="/admin/dashboard/students"
               />
 

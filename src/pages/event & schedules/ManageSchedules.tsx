@@ -1,14 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { AiOutlineMore as MoreIcon } from "react-icons/ai";
 import { IoReload as SwapIcon } from "react-icons/io5";
 import { StoreState } from "../../redux/reducers";
 
 import Button from "../../components/common/Button";
 import PlainTable from "../../components/tables/PlainTable";
+import ActionMenu from "../../components/common/ActionMenu";
+import Calendar, { type CalendarEvent } from "../../components/Calendar";
 
 import { getAllSchedules } from "../../redux/actions/schedule.action";
-import Calendar, { type CalendarEvent } from "../../components/Calendar";
+import { CellProps } from "react-table";
 
 function ManageSchedules() {
   const dispatch = useDispatch<any>();
@@ -47,6 +50,44 @@ function ManageSchedules() {
     {
       Header: "Actions",
       accessor: "0",
+      Cell: ({ row }: CellProps<any>) => {
+        // const { original } = row;
+        return (
+          <ActionMenu
+            activator={<MoreIcon style={{ fontSize: "24px" }} />}
+            menu={
+              <div className="flex flex-col" style={{}}>
+                <Button
+                  className="text-left px-3 py-2 border-b hover:bg-slate-200 capitalize"
+                  href="/admin/dashboard/schedules/create"
+                  text="Edit"
+                />
+
+                {/* <button
+                  disabled={original?.applicantHasBeenCalled}
+                  className="ignore-default-styles text-left px-3 py-2 border-b hover:bg-slate-200"
+                  onClick={async () => {
+                    const res = await dispatch(
+                      updateAdmissionForm({
+                        formId: original?.formId,
+                        userId: original?.userId,
+                        applicantHasBeenCalled: true,
+                      })
+                    );
+                    console.log(res);
+                    if (res?.meta?.requestStatus === "fulfilled") {
+                      notify("Success!", { type: "success" });
+                      dispatch(getAllAdmissionForms({}));
+                    }
+                  }}
+                >
+                  Mark Applicant As Called
+                </button> */}
+              </div>
+            }
+          />
+        );
+      },
     },
   ];
 
@@ -122,7 +163,9 @@ function ManageSchedules() {
                       title: schedule?.title,
                       date: new Date(schedule?.dueDate),
                       color:
-                        schedule.eventType !== "INTERVIEW" ? "gray" : "orange",
+                        schedule.eventType !== "INTERVIEW"
+                          ? "dodgerblue"
+                          : "orange",
                       metadata: {
                         ...schedule,
                       },

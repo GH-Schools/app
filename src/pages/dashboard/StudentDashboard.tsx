@@ -14,9 +14,18 @@ import TextSpinner from "../../components/TextSpinner";
 import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
 
 import { getAuthUser } from "../../utils/storage";
+import {
+  getMyAdmissionForm,
+  downloadAdmissionForm,
+} from "../../redux/actions/dashboard.action";
 
 function StudentDashboard() {
   const dispatch = useDispatch<any>();
+
+  const admissionInfo = useSelector(
+    (state: StoreState) => state?.Dashboard?.data?.[0]
+  );
+
   const academicSession = useSelector(
     (state: StoreState) => state.App?.sessionInfo
   );
@@ -49,7 +58,15 @@ function StudentDashboard() {
 
   useEffect(() => {
     dispatch(getAllSchedules({}));
-  }, [dispatch]);
+    if (authUser?.userId) {
+      dispatch(
+        getMyAdmissionForm({
+          userId: authUser?.userId as string,
+          silent: true,
+        })
+      );
+    }
+  }, [authUser?.userId, dispatch]);
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5">
@@ -65,70 +82,58 @@ function StudentDashboard() {
           </div>
 
           <div className="flex flex-col">
-            <Notice
-              variant="success"
-              title="Info:"
-              message={"You can now apply for admissions here"}
-            >
-              <Button
-                text={"Apply for Admission"}
-                href={"/student/dashboard/apply/form"}
-                className="text-center font-bold"
-                style={{
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  padding: "10px",
-                  borderRadius: "5px",
-                  backgroundColor: NoticeTheme.success.title.color,
-                  textTransform: "capitalize",
-                }}
-              />
-            </Notice>
+            {!admissionInfo?.hasCompletedForm && (
+              <Notice
+                variant="success"
+                title="Info:"
+                message={"You can now apply for admissions here"}
+              >
+                <Button
+                  text={"Apply for Admission"}
+                  href={"/student/dashboard/apply/form"}
+                  className="text-center font-bold"
+                  style={{
+                    color: "white",
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    padding: "10px",
+                    borderRadius: "5px",
+                    backgroundColor: NoticeTheme.success.title.color,
+                    textTransform: "capitalize",
+                  }}
+                />
+              </Notice>
+            )}
 
-            {/* <Notice
-              variant="warn"
-              title="Warning:"
-              message={
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid pariatur ex aut dicta corporis in, fuga earum adipisci, vel eum, dolorum minima laudantium. Ad, ex temporibus debitis harum ullam error."
-              }
-            >
-              <Button
-                text={"Apply for Admission"}
-                className="text-center font-bold"
-                style={{
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  padding: "10px",
-                  borderRadius: "5px",
-                  backgroundColor: "#31B5A7",
-                  textTransform: "capitalize",
-                }}
-              />
-            </Notice> */}
-
-            {/* <Notice
-              variant="error"
-              title="Error:"
-              message={
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid pariatur ex aut dicta corporis in, fuga earum adipisci, vel eum, dolorum minima laudantium. Ad, ex temporibus debitis harum ullam error."
-              }
-            >
-              <Button
-                text={"Apply for Admission"}
-                className="text-center font-bold"
-                style={{
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  padding: "10px",
-                  borderRadius: "5px",
-                  backgroundColor: "#31B5A7",
-                  textTransform: "capitalize",
-                }}
-              />
-            </Notice> */}
+            {admissionInfo?.hasCompletedForm && (
+              <Notice
+                variant="success"
+                title="Info:"
+                message={
+                  "Click here to download a PDF copy of your admission form for your reference. We do not require you to bring a printed copy, as we are paperless."
+                }
+              >
+                <Button
+                  text={"Download PDF"}
+                  onClick={() =>
+                    dispatch(
+                      downloadAdmissionForm({ formId: admissionInfo?.formId })
+                    )
+                  }
+                  className="text-center font-bold"
+                  style={{
+                    whitSpace: "nowrap",
+                    color: "white",
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    padding: "10px",
+                    borderRadius: "5px",
+                    backgroundColor: NoticeTheme.success.title.color,
+                    textTransform: "capitalize",
+                  }}
+                />
+              </Notice>
+            )}
           </div>
         </div>
       </section>

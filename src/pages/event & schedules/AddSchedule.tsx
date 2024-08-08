@@ -111,7 +111,7 @@ function AddSchedule() {
                   <InputComponent
                     label="Due Date"
                     name="dueDate"
-                    type="datetime"
+                    type="datetime-local"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     errors={errors}

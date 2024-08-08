@@ -28,7 +28,7 @@ import {
 import { getMyPayments } from "../../redux/actions/payment.action";
 
 import checkCircledLottie from "../../assets/lotties/check_circled.lottie.json";
-import { schoolCourses } from "../../constants/data";
+import { NATIONS, REGIONS, schoolCourses } from "../../constants/data";
 import { OptionProps } from "../../interfaces";
 
 import { notify } from "../../utils/toastNotification";
@@ -42,9 +42,7 @@ function Application() {
     (state: StoreState) => state?.Dashboard?.data?.[0]
   );
 
-  const paymentInfo = useSelector(
-    (state: StoreState) => state?.Payment
-  );
+  const paymentInfo = useSelector((state: StoreState) => state?.Payment);
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
@@ -83,9 +81,7 @@ function Application() {
           <Notice
             variant="error"
             title="Error:"
-            message={
-              "We could not find payment information for this account"
-            }
+            message={"We could not find payment information for this account"}
           >
             <Button
               text={"Contact Support"}
@@ -322,7 +318,9 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     required={true}
-                    disabled={disabledForms[Steps.PERSONAL] || !!values?.firstName}
+                    disabled={
+                      disabledForms[Steps.PERSONAL] || !!values?.firstName
+                    }
                   />
 
                   <InputComponent
@@ -351,7 +349,9 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     required={true}
-                    disabled={disabledForms[Steps.PERSONAL] || !!values?.lastName}
+                    disabled={
+                      disabledForms[Steps.PERSONAL] || !!values?.lastName
+                    }
                   />
                 </div>
 
@@ -465,9 +465,12 @@ const Form = ({
                     width="100%"
                     options={[
                       { name: "- Choose a country -", value: "" },
-                      { name: "Nigeria", value: "nigerian" },
-                      { name: "Ghana", value: "ghanian" },
-                    ]}
+                    ].concat(
+                      NATIONS.map((nation) => ({
+                        name: nation.name,
+                        value: nation.nationality_type,
+                      }))
+                    )}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -499,17 +502,12 @@ const Form = ({
                     width="100%"
                     options={[
                       { name: "- Choose a region -", value: "" },
-                      { name: "Ahafo region", value: "ahafo region" },
-                      { name: "Ashanti region", value: "ashanti region" },
-                      { name: "Bono East region", value: "bono east region" },
-                      { name: "Bono region", value: "bono region" },
-                      { name: "Central region", value: "central region" },
-                      { name: "Eastern region", value: "eastern region" },
-                      { name: "Northern region", value: "northern region" },
-                      { name: "Oti region", value: "oti region" },
-                      { name: "North East region", value: "north east region" },
-                      { name: "Outside Ghana", value: "outside ghana" },
-                    ]}
+                    ].concat(
+                      REGIONS.map((region) => ({
+                        name: region.name,
+                        value: region.value,
+                      }))
+                    )}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -1097,14 +1095,28 @@ const Form = ({
                 admissionInfo?.disability ??
                 authenticatedUser?.disability ??
                 "",
+              preferHostel: admissionInfo?.preferHostel ?? "false",
               sponsorRelationship: admissionInfo?.sponsorRelationship ?? "",
               sponsorOccupation: admissionInfo?.sponsorOccupation ?? "",
-              preferHostel: admissionInfo?.preferHostel ?? "false",
               sponsorAddress: admissionInfo?.sponsorAddress ?? "",
               sponsorMobile: admissionInfo?.sponsorMobile ?? "",
               sponsorName: admissionInfo?.sponsorName ?? "",
               reference: paymentInfo?.reference,
             }}
+            validationSchema={Yup.object({
+              sponsorName: validations
+                .name("Sponsor name")
+                .required("Sponsor name is required"),
+              sponsorRelationship: validations
+                .blank()
+                .required("Sponsor relationship is required"),
+              sponsorMobile: validations
+                .mobile("Sponsor mobile")
+                .required("Sponsor mobile is required"),
+              sponsorOccupation: validations
+                .blank()
+                .required("Sponsor occupation is required"),
+            })}
             onSubmit={async (values, helpers) => {
               try {
                 const {
@@ -1297,6 +1309,7 @@ const Form = ({
                     placeholder="E.g. Temiloluwa"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
 
@@ -1310,6 +1323,7 @@ const Form = ({
                     value={values?.sponsorRelationship}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                     placeholder="Type relationship here e.g. father, friend..."
                     // options={[
@@ -1335,6 +1349,7 @@ const Form = ({
                     placeholder="e.g farmer, civil servant, banker etc"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
 
@@ -1350,6 +1365,7 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     type="tel"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
                 </div>
@@ -1366,6 +1382,7 @@ const Form = ({
                     placeholder="E.g. No 14, Kings Street"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
                 </div>

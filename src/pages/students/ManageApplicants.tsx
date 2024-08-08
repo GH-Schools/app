@@ -1,9 +1,11 @@
+import { CellProps } from "react-table";
 import React, { useEffect } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { StoreState } from "../../redux/reducers";
 
+import { AiOutlineMore as MoreIcon } from "react-icons/ai";
 import { BsFileEarmarkText as PendingIcon } from "react-icons/bs";
 import {
   BsFileCheck as ReviewedIcon,
@@ -12,7 +14,12 @@ import {
 
 import PlainTable from "../../components/tables/PlainTable";
 import MetricsCard from "../../components/cards/MetricsCard";
-import { getAllAdmissionForms } from "../../redux/actions/dashboard.action";
+import {
+  getAllAdmissionForms,
+  updateAdmissionForm,
+} from "../../redux/actions/dashboard.action";
+import ActionMenu from "../../components/common/ActionMenu";
+import { notify } from "../../utils/toastNotification";
 
 function ManageApplicants() {
   const dispatch = useDispatch<any>();
@@ -67,8 +74,93 @@ function ManageApplicants() {
       accessor: "createdAt",
     },
     {
+      Header: "Has Been Called?",
+      accessor: "applicantHasBeenCalled",
+      Cell: ({ row }: CellProps<any>) => {
+        const { original } = row;
+        return (
+          <input
+            type="checkbox"
+            value={original?.applicantHasBeenCalled ? "Yes" : "No"}
+            checked={original?.applicantHasBeenCalled}
+          />
+        );
+      },
+    },
+    {
+      Header: "Has Been Interviewed?",
+      accessor: "interviewStatus",
+      Cell: ({ row }: CellProps<any>) => {
+        const { original } = row;
+        return (
+          <input
+            type="checkbox"
+            value={original?.interviewStatus}
+            checked={original?.interviewStatus === "DONE"}
+          />
+        );
+      },
+    },
+    {
       Header: "Actions",
       accessor: "0",
+      Cell: ({ row }: CellProps<any>) => {
+        const { original } = row;
+        return (
+          <ActionMenu
+            activator={<MoreIcon style={{ fontSize: "24px" }} />}
+            menu={
+              <div className="flex flex-col" style={{}}>
+                <button className="text-left px-3 py-2 border-b hover:bg-slate-200">
+                  Mark As Called
+                </button>
+                <button
+                  disabled={original?.applicantHasBeenCalled}
+                  className="ignore-default-styles text-left px-3 py-2 border-b hover:bg-slate-200"
+                  onClick={async () => {
+                    const res = await dispatch(
+                      updateAdmissionForm({
+                        formId: original?.formId,
+                        userId: original?.userId,
+                        applicantHasBeenCalled: true,
+                      })
+                    );
+                    console.log(res);
+                    if (res?.meta?.requestStatus === "fulfilled") {
+                      notify("Success!", { type: "success" });
+                      dispatch(getAllAdmissionForms({}));
+                    }
+                  }}
+                >
+                  Mark Applicant As Called
+                </button>
+
+                <button
+                  disabled={original?.interviewStatus === "DONE"}
+                  className="ignore-default-styles text-left px-3 py-2 border-b hover:bg-slate-200"
+                  onClick={async () => {
+                    const res = await dispatch(
+                      updateAdmissionForm({
+                        formId: original?.formId,
+                        userId: original?.userId,
+                        interviewStatus: "DONE",
+                        isEditable: false,
+                      })
+                    );
+                    console.log(res);
+                    if (res?.meta?.requestStatus === "fulfilled") {
+                      notify("Success!", { type: "success" });
+                      dispatch(getAllAdmissionForms({}));
+                    }
+                  }}
+                >
+                  Mark Applicant As Interviewed
+                </button>
+              </div>
+            }
+          />
+        );
+      },
     },
   ];
 
@@ -89,13 +181,17 @@ function ManageApplicants() {
             color: "bg-gray-400",
           },
           {
-            title: "250.00 K",
+            title: `${
+              data?.filter((a) => a?.interviewStatus === "DONE")?.length
+            }`,
             message: `Interviewed Applicants`,
             icon: <ReviewedIcon fontSize={28} />,
             color: "bg-green-600",
           },
           {
-            title: "1,000",
+            title: `${
+              data?.filter((a) => a?.interviewStatus === "PENDING")?.length
+            }`,
             message: `Pending Applications`,
             icon: <PendingIcon fontSize={28} />,
             color: "bg-yellow-600",
@@ -107,10 +203,7 @@ function ManageApplicants() {
             icon={icon}
             message={message}
             bgColorClass={color}
-            style={{
-              // alignItems: "center",
-              // justifyContent: "center",
-            }}
+            style={{}}
           />
         ))}
       </section>

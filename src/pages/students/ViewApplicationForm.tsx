@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import {
   InputComponent,
   SelectComponent,
-  FileUploadComponent,
+  // FileUploadComponent,
 } from "../../components/common/FormComponents";
 import Button from "../../components/common/Button";
 import TextSpinner from "../../components/TextSpinner";
@@ -23,7 +23,7 @@ import {
   saveAdmissionWelfareInformation,
 } from "../../redux/actions/dashboard.action";
 
-import { schoolCourses } from "../../constants/data";
+import { NATIONS, REGIONS, schoolCourses } from "../../constants/data";
 import { OptionProps } from "../../interfaces";
 
 import { notify } from "../../utils/toastNotification";
@@ -43,7 +43,7 @@ function ViewApplicationForm() {
         <div className="flex flex-col flex-grow shadow-sm px-4 py-4 rounded-xl gap-2 bg-white w-1/3 ">
           <div className="rounded-lg border py-4 px-5">
             <div className="flex flex-row justify-between items-start mb-4">
-              <h3 className="font-bold text-2xl">Quick Summary</h3>
+              <h3 className="font-bold text-xl sm:text-2xl ">Quick Summary</h3>
 
               <Button
                 text="Download Form"
@@ -55,7 +55,7 @@ function ViewApplicationForm() {
                 style={{
                   backgroundColor: "#21B591",
                   color: "white",
-                  fontSize: "14px",
+                  fontSize: "12px",
                   fontWeight: 600,
                   textTransform: "capitalize",
                 }}
@@ -95,7 +95,7 @@ function ViewApplicationForm() {
 
               <FieldComponent
                 label="Mobile"
-                value={admissionInfo?.User?.mobile ?? "--"}
+                value={admissionInfo?.mobile1 ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
@@ -184,7 +184,6 @@ const Form = ({
   };
 
   useEffect(() => {
-    // dispatch(getMyPayments({}));
     if (params?.formId) {
       dispatch(getMyAdmissionForm({ userId: params?.formId as string }));
     }
@@ -214,7 +213,7 @@ const Form = ({
               lastName: admissionInfo?.lastName ?? "",
               mobile1: admissionInfo?.mobile1 ?? "",
               email: admissionInfo?.email ?? "",
-              residentialArea: "",
+              residentialArea: admissionInfo?.residentialArea ?? "",
               residentialAddress: admissionInfo?.residentialAddress ?? "",
               regionOfResidence: admissionInfo?.regionOfResidence ?? "",
               nationalIDNumber: admissionInfo?.nationalIDNumber ?? "",
@@ -286,9 +285,9 @@ const Form = ({
               touched,
               values,
             }) => (
-              <form className="rounded-lg py-8 px-9" onSubmit={handleSubmit}>
+              <form className="rounded-lg py-6 sm:py-8 px-6 sm:px-9" onSubmit={handleSubmit}>
                 <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
-                  <h3 className="font-bold text-2xl mb-5 text-inherit">
+                  <h3 className="font-bold text-xl sm:text-2xl mb-5 text-inherit">
                     Personal Profile
                   </h3>
 
@@ -301,14 +300,14 @@ const Form = ({
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center w-full mt-2 mb-6">
+                {/* <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center w-full mt-2 mb-6">
                   <FileUploadComponent
                     name="passportPhoto"
                     label="Click to add a picture"
                     sx={{ borderRadius: "50%" }}
                     inputSx={{ borderRadius: "50%" }}
                   />
-                </div>
+                </div> */}
 
                 <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <InputComponent
@@ -466,9 +465,12 @@ const Form = ({
                     width="100%"
                     options={[
                       { name: "- Choose a country -", value: "" },
-                      { name: "Nigeria", value: "nigerian" },
-                      { name: "Ghana", value: "ghanian" },
-                    ]}
+                    ].concat(
+                      NATIONS.map((nation) => ({
+                        name: nation.name,
+                        value: nation.nationality_type,
+                      }))
+                    )}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -500,19 +502,12 @@ const Form = ({
                     width="100%"
                     options={[
                       { name: "- Choose a region -", value: "" },
-                      { name: "Ahafo region", value: "ahafo region" },
-                      { name: "Ashanti region", value: "ashanti region" },
-                      { name: "Bono East region", value: "bono east region" },
-                      { name: "Bono region", value: "bono region" },
-                      { name: "Central region", value: "central region" },
-                      { name: "Eastern region", value: "eastern region" },
-                      { name: "Northern region", value: "northern region" },
-                      { name: "Oti region", value: "oti region" },
-                      {
-                        name: "North East region",
-                        value: "north east region",
-                      },
-                    ]}
+                    ].concat(
+                      REGIONS.map((region) => ({
+                        name: region.name,
+                        value: region.value,
+                      }))
+                    )}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -528,7 +523,7 @@ const Form = ({
                     value={values?.nationalIDType}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
-                    required={true}
+                    required={false}
                     options={[
                       { name: "- Choose an ID type -", value: "" },
                       {
@@ -542,6 +537,10 @@ const Form = ({
                       {
                         name: "Drivers license",
                         value: "driver's license",
+                      },
+                      {
+                        name: "Others",
+                        value: "others",
                       },
                     ]}
                     disabled={disabledForms[Steps.PERSONAL]}
@@ -558,7 +557,7 @@ const Form = ({
                     placeholder="e.g GHA-000937373-1"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
-                    required={true}
+                    required={false}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -684,9 +683,9 @@ const Form = ({
               touched,
               values,
             }) => (
-              <form className="rounded-lg py-8 px-9" onSubmit={handleSubmit}>
+              <form className="rounded-lg py-6 sm:py-8 px-6 sm:px-9" onSubmit={handleSubmit}>
                 <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
-                  <h3 className="font-bold text-2xl mb-5 text-inherit">
+                  <h3 className="font-bold text-xl sm:text-2xl mb-5 text-inherit">
                     Welfare &amp; Sponsorship Information
                   </h3>
 
@@ -819,10 +818,11 @@ const Form = ({
                     placeholder="E.g. Temiloluwa"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
 
-                  <SelectComponent
+                  <InputComponent
                     label="Relationship With Sponsor"
                     name="sponsorRelationship"
                     onChange={handleChange}
@@ -832,15 +832,17 @@ const Form = ({
                     value={values?.sponsorRelationship}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
-                    options={[
-                      { name: "- Choose relationship -", value: "" },
-                      { name: "Father", value: "father" },
-                      { name: "Mother", value: "mother" },
-                      { name: "Siblings", value: "siblings" },
-                      { name: "Friend", value: "friend" },
-                      { name: "Acquaintance", value: "acquaintance" },
-                    ]}
+                    placeholder="Type relationship here e.g. father, friend..."
+                    // options={[
+                    //   { name: "- Choose relationship -", value: "" },
+                    //   { name: "Father", value: "father" },
+                    //   { name: "Mother", value: "mother" },
+                    //   { name: "Siblings", value: "siblings" },
+                    //   { name: "Friend", value: "friend" },
+                    //   { name: "Acquaintance", value: "acquaintance" },
+                    // ]}
                   />
                 </div>
 
@@ -856,6 +858,7 @@ const Form = ({
                     placeholder="e.g farmer, civil servant, banker etc"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
 
@@ -871,6 +874,7 @@ const Form = ({
                     sx={{ marginBottom: "10px" }}
                     width="100%"
                     type="tel"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
                 </div>
@@ -887,6 +891,7 @@ const Form = ({
                     placeholder="E.g. No 14, Kings Street"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.HOSPITALITY]}
                   />
                 </div>
@@ -1032,9 +1037,9 @@ const Form = ({
               errors,
               values,
             }) => (
-              <form className="rounded-lg py-8 px-9" onSubmit={handleSubmit}>
+              <form className="rounded-lg py-6 sm:py-8 px-6 sm:px-9" onSubmit={handleSubmit}>
                 <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full mb-5">
-                  <h3 className="font-bold text-2xl text-inherit">
+                  <h3 className="font-bold text-xl sm:text-2xl text-inherit">
                     Educational Information
                   </h3>
 
@@ -1111,7 +1116,7 @@ const Form = ({
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
-                    <SelectComponent
+                    <InputComponent
                       label={`Qualification ${index + 1}`}
                       name={`previousSchoolInfo[${index}].qualification`}
                       onChange={handleChange}
@@ -1121,21 +1126,22 @@ const Form = ({
                       value={schoolInfo?.qualification}
                       sx={{ marginBottom: "10px" }}
                       width="100%"
-                      options={[
-                        { name: "- Choose a qualification -", value: "" },
-                        {
-                          name: "B.E.C.E",
-                          value: "BECE",
-                        },
-                        {
-                          name: "WASSCE",
-                          value: "WASSCE",
-                        },
-                        {
-                          name: "Degree",
-                          value: "Degree",
-                        },
-                      ]}
+                      placeholder="Type a qualification e.g. BECE, WASSCE, Degree"
+                      // options={[
+                      //   { name: "- Choose a qualification -", value: "" },
+                      //   {
+                      //     name: "B.E.C.E",
+                      //     value: "BECE",
+                      //   },
+                      //   {
+                      //     name: "WASSCE",
+                      //     value: "WASSCE",
+                      //   },
+                      //   {
+                      //     name: "Degree",
+                      //     value: "Degree",
+                      //   },
+                      // ]}
                       required={index === 0}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />

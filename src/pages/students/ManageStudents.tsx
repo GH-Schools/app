@@ -1,14 +1,17 @@
+import { CellProps } from "react-table";
 import React, { useEffect } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 
 import { BsPeople as UserIcon } from "react-icons/bs";
+import { AiOutlineMore as MoreIcon } from "react-icons/ai";
 
 import PlainTable from "../../components/tables/PlainTable";
 import MetricsCard from "../../components/cards/MetricsCard";
 
 import { getUsers } from "../../redux/actions/users.action";
+import ActionMenu from "../../components/common/ActionMenu";
 
 function ManageStudents() {
   const dispatch = useDispatch<any>();
@@ -60,6 +63,16 @@ function ManageStudents() {
     {
       Header: "Actions",
       accessor: "0",
+      Cell: ({ row }: CellProps<any>) => {
+        // const { original } = row;
+
+        return (
+          <ActionMenu
+            activator={<MoreIcon style={{ fontSize: "24px" }} />}
+            menu={<div className="border p-5" style={{}}></div>}
+          />
+        );
+      },
     },
   ];
 
@@ -92,9 +105,7 @@ function ManageStudents() {
             icon={icon}
             message={message}
             bgColorClass={color}
-            style={{
-
-            }}
+            style={{}}
           />
         ))}
       </section>

@@ -42,7 +42,10 @@ const Calendar = ({
 
     switch (true) {
       case data === null:
-        return mergeClassNames(defaultClass, "border-darkgray-600 bg-gray-300 cursor-default");
+        return mergeClassNames(
+          defaultClass,
+          "border-darkgray-600 bg-gray-300 cursor-default"
+        );
 
       case data &&
         data === today.getDate() &&
@@ -99,7 +102,7 @@ const Calendar = ({
       <div className="flex flex-row w-full gap-0.5 overflow-auto">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
           (dateCol, columnIndex) => (
-            <div className="flex flex-col flex-grow gap-0.5">
+            <div key={columnIndex} className="flex flex-col flex-grow gap-0.5">
               <div className="border p-2 font-bold rounded-md">{dateCol}</div>
               {data.map((_, rowIndex) => {
                 const d = data[rowIndex][columnIndex];
@@ -111,6 +114,7 @@ const Calendar = ({
                 );
                 return (
                   <button
+                    key={rowIndex}
                     className={mergeClassNames(
                       "ignore-default-styles flex flex-col justify-between text-left p-2 min-h-[65px] flex-grow text-sm rounded-md",
                       dateStyle(d, chosenDate)
@@ -120,8 +124,9 @@ const Calendar = ({
                     <span>{d}</span>
                     {eventsForD && eventsForD.length > 0 && (
                       <div className="flex flex-row w-[90%] gap-0.5">
-                        {eventsForD.map((ev) => (
+                        {eventsForD.map((ev, i) => (
                           <div
+                            key={i}
                             className={`flex flex-row w-1/${Math.max(
                               2,
                               eventsForD.length

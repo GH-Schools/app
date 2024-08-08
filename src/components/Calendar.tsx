@@ -44,7 +44,7 @@ const Calendar = ({
       case data === null:
         return mergeClassNames(
           defaultClass,
-          "border-darkgray-600 bg-gray-300 cursor-default"
+          "border-darkgray-500 bg-gray-200 cursor-default"
         );
 
       case data &&

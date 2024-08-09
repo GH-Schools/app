@@ -50,13 +50,13 @@ function PaymentComplete() {
               </h3>
 
               <p>
-                Congratulations, you've succesfully completed the registration
-                process.
+                Congratulations, you've succesfully completed the payment for
+                the admission form. You will receive an SMS and/or an email with
+                your username and password to login to your student portal where
+                you can proceed to complete your application form
               </p>
               <p>
-                <ol>
-                  {/* <li>hhhh</li> */}
-                </ol>
+                <ol>{/* <li>hhhh</li> */}</ol>
               </p>
               <p
                 className="pt-4 pb-6"

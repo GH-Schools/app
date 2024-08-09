@@ -114,14 +114,14 @@ function AdminDashboard() {
       <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
         {[
           {
-            title: "11.11 K",
-            message: `Active Students`,
-            icon: <UserIcon fontSize={28} />,
-          },
-          {
-            title: "250.00 K",
+            title: "0",
             message: `Total Applications`,
             icon: <CardIcon fontSize={28} />,
+          },
+          {
+            title: "0",
+            message: `Active Students`,
+            icon: <UserIcon fontSize={28} />,
           },
           {
             title: "3",

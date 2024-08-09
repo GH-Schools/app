@@ -112,7 +112,7 @@ function ManageApplicants() {
             menu={
               <div className="flex flex-col" style={{}}>
                 <button className="text-left px-3 py-2 border-b hover:bg-slate-200">
-                  Mark As Called
+                  View Application
                 </button>
                 <button
                   disabled={original?.applicantHasBeenCalled}

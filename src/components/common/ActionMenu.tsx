@@ -13,7 +13,7 @@ function ActionMenu({
   useEffect(() => {
     window.onload = () => {
       document.body.onclick = () => {
-        alert("hey");
+        // alert("hey");
         setOpen(false);
       };
     };

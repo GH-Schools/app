@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { StoreState } from "../../../redux/reducers";
 
-// import { SiGoogleforms } from "react-icons/si";
+import { AiOutlineMore as MoreIcon } from "react-icons/ai";
 import {
   BsCreditCard as OnlinePaymentIcon,
   BsCashStack as FrontDeskIcon,
@@ -14,6 +14,9 @@ import {
 import PlainTable from "../../../components/tables/PlainTable";
 import MetricsCard from "../../../components/cards/MetricsCard";
 import { getAllPayments } from "../../../redux/actions/payment.action";
+import ActionMenu from "../../../components/common/ActionMenu";
+import { CellProps } from "react-table";
+import Button from "../../../components/common/Button";
 
 function ManagePayments() {
   const navigate = useNavigate();
@@ -62,6 +65,44 @@ function ManagePayments() {
     {
       Header: "Actions",
       accessor: "0",
+      Cell: ({ row }: CellProps<any>) => {
+        const { original } = row;
+        return (
+          <ActionMenu
+            activator={<MoreIcon style={{ fontSize: "24px" }} />}
+            menu={
+              <div className="flex flex-col" style={{}}>
+                <Button
+                  className="text-left px-3 py-2 border-b hover:bg-slate-200 capitalize"
+                  href={`/admin/dashboard/payment/${original?.payId}`}
+                  text="View Payment"
+                />
+
+                {/* <button
+                  disabled={original?.applicantHasBeenCalled}
+                  className="ignore-default-styles text-left px-3 py-2 border-b hover:bg-slate-200"
+                  onClick={async () => {
+                    const res = await dispatch(
+                      updateAdmissionForm({
+                        formId: original?.formId,
+                        userId: original?.userId,
+                        applicantHasBeenCalled: true,
+                      })
+                    );
+                    console.log(res);
+                    if (res?.meta?.requestStatus === "fulfilled") {
+                      notify("Success!", { type: "success" });
+                      dispatch(getAllAdmissionForms({}));
+                    }
+                  }}
+                >
+                  Mark Applicant As Called
+                </button> */}
+              </div>
+            }
+          />
+        );
+      },
     },
   ];
 

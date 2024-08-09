@@ -18,9 +18,7 @@ import { validations } from "../../utils/validations";
 import {
   getMyAdmissionForm,
   downloadAdmissionForm,
-  saveAdmissionEducation,
-  saveAdmissionPersonalProfile,
-  saveAdmissionWelfareInformation,
+  updateAdmissionForm,
 } from "../../redux/actions/dashboard.action";
 
 import { NATIONS, REGIONS, schoolCourses } from "../../constants/data";
@@ -249,7 +247,11 @@ const Form = ({
                 console.log(values);
                 helpers.setSubmitting(true);
                 const res = await dispatch(
-                  saveAdmissionPersonalProfile(values)
+                  updateAdmissionForm({
+                    formId: admissionInfo?.formId,
+                    userId: admissionInfo?.userId,
+                    ...values,
+                  })
                 );
                 console.log(res);
 
@@ -285,7 +287,10 @@ const Form = ({
               touched,
               values,
             }) => (
-              <form className="rounded-lg py-6 sm:py-8 px-6 sm:px-9" onSubmit={handleSubmit}>
+              <form
+                className="rounded-lg py-6 sm:py-8 px-6 sm:px-9"
+                onSubmit={handleSubmit}
+              >
                 <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <h3 className="font-bold text-xl sm:text-2xl mb-5 text-inherit">
                     Personal Profile
@@ -644,13 +649,16 @@ const Form = ({
                 helpers.setSubmitting(true);
                 console.log(payload);
                 const res = await dispatch(
-                  saveAdmissionWelfareInformation({
+                  updateAdmissionForm({
+                    formId: admissionInfo?.formId,
+                    userId: admissionInfo?.userId,
                     preferHostel: Boolean(preferHostel),
                     hasMedicalCondition: Boolean(hasMedicalCondition),
                     hasDisability: Boolean(hasDisability),
                     ...payload,
                   })
                 );
+
                 console.log(res);
 
                 if (res?.meta?.requestStatus === "fulfilled") {
@@ -683,7 +691,10 @@ const Form = ({
               touched,
               values,
             }) => (
-              <form className="rounded-lg py-6 sm:py-8 px-6 sm:px-9" onSubmit={handleSubmit}>
+              <form
+                className="rounded-lg py-6 sm:py-8 px-6 sm:px-9"
+                onSubmit={handleSubmit}
+              >
                 <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
                   <h3 className="font-bold text-xl sm:text-2xl mb-5 text-inherit">
                     Welfare &amp; Sponsorship Information
@@ -993,12 +1004,13 @@ const Form = ({
                 console.log(payload);
 
                 const res = await dispatch(
-                  saveAdmissionEducation({
+                  updateAdmissionForm({
+                    formId: admissionInfo?.formId,
+                    userId: admissionInfo?.userId,
                     priorExperience: Boolean(priorExperience),
                     ...payload,
                   })
                 );
-                // console.log(res);
 
                 if (res?.meta?.requestStatus === "fulfilled") {
                   notify("Saved Successfully!", { type: "success" });
@@ -1037,7 +1049,10 @@ const Form = ({
               errors,
               values,
             }) => (
-              <form className="rounded-lg py-6 sm:py-8 px-6 sm:px-9" onSubmit={handleSubmit}>
+              <form
+                className="rounded-lg py-6 sm:py-8 px-6 sm:px-9"
+                onSubmit={handleSubmit}
+              >
                 <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full mb-5">
                   <h3 className="font-bold text-xl sm:text-2xl text-inherit">
                     Educational Information

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { mergeClassNames } from "../../utils/utilities";
 
 function ActionMenu({
@@ -9,18 +9,24 @@ function ActionMenu({
   menu: React.ReactNode | JSX.Element;
 }) {
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setOpen(false);
+    }
+  };
 
   useEffect(() => {
-    window.onload = () => {
-      document.body.onclick = () => {
-        // alert("hey");
-        setOpen(false);
-      };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   return (
-    <div className="flex justify-center items-center relative">
+    <div className="flex justify-center items-center relative" ref={menuRef}>
       <button
         className="flex justify-center items-center hover:bg-slate-200 w-[40px] h-[40px] rounded-full"
         onClick={(ev) => {

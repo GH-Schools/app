@@ -10,6 +10,7 @@ import {
   SelectComponent,
   // FileUploadComponent,
 } from "../../components/common/FormComponents";
+import Modal from "../../components/modals/Modal";
 import Button from "../../components/common/Button";
 import Lottie from "../../components/common/Lottie";
 import TextSpinner from "../../components/TextSpinner";
@@ -27,16 +28,27 @@ import {
 } from "../../redux/actions/dashboard.action";
 import { getMyPayments } from "../../redux/actions/payment.action";
 
+import logo from "../../assets/favicon.png";
 import checkCircledLottie from "../../assets/lotties/check_circled.lottie.json";
+
 import { NATIONS, REGIONS, schoolCourses } from "../../constants/data";
 import { OptionProps } from "../../interfaces";
 
 import { notify } from "../../utils/toastNotification";
 import { mergeClassNames } from "../../utils/utilities";
+import {
+  schoolArrayToObject,
+  schoolObjectToArray,
+} from "../../utils/admissionForm";
 
 function Application() {
   const [completed, setCompleted] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const dispatch = useDispatch<any>();
+
+  const admissionInfoIsLoading = useSelector(
+    (state: StoreState) => state?.Dashboard?.isLoading
+  );
 
   const admissionInfo = useSelector(
     (state: StoreState) => state?.Dashboard?.data?.[0]
@@ -45,73 +57,450 @@ function Application() {
   const paymentInfo = useSelector((state: StoreState) => state?.Payment);
 
   return (
-    <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
-      <div className="flex flex-col">
-        {admissionInfo?.hasCompletedForm && (
-          <Notice
-            variant="success"
-            title="Info:"
-            message={
-              "Success! You can now download a PDF copy of your admission form for your reference. We do not require you to bring a printed copy, as we are paperless."
-            }
-          >
-            <Button
-              text={"Download PDF"}
-              onClick={() =>
-                dispatch(
-                  downloadAdmissionForm({ formId: admissionInfo?.formId })
-                )
+    <>
+      <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
+        <div className="flex flex-col">
+          {admissionInfo?.hasCompletedForm && (
+            <Notice
+              variant="success"
+              title="Info:"
+              message={
+                "Success! You can now download a PDF copy of your admission form for your reference. We do not require you to bring a printed copy, as we are paperless."
               }
-              className="text-center font-bold"
-              style={{
-                whitSpace: "nowrap",
-                color: "white",
-                fontSize: "10px",
-                fontWeight: 700,
-                padding: "10px",
-                borderRadius: "5px",
-                backgroundColor: NoticeTheme.success.title.color,
-                textTransform: "capitalize",
-              }}
-            />
-          </Notice>
-        )}
+            >
+              <Button
+                text={"Download PDF"}
+                onClick={() =>
+                  dispatch(
+                    downloadAdmissionForm({ formId: admissionInfo?.formId })
+                  )
+                }
+                className="text-center font-bold"
+                style={{
+                  whitSpace: "nowrap",
+                  color: "white",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  padding: "10px",
+                  borderRadius: "5px",
+                  backgroundColor: NoticeTheme.success.title.color,
+                  textTransform: "capitalize",
+                }}
+              />
+            </Notice>
+          )}
 
-        {!paymentInfo?.payments?.[0] && !paymentInfo?.isLoading && (
-          <Notice
-            variant="error"
-            title="Error:"
-            message={"We could not find payment information for this account"}
-          >
-            <Button
-              text={"Contact Support"}
-              href="/student/dashboard/contact-us"
-              className="text-center font-bold"
-              style={{
-                whitSpace: "nowrap",
-                color: "white",
-                fontSize: "10px",
-                fontWeight: 700,
-                padding: "10px",
-                borderRadius: "5px",
-                backgroundColor: NoticeTheme.error.title.color,
-                textTransform: "capitalize",
-              }}
-            />
-          </Notice>
-        )}
+          {!paymentInfo?.payments?.[0] && !paymentInfo?.isLoading && (
+            <Notice
+              variant="error"
+              title="Error:"
+              message={"We could not find payment information for this account"}
+            >
+              <Button
+                text={"Contact Support"}
+                href="/student/dashboard/contact-us"
+                className="text-center font-bold"
+                style={{
+                  whitSpace: "nowrap",
+                  color: "white",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  padding: "10px",
+                  borderRadius: "5px",
+                  backgroundColor: NoticeTheme.error.title.color,
+                  textTransform: "capitalize",
+                }}
+              />
+            </Notice>
+          )}
+        </div>
 
-        {/* <Notice
-          variant="warn"
-          title="Note:"
-          message={
-            "Please note that this admissions form will be disabled after admissions for this session has ended!"
-          }
-        ></Notice> */}
+        {!completed ? <Form setCompleted={setCompleted} /> : <Success />}
       </div>
 
-      {!completed ? <Form setCompleted={setCompleted} /> : <Success />}
-    </div>
+      {!admissionInfo && !admissionInfoIsLoading && (
+        <Modal open={openModal}>
+          <div className="flex flex-col items-center w-[95%] sm:w-[65vw] h-[88vh] overflow-y-auto sm:px-3">
+            <img
+              src={logo}
+              alt="log"
+              width={"70px"}
+              height={"70px"}
+              className="py-2"
+              style={{ objectFit: "contain" }}
+            />
+
+            <h2 className="font-bold text-slate-900 text-2xl uppercase mb-2 w-full border-b pb-3 text-center">
+              Rule &amp; Regulations
+            </h2>
+
+            <div className="flex flex-col gap-4 mt-0 w-full">
+              <Notice
+                title="Notice"
+                message={
+                  "All applicants are expected to read and understand the rules and regulation governing his/her school of application before proceeding with filling the application form. Kindly click the button at the bottom of this page to proceed to the forms page when you are done."
+                }
+              />
+
+              <fieldset className="flex flex-col flex-grow gap-2 px-3 pb-6 border-t rounded-lg">
+                <legend className="text-base uppercase font-bold py-1 pl-1 pr-2 text-slate-900">
+                  Bye-laws governing gh media school
+                </legend>
+
+                <div className="flex gap-1 flex-col text-xs font-normal mt-1 py-2 px-3 border bg-orange-400 text-white border-orange-500 rounded-md">
+                  {/* <span className="font-bold text-white">Kindly Note:</span>{" "} */}
+                  <span className="font-semibold">
+                    All laws listed below are applicable to all GH Media School
+                    applicants
+                  </span>
+                </div>
+
+                <ul
+                  style={{ listStyleType: "circle" }}
+                  className="flex flex-col gap-4 pl-5"
+                >
+                  {[
+                    {
+                      heading: "Compliance with school rules and regulation",
+                      text: "Every student is entitled to the acquaintance with the rules and regulations governing the school and is expected to comply by them accordingly. Breach of the rules shall warrant sanctions like warning, suspension, dismissal",
+                    },
+                    {
+                      heading: "Student liability for damage",
+                      text: "Students are by these rules encouraged to handle all school properties and equipment with care. Improper handling, damage or loss of school properties would require their replacement or payment by the student.",
+                    },
+                    {
+                      heading: "Attachment",
+                      text: (
+                        <>
+                          Brilliant and deserving students will be assisted by
+                          the school to gain attachment in reputable media
+                          institutions. Those who do not fall in the stated
+                          category would have to find attachment by their own
+                          means.
+                          <ul
+                            style={{ listStyleType: "square" }}
+                            className="pl-4"
+                          >
+                            <li>School fees.</li>
+                            <li>
+                              Students are expected to fully pay their school
+                              fees before the commencement of the end of
+                              semester exam.
+                            </li>
+                            <li>
+                              Accumulation of fees by the end of the year will
+                              warrant the withholding of students’ certificate
+                              on completion of the course.
+                            </li>
+                            <li>
+                              Students shall accept any timely increment in
+                              school fees.
+                            </li>
+                            <li>
+                              Foreign applicants are required to pay fees in
+                              full prior to their studies.
+                            </li>
+                            <li>Fees paid are not refundable.</li>
+                          </ul>
+                        </>
+                      ),
+                    },
+                    {
+                      heading: "Regularity & Punctuality",
+                      text: "Students should attend every lecture and be on time to avoid lateness. Failure to attend lectures regularly reliefs the administration from aiding to put you on attachment, students who miss lectures for 3 consecutive days should not expect administration to aid in their attachment.",
+                    },
+                    {
+                      heading: "Project work",
+                      text: "Since our courses are 70% practical, students must prepare in “time” and “finance” for any travelling, staying on set for certain number of days, or practical aimed at enhancing their course in school. Students will also be required to complete specific projects by different lectures during studies.",
+                    },
+                    {
+                      heading: "Compulsory church service",
+                      text: "Every student must be present during church service. It is compulsory for all. Information and announcements are given during this session, which is relevant to all students. Refusal to attend would call for an unpleasant sanction.",
+                    },
+                    {
+                      heading: "Use of school property",
+                      text: "Use of school properties like studio equipment, facilities etc. must be done with the appropriate permission and relevant documentation from authorities. NOTE: Students must be ready to accept other interim bye laws which may emerge from time to time during the cause of study",
+                    },
+                    {
+                      heading: "Subjection to disciplinary actions",
+                      text: "Any offender of the stipulated rules should be willing to subject himself to any form of disciplinary action proposed by the school authorities, disciplinary committee or the SRC executives without complaint or protest.",
+                    },
+                    {
+                      heading: "Good behaviour",
+                      text: "Every student is expected to put up a good and accommodating behavior with a high level of comportment, courtesy, discipline, and good moral values.",
+                    },
+                    {
+                      heading: "Academic Performance",
+                      text: (
+                        <>
+                          <ul
+                            style={{ listStyleType: "square" }}
+                            className="pl-4"
+                          >
+                            <li>
+                              Students are expected to study hard to avoid
+                              abject failure in their exams.
+                            </li>
+                            <li>
+                              Failing in 3 or more subject in a semester will
+                              warrant outright withdrawal from the school. Fees
+                              paid would not to be refundable
+                            </li>
+                            <li>
+                              Failing in 1 or 2 subjects would necessitate
+                              re-sitting. Failure to re-sit by the following
+                              semester would mandate withdrawal.
+                            </li>
+                            <li>
+                              Students are expected to meet at least an average
+                              academic performance (Both in theory and
+                              practical’s) to be eligible for graduation.
+                            </li>
+                            <li>
+                              Rampant absence from class without any authentic
+                              and verified reason would affect ones eligibility
+                              to graduate after school.
+                            </li>
+                            <li>
+                              Continuing students who only report to school
+                              after mid-semester exams would be withdrawn from
+                              the school automatically.
+                            </li>
+                          </ul>
+                        </>
+                      ),
+                    },
+                    {
+                      heading:
+                        "Full and active perticipation in school activities",
+                      text: "Every member is encouraged to play active role in the school’s activities - for example, participation in SRC week celebration and elections, group work, church services, sports and other extra curricula activities.",
+                    },
+                    {
+                      heading: "Copyright",
+                      text: "The student must accept that any productions including film, video, soundtracks, writing, recording and any other products from students’ projects and works whiles in school shall vest in GH Media School to whom all copyright and ownership belong and without whose permission, there shall be no use of such works. GH Media School also holds the sole right to show or broadcast any of her students’ work at her own time and sole discretion.",
+                    },
+                    {
+                      heading: "Respect for student leadership",
+                      text: "Every student must be ready to accord the student leadership (SRC), the respect due it. They must also comply with bye-laws which would emerge from their end to help ensure sanity in school.",
+                    },
+                  ].map((each, ii) => (
+                    <li key={ii} className="flex-grow w-full">
+                      <h4 className="text-sm text-slate-900 font-semibold capitalize mb-2">
+                        {each?.heading}
+                      </h4>
+
+                      <div className="text-xs font-normal leading-6 text-slate-900">
+                        {each?.text}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </fieldset>
+
+              <fieldset className="flex flex-col flex-grow gap-2 px-3 pb-6 border-t rounded-lg">
+                <legend className="text-base uppercase font-bold py-1 pl-1 pr-2 text-slate-900">
+                  GH Cosmetology School Rules &amp; Regulations
+                </legend>
+
+                <div className="flex flex-col gap-1 text-xs font-normal mt-1 py-2 px-3 border bg-orange-400 text-white border-orange-500 rounded-md">
+                  {/* <span className="font-semibold text-white">Kindly Note:</span>{" "} */}
+                  <span className="font-medium">
+                    GH Cosmetology School reserves the right and the prerogative
+                    to sanction and / or terminate the training of any student
+                    who breaches these rules and regulation during their stay in
+                    the school. Other bye-laws would be duly communicated to
+                    students to aid and regulate better teaching and learning
+                    environment.
+                  </span>
+                </div>
+
+                <ul
+                  style={{ listStyleType: "circle" }}
+                  className="flex flex-col gap-4 pl-5"
+                >
+                  {[
+                    {
+                      heading: "Discipline and personal hygiene",
+                      text: "Discipline and personal hygiene is of utmost importance to the academy therefore all student must look very neat and smart always. Indecently dressed students will not be allowed inside the school premises.",
+                    },
+                    {
+                      heading: "Student to model for each other",
+                      text: "During practical sessions, student are expected to model for each other. If for any reason a student cannot do so, by reason of any medical codition, he or she must notify the school on enrollment with necessary evidence.",
+                    },
+                    {
+                      heading: "Prescribed dress code appearance",
+                      text: (
+                        <>
+                          In a bid to inculcate a Professional apperance in
+                          students, they are to be in the prescribed uniforms at
+                          all times. <br /> All students must wear the
+                          prescribed school uniform:
+                          <ul
+                            style={{ listStyleType: "square" }}
+                            className="pl-4"
+                          >
+                            <li>
+                              <b>Uniforms: </b>School Lacoste and school cloth.
+                              No mufti and unprescribed uniforms would be
+                              allowed.
+                            </li>
+                            <li>
+                              <b>
+                                Footwear (BLACK, BROWN, or WHITE loafers/flat
+                                shoes):{" "}
+                              </b>
+                              No talking shoes or high heeled footwears are
+                              allowed.
+                            </li>
+                            <li>
+                              <b>Accessories: </b>With the exception of wedding
+                              rings and earrings, no other form of accesories or
+                              body jewelries are allowed during and around
+                              classes' hours.
+                            </li>
+                          </ul>
+                        </>
+                      ),
+                    },
+                    {
+                      heading: "Class attendance",
+                      text: "Punctuality and regularity to class must be ensured. The instructor reserves every right to sanction late comers accordingly.",
+                    },
+                    {
+                      heading: "Appearance during practical",
+                      text: "Students must ensure that during practical hours, they wear overalls or aprons. No student will be permitted to work without it, hence, will not be allowed in class.",
+                    },
+                    {
+                      heading: "School property",
+                      text: "Students are expected to handle all school properties including tools and equipment with a sense of responsibilty or else damages caused to any school property is payable.",
+                    },
+                  ].map((each, ii) => (
+                    <li key={ii} className="flex-grow w-full">
+                      <h4 className="text-sm text-slate-900 font-semibold capitalize mb-2">
+                        {each?.heading}
+                      </h4>
+
+                      <div className="text-xs font-normal leading-6 text-slate-900">
+                        {each?.text}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </fieldset>
+
+              <fieldset className="flex flex-col flex-grow gap-2 px-3 pb-6 border-t rounded-lg">
+                <legend className="text-base uppercase font-bold py-1 pl-1 pr-2 text-slate-900">
+                  GH Fashion School rules &amp; regulation
+                </legend>
+
+                <div className="flex flex-col gap-1 text-xs font-normal mt-1 py-2 px-3 border bg-blue-400 text-white border-blue-500 rounded-md">
+                  {/* <span className="font-semibold text-white">Kindly Note:</span>{" "} */}
+                  <span className="font-medium">
+                    GH Fashion School reserves the right and the prerogative to
+                    sanction and / or terminate the training of any student who
+                    breaches these rules and regulation during their stay in the
+                    school. Other bye laws would be duly communicated to
+                    students to aid and regulate better teaching and learning
+                    environment
+                  </span>
+                </div>
+
+                <ul
+                  style={{ listStyleType: "circle" }}
+                  className="flex flex-col gap-4 pl-5"
+                >
+                  {[
+                    {
+                      heading: "Discipline and personal hygiene",
+                      text: "Discipline and personal hygiene is of utmost importance to the academy therefore all student must look very neat and smart always. Indecently dressed students will not be allowed inside the school premises.",
+                    },
+                    {
+                      heading: "Student to model for each other",
+                      text: "During practical sessions, student are expected to model for each other. If for any reason a student cannot do so, by reason of any medical codition, he or she must notify the school on enrollment with necessary evidence.",
+                    },
+                    {
+                      heading: "Prescribed dress code appearance",
+                      text: (
+                        <>
+                          In a bid to inculcate a Professional apperance in
+                          students, they are to be in the prescribed uniforms at
+                          all times. <br /> All students must wear the
+                          prescribed school uniform:
+                          <ul
+                            style={{ listStyleType: "square" }}
+                            className="pl-4"
+                          >
+                            <li>
+                              <b>Uniforms: </b>School Lacoste and school cloth.
+                              No mufti and unprescribed uniforms would be
+                              allowed.
+                            </li>
+                            <li>
+                              <b>
+                                Footwear (BLACK, BROWN, or WHITE loafers/flat
+                                shoes):{" "}
+                              </b>
+                              No talking shoes or high heeled footwears are
+                              allowed.
+                            </li>
+                            <li>
+                              <b>Accessories: </b>With the exception of wedding
+                              rings and earrings, no other form of accesories or
+                              body jewelries are allowed during and around
+                              classes' hours.
+                            </li>
+                          </ul>
+                        </>
+                      ),
+                    },
+                    {
+                      heading: "Class attendance",
+                      text: "Punctuality and regularity to class must be ensured. The instructor reserves every right to sanction late comers accordingly.",
+                    },
+                    {
+                      heading: "Appearance during practical",
+                      text: "Students must ensure that during practical hours, they wear overalls or aprons. No student will be permitted to work without it, hence, will not be allowed in class.",
+                    },
+                    {
+                      heading: "School property",
+                      text: "Students are expected to handle all school properties including tools and equipment with a sense of responsibilty or else damages caused to any school property is payable.",
+                    },
+                  ].map((each, ii) => (
+                    <li key={ii} className="flex-grow w-full">
+                      <h4 className="text-sm text-slate-900 font-semibold capitalize mb-2">
+                        {each?.heading}
+                      </h4>
+
+                      <div className="text-xs font-normal leading-6 text-slate-900">
+                        {each?.text}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </fieldset>
+            </div>
+
+            <div className="fixed flex gap-4 justify-center p-4 w-full bg-slate-100 bottom-0 border-t">
+              <Button
+                text={"Accept & Continue"}
+                onClick={() => setOpenModal(!openModal)}
+                className="text-center font-bold shadow-lg"
+                style={{
+                  whitSpace: "nowrap",
+                  color: "white",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  padding: "10px",
+                  borderRadius: "5px",
+                  backgroundColor: NoticeTheme.success.title.color,
+                  textTransform: "capitalize",
+                }}
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
+    </>
   );
 }
 
@@ -209,7 +598,7 @@ const Form = ({
               mobile1:
                 admissionInfo?.mobile1 ?? authenticatedUser?.mobile ?? "",
               email: admissionInfo?.email ?? authenticatedUser?.email ?? "",
-              residentialArea: "",
+              residentialArea: admissionInfo?.areaOfResidence ?? "",
               residentialAddress: admissionInfo?.residentialAddress ?? "",
               regionOfResidence: admissionInfo?.regionOfResidence ?? "",
               nationalIDNumber: admissionInfo?.nationalIDNumber ?? "",
@@ -233,19 +622,30 @@ const Form = ({
                 .required("Mobile Number is required"),
               sex: validations.blank().required("Sex is required"),
               dob: validations.blank().required("Date of birth is required"),
-              // nationalIDType: validations
-              //   .blank()
-              //   .required("National ID type is required"),
+              language: validations.blank().required("Language is required"),
+              regionOfResidence: validations
+                .blank()
+                .required("Region of residence is required"),
+              residentialArea: validations
+                .blank()
+                .required("Area of residence is required"),
+              nationality: validations
+                .blank()
+                .required("Nationality is required"),
               // nationalIDNumber: validations
               //   .blank()
               //   .required("National ID number is required"),
             })}
             onSubmit={async (values, helpers) => {
               try {
+                const { residentialArea, ...payload } = values;
                 console.log(values);
                 helpers.setSubmitting(true);
                 const res = await dispatch(
-                  saveAdmissionPersonalProfile(values)
+                  saveAdmissionPersonalProfile({
+                    ...payload,
+                    areaOfResidence: residentialArea,
+                  })
                 );
                 console.log(res);
 
@@ -434,6 +834,7 @@ const Form = ({
                     placeholder="E.g. English, Twi, Ga"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -463,6 +864,7 @@ const Form = ({
                     value={values?.nationality}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     options={[
                       { name: "- Choose a country -", value: "" },
                     ].concat(
@@ -487,6 +889,7 @@ const Form = ({
                     placeholder="e.g, Kasoa, Gomoa, Effiduase, Kaneshie"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
 
@@ -500,6 +903,7 @@ const Form = ({
                     value={values?.regionOfResidence}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     options={[
                       { name: "- Choose a region -", value: "" },
                     ].concat(
@@ -628,14 +1032,7 @@ const Form = ({
               source: admissionInfo?.source ?? "",
               reference: paymentInfo?.reference,
               // mobile2: "",
-              previousSchoolInfo: [
-                {
-                  name: "",
-                  yearAttended: "",
-                  locationOfSchool: "",
-                  qualification: "",
-                },
-              ],
+              previousSchoolInfo: schoolObjectToArray(admissionInfo),
             }}
             validationSchema={Yup.object({
               preferredSchool: validations
@@ -655,16 +1052,10 @@ const Form = ({
               try {
                 helpers.setSubmitting(true);
                 const { previousSchoolInfo, priorExperience, ...rest } = values;
-                const payload: { [x: string]: any } = { ...rest };
-
-                previousSchoolInfo.forEach((schoolInfo, index) => {
-                  payload[`nameOfSchoolAttended${index + 1}`] = schoolInfo.name;
-                  payload[`locationOfSchoolAttended${index + 1}`] =
-                    schoolInfo.locationOfSchool;
-                  payload[`yearAttended${index + 1}`] = schoolInfo.yearAttended;
-                  payload[`qualification${index + 1}`] =
-                    schoolInfo.qualification;
-                });
+                const payload: { [x: string]: any } = {
+                  ...rest,
+                  ...schoolArrayToObject(previousSchoolInfo),
+                };
 
                 console.log(payload);
 
@@ -749,7 +1140,7 @@ const Form = ({
                       placeholder="e.g Accra Academy Senior High school"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -767,7 +1158,7 @@ const Form = ({
                       type="number"
                       min={1960}
                       max={9999}
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -782,7 +1173,7 @@ const Form = ({
                       placeholder="e.g. Winneba Rd P. O. Box GP 501, Accra, Ghana"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -812,7 +1203,7 @@ const Form = ({
                       //     value: "Degree",
                       //   },
                       // ]}
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 

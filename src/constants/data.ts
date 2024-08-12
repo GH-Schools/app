@@ -57,8 +57,8 @@ export const NATIONS: {
 }[] = [
   {
     name: "Ghana",
-    value: "ghanian",
-    nationality_type: "ghanian",
+    value: "ghanaian",
+    nationality_type: "ghanaian",
     telcode: "+233",
   },
   {

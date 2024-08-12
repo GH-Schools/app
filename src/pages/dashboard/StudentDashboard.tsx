@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 import { GenericObject } from "../../interfaces";
 
-import { SiGoogleforms } from "react-icons/si";
-import { BsFillCreditCardFill as CardIcon } from "react-icons/bs";
+// import { SiGoogleforms } from "react-icons/si";
+import {
+  BsCheck as CheckIcon,
+} from "react-icons/bs";
 
 import { getAllSchedules } from "../../redux/actions/schedule.action";
 
@@ -147,7 +149,12 @@ function StudentDashboard() {
                   dateSchedules?.INTERVIEW ?? "Friday, 23rd July, 2024"
                 }`
               : "Next interview date will be communicated",
-            icon: <CardIcon />,
+            icon:
+              admissionInfo?.interviewStatus === "DONE" ? (
+                <CheckIcon />
+              ) : (
+                <TextSpinner text={`${1}`} loading={scheduleInfo.isLoading} />
+              ),
           },
           {
             title: "Orientation Date",
@@ -156,7 +163,9 @@ function StudentDashboard() {
                   dateSchedules?.ORIENTATION ?? "Friday, 23rd July, 2024"
                 }`
               : "Orientation date will be communicated",
-            icon: <SiGoogleforms />,
+            icon: (
+              <TextSpinner text={`${2}`} loading={scheduleInfo.isLoading} />
+            ),
           },
           {
             title: "Lecture Resumption Date",
@@ -165,15 +174,15 @@ function StudentDashboard() {
                   dateSchedules?.LECTURE ?? "Friday, 23rd July, 2024"
                 }`
               : "Lecture date will be communicated",
-            icon: <CardIcon />,
+            icon:(
+              <TextSpinner text={`${3}`} loading={scheduleInfo.isLoading} />
+            ),
           },
         ].map(({ title, icon, message }, i) => (
           <MetricsCard
             key={i}
             title={title}
-            icon={
-              <TextSpinner text={`${i + 1}`} loading={scheduleInfo.isLoading} />
-            }
+            icon={icon}
             message={scheduleInfo.isLoading ? "Loading..." : message}
           />
         ))}

@@ -119,6 +119,7 @@ function Home() {
             GH Schools
           </h1>
           <p className="text-white">Your GH Schools journey starts here</p>
+          <p className="animate-pulse mt-2">Loading schools...</p>
         </div>
       </section>
     </main>

@@ -42,6 +42,21 @@ export const verifyPaymentByMobile = createAsyncThunk<
   }
 });
 
+export const getSinglePayment = createAsyncThunk<any, string>(
+  "payment/getSinglePayment",
+  async (payId) => {
+    try {
+      const response: { payload: any } = await axiosServices.get(
+        `/payment/${payId}`
+      );
+      return response?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
 export const getMyPayments = createAsyncThunk<any, GenericObject>(
   "payment/getMyPayments",
   async (queryParams: GenericObject) => {

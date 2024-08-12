@@ -4,14 +4,17 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineDownload } from "react-icons/ai";
 import React, { useEffect, useState } from "react";
 import {
   InputComponent,
   SelectComponent,
   // FileUploadComponent,
 } from "../../components/common/FormComponents";
+// import Modal from "../../components/modals/Modal";
 import Button from "../../components/common/Button";
 import TextSpinner from "../../components/TextSpinner";
+import TextIcon from "../../components/common/TextIcon";
 
 import { StoreState } from "../../redux/reducers";
 import { validations } from "../../utils/validations";
@@ -26,10 +29,16 @@ import { OptionProps } from "../../interfaces";
 
 import { notify } from "../../utils/toastNotification";
 import { mergeClassNames } from "../../utils/utilities";
+import {
+  schoolArrayToObject,
+  schoolObjectToArray,
+} from "../../utils/admissionForm";
+// import logo from "../../assets/favicon.png";
 
 function ViewApplicationForm() {
   const dispatch = useDispatch<any>();
   const [, setCompleted] = useState(false);
+  // const [openModal, setOpenModal] = useState(true);
 
   const admissionInfo = useSelector(
     (state: StoreState) => state?.Dashboard?.data?.[0]
@@ -44,7 +53,13 @@ function ViewApplicationForm() {
               <h3 className="font-bold text-xl sm:text-2xl ">Quick Summary</h3>
 
               <Button
-                text="Download Form"
+                text={
+                  <TextIcon
+                    text="Download Form"
+                    icon={<AiOutlineDownload fontSize={20} />}
+                    size="sm"
+                  />
+                }
                 onClick={() =>
                   dispatch(
                     downloadAdmissionForm({ formId: admissionInfo?.formId })
@@ -133,6 +148,19 @@ function ViewApplicationForm() {
       </section>
 
       <Form setCompleted={setCompleted} />
+
+      {/* <Modal open={openModal} toggleHandler={() => setOpenModal(!openModal)}>
+        <div>
+          <img
+            src={logo}
+            alt="log"
+            width={"100px"}
+            height={"100px"}
+            className="py-2"
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+      </Modal> */}
     </div>
   );
 }
@@ -235,12 +263,19 @@ const Form = ({
                 .required("Mobile Number is required"),
               sex: validations.blank().required("Sex is required"),
               dob: validations.blank().required("Date of birth is required"),
-              nationalIDType: validations
+              language: validations.blank().required("Language is required"),
+              nationality: validations
                 .blank()
-                .required("National ID type is required"),
-              nationalIDNumber: validations
+                .required("Nationality is required"),
+              regionOfResidence: validations
                 .blank()
-                .required("National ID number is required"),
+                .required("Region of residence is required"),
+              // nationalIDType: validations
+              //   .blank()
+              //   .required("National ID type is required"),
+              // nationalIDNumber: validations
+              //   .blank()
+              //   .required("National ID number is required"),
             })}
             onSubmit={async (values, helpers) => {
               try {
@@ -439,6 +474,7 @@ const Form = ({
                     placeholder="E.g. English, Twi, Ga"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
                 </div>
@@ -468,6 +504,7 @@ const Form = ({
                     value={values?.nationality}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     options={[
                       { name: "- Choose a country -", value: "" },
                     ].concat(
@@ -492,6 +529,7 @@ const Form = ({
                     placeholder="e.g, Kasoa, Gomoa, Effiduase, Kaneshie"
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     disabled={disabledForms[Steps.PERSONAL]}
                   />
 
@@ -505,6 +543,7 @@ const Form = ({
                     value={values?.regionOfResidence}
                     sx={{ marginBottom: "10px" }}
                     width="100%"
+                    required={true}
                     options={[
                       { name: "- Choose a region -", value: "" },
                     ].concat(
@@ -587,7 +626,7 @@ const Form = ({
                   {!disabledForms[Steps.PERSONAL] && (
                     <>
                       <Button
-                        text="Reset Form"
+                        text="Cancel"
                         style={{
                           backgroundColor: "transparent",
                           border: "1px solid lightgray",
@@ -596,7 +635,7 @@ const Form = ({
                           fontSize: "14px",
                           fontWeight: 600,
                         }}
-                        onClick={() => resetForm()}
+                        onClick={() => setActiveForm(null)}
                       />
 
                       <Button
@@ -737,7 +776,7 @@ const Form = ({
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                <div className="flex flex-row md:flex-col gap-6 md:gap-0 items-start justify-between w-full">
                   <SelectComponent
                     label="Do you have any medical condition?"
                     name="hasMedicalCondition"
@@ -774,7 +813,7 @@ const Form = ({
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                <div className="flex flex-row md:flex-col gap-6 md:gap-0 items-start justify-between w-full">
                   <SelectComponent
                     label="Do you have any disability?"
                     name="hasDisability"
@@ -911,7 +950,7 @@ const Form = ({
                   {!disabledForms[Steps.HOSPITALITY] && (
                     <>
                       <Button
-                        text="Go Back"
+                        text="Cancel"
                         style={{
                           backgroundColor: "transparent",
                           border: "1px solid lightgray",
@@ -920,13 +959,7 @@ const Form = ({
                           fontSize: "14px",
                           fontWeight: 600,
                         }}
-                        onClick={() => {
-                          navigate("/dashboard/apply/form#education");
-                          document
-                            .getElementById("education")
-                            ?.scrollIntoView({ behavior: "smooth" });
-                          setActiveForm(Steps.EDUCATION);
-                        }}
+                        onClick={() => setActiveForm(null)}
                       />
 
                       <Button
@@ -956,21 +989,14 @@ const Form = ({
               preferredSchool:
                 admissionInfo?.preferredSchool ?? "gh media school",
               preferredCourse: admissionInfo?.preferredCourse ?? "",
-              courseSession: admissionInfo?.courseSession ?? "",
+              courseSession: admissionInfo?.session ?? "",
               priorExperience: admissionInfo?.priorExperience ?? "",
               priorExperienceSpecialization:
                 admissionInfo?.priorExperienceSpecialization ?? "",
               source: admissionInfo?.source ?? "",
               reference: admissionInfo?.paymentReference ?? "",
               // mobile2: "",
-              previousSchoolInfo: [
-                {
-                  name: "",
-                  yearAttended: "",
-                  locationOfSchool: "",
-                  qualification: "",
-                },
-              ],
+              previousSchoolInfo: schoolObjectToArray(admissionInfo),
             }}
             validationSchema={Yup.object({
               preferredSchool: validations
@@ -990,16 +1016,10 @@ const Form = ({
               try {
                 helpers.setSubmitting(true);
                 const { previousSchoolInfo, priorExperience, ...rest } = values;
-                const payload: { [x: string]: any } = { ...rest };
-
-                previousSchoolInfo.forEach((schoolInfo, index) => {
-                  payload[`nameOfSchoolAttended${index + 1}`] = schoolInfo.name;
-                  payload[`locationOfSchoolAttended${index + 1}`] =
-                    schoolInfo.locationOfSchool;
-                  payload[`yearAttended${index + 1}`] = schoolInfo.yearAttended;
-                  payload[`qualification${index + 1}`] =
-                    schoolInfo.qualification;
-                });
+                const payload: { [x: string]: any } = {
+                  ...rest,
+                  ...schoolArrayToObject(previousSchoolInfo),
+                };
 
                 console.log(payload);
 
@@ -1094,7 +1114,7 @@ const Form = ({
                       placeholder="e.g Accra Academy Senior High school"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -1112,7 +1132,7 @@ const Form = ({
                       type="number"
                       min={1960}
                       max={9999}
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -1127,7 +1147,7 @@ const Form = ({
                       placeholder="e.g. Winneba Rd P. O. Box GP 501, Accra, Ghana"
                       sx={{ marginBottom: "10px" }}
                       width="100%"
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -1157,7 +1177,7 @@ const Form = ({
                       //     value: "Degree",
                       //   },
                       // ]}
-                      required={index === 0}
+                      required={index === -1}
                       disabled={disabledForms[Steps.EDUCATION]}
                     />
 
@@ -1301,7 +1321,7 @@ const Form = ({
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                <div className="flex flex-row md:flex-col gap-6 md:gap-0 items-start justify-between w-full">
                   <SelectComponent
                     label="Are you already into your field of application?"
                     name="priorExperience"
@@ -1382,7 +1402,7 @@ const Form = ({
                   {!disabledForms[Steps.EDUCATION] && (
                     <>
                       <Button
-                        text="Go Back"
+                        text="Cancel"
                         style={{
                           backgroundColor: "transparent",
                           border: "1px solid lightgray",
@@ -1391,13 +1411,7 @@ const Form = ({
                           fontSize: "14px",
                           fontWeight: 600,
                         }}
-                        onClick={() => {
-                          navigate("/dashboard/apply/form#personal");
-                          document
-                            .getElementById("personal")
-                            ?.scrollIntoView({ behavior: "smooth" });
-                          setActiveForm(Steps.PERSONAL);
-                        }}
+                        onClick={() => setActiveForm(null)}
                       />
 
                       <Button

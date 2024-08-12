@@ -14,7 +14,7 @@ type HeaderProps = {
   toggleHandler: (state: boolean) => any;
 };
 
-function Header({ toggleHandler }: HeaderProps) {
+function DashboardHeader({ toggleHandler }: HeaderProps) {
   const dispatch = useDispatch<any>();
   const authenticatedUser = useSelector(
     (state: StoreState) => state?.Auth?.userProfile
@@ -23,7 +23,7 @@ function Header({ toggleHandler }: HeaderProps) {
     (state: StoreState) => state.App?.sessionInfo
   );
 
-  console.log(academicSession);
+  console.log({ sessionId: academicSession?.data?.sessionId });
   console.log(authenticatedUser?.firstName);
 
   useEffect(() => {
@@ -60,4 +60,4 @@ function Header({ toggleHandler }: HeaderProps) {
   );
 }
 
-export default Header;
+export default DashboardHeader;

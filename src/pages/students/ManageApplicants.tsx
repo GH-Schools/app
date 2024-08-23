@@ -109,6 +109,7 @@ function ManageApplicants() {
         return (
           <ActionMenu
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
+            activatorClassName="hover:bg-slate-200"
             menu={
               <div className="flex flex-col" style={{}}>
                 <button className="text-left px-3 py-2 border-b hover:bg-slate-200">

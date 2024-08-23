@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap");
 
 * {
   font-family: "Inter", "Lato", TT Norms Web, "Segoe UI", "Roboto", "Oxygen",
     "Helvetica Neue", sans-serif;
   font-style: normal;
+}
+
+.fade-up {
+  animation: fade-up 700ms ease-out 0ms 1 both normal;
 }
 
 html {
@@ -111,6 +115,18 @@ footer big {
   font-size: 1.6rem;
   font-weight: 500;
   margin-bottom: 1rem;
+}
+
+@keyframes fade-up {
+  from {
+    clip-path: ellipse(5px 0% at 50% 100%);
+    opacity: 0;
+  }
+
+  to {
+    clip-path: ellipse(250px 120% at 50% 100%);
+    opacity: 1;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

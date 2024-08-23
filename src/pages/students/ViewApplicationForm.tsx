@@ -1,11 +1,14 @@
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { AiOutlineEdit } from "react-icons/ai";
-import { AiOutlineDownload } from "react-icons/ai";
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  AiOutlineEdit,
+  AiOutlineDownload,
+  AiOutlineCheck,
+  AiOutlineComment,
+} from "react-icons/ai";
 import {
   InputComponent,
   SelectComponent,
@@ -33,6 +36,11 @@ import {
   schoolArrayToObject,
   schoolObjectToArray,
 } from "../../utils/admissionForm";
+import StatusChip from "../../components/common/StatusChip";
+import ActionMenu, {
+  PLACEMENT,
+  EVENT_TYPES,
+} from "../../components/common/ActionMenu";
 // import logo from "../../assets/favicon.png";
 
 function ViewApplicationForm() {
@@ -45,7 +53,11 @@ function ViewApplicationForm() {
   );
 
   return (
-    <div className="flex flex-col gap-7 my-5 mx-5" style={{ color: "#111" }}>
+    <div
+      className="relative flex flex-col gap-7 my-5 mx-5"
+      style={{ color: "#111" }}
+    >
+      {/* QUICK SUMMARY */}
       <section className="flex flex-row gap-5" key={admissionInfo?.formId}>
         <div className="flex flex-col flex-grow shadow-sm px-4 py-4 rounded-xl gap-2 bg-white w-1/3 ">
           <div className="rounded-lg border py-4 px-5">
@@ -77,21 +89,21 @@ function ViewApplicationForm() {
 
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
-                label="First Name"
+                label="First Name:"
                 value={admissionInfo?.firstName ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Middle Name"
+                label="Middle Name:"
                 value={admissionInfo?.middleName ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Last Name"
+                label="Last Name:"
                 value={admissionInfo?.lastName ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
@@ -100,21 +112,21 @@ function ViewApplicationForm() {
 
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
-                label="Email Address"
+                label="Email Address:"
                 value={admissionInfo?.email ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Mobile"
+                label="Mobile:"
                 value={admissionInfo?.mobile1 ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Payment Reference"
+                label="Payment Reference:"
                 value={admissionInfo?.paymentReference ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
@@ -123,25 +135,70 @@ function ViewApplicationForm() {
 
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
-                label="Preferred School"
+                label="Preferred School:"
                 value={admissionInfo?.preferredSchool ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Preferred Course"
+                label="Preferred Course:"
                 value={admissionInfo?.preferredCourse ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
-                label="Preferred Course Session/Duration"
+                label="Preferred Course Session/Duration:"
                 value={admissionInfo?.session ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
+              <FieldComponent
+                label="Follow-Up Status:"
+                value={
+                  <StatusChip
+                    type={
+                      admissionInfo?.applicantHasBeenCalled
+                        ? "success"
+                        : "neutral"
+                    }
+                    value={
+                      admissionInfo?.applicantHasBeenCalled
+                        ? "Called"
+                        : "Not Called"
+                    }
+                    roundness="4px"
+                    sx={{ textTransform: "uppercase" }}
+                  />
+                }
+                sx={{ alignItems: "flex-start", marginBottom: "10px" }}
+                width="100%"
+              />
+
+              <FieldComponent
+                label="Interview Status:"
+                value={
+                  <StatusChip
+                    type="pending"
+                    value={admissionInfo?.interviewStatus ?? "--"}
+                    roundness="4px"
+                    sx={{ textTransform: "uppercase" }}
+                  />
+                }
+                sx={{ alignItems: "flex-start", marginBottom: "10px" }}
+                width="100%"
+              />
+
+              {/* <FieldComponent
+                label="Preferred Course Session/Duration:"
+                value={admissionInfo?.session ?? "--"}
+                sx={{ marginBottom: "10px" }}
+                width="100%"
+              /> */}
             </div>
           </div>
         </div>
@@ -161,6 +218,7 @@ function ViewApplicationForm() {
           />
         </div>
       </Modal> */}
+      <FloatMenu />
     </div>
   );
 }
@@ -1471,11 +1529,11 @@ const SectionIndicator = ({
 const FieldComponent: React.FC<{
   width: string;
   label: string;
-  value: string;
+  value: React.ReactNode;
   sx: any;
 }> = ({ width, label, sx = {}, value = "", ...rest }) => {
   return (
-    <div style={{ width, ...sx }}>
+    <div className="flex flex-col" style={{ width, ...sx }}>
       <span
         style={{
           width: "auto",
@@ -1493,7 +1551,7 @@ const FieldComponent: React.FC<{
           fontSize: "14px",
           fontWeight: 700,
           padding: "10px 0px",
-          width: "100%",
+          // width: "100%",
           borderRadius: "3px",
           // textTransform: "capitalize",
           // backgroundColor: "#F6FAFC",
@@ -1502,6 +1560,81 @@ const FieldComponent: React.FC<{
       >
         {value}
       </div>
+    </div>
+  );
+};
+
+const FloatMenu: React.FC<{}> = () => {
+  return (
+    <div
+      className="fixed"
+      style={{
+        top: "calc(100vh - 80px - 50px)",
+        left: "calc(100vw - 80px - 50px)",
+      }}
+    >
+      <ActionMenu
+        eventType={EVENT_TYPES.CLICK}
+        placement={PLACEMENT.TOP}
+        activatorClassName={
+          "flex flex-col items-center justify-center p-4 rounded-full bg-black w-[80px] h-[80px] shadow-xl text-white text-2xl"
+        }
+        activator={"A"}
+        menu={
+          <div className="flex flex-col gap-4 p-4 rounded-md bg-black min-h-72 w-auto">
+            <button
+              // onClick={activateFormHandler}
+              className={mergeClassNames(
+                "flex items-center justify-center gap-2 text-md font-bold text-white"
+              )}
+            >
+              <AiOutlineCheck fontSize={24} />
+            </button>
+
+            <button
+              // onClick={activateFormHandler}
+              className={mergeClassNames(
+                "flex items-center justify-center gap-2 text-md font-bold text-white"
+              )}
+              title="Add Comment"
+            >
+              <AiOutlineComment fontSize={24} />
+            </button>
+
+            <button
+              // onClick={activateFormHandler}
+              className={mergeClassNames(
+                "flex items-center justify-center gap-2 text-md font-bold text-white"
+              )}
+            >
+              <AiOutlineEdit fontSize={24} />
+              {/* <span>Edit</span> */}
+            </button>
+
+            <button
+              // onClick={activateFormHandler}
+              className={mergeClassNames(
+                "flex items-center justify-center gap-2 text-md font-bold text-white"
+              )}
+            >
+              <AiOutlineEdit fontSize={24} />
+              {/* <span>Edit</span> */}
+            </button>
+
+            <button
+              // onClick={activateFormHandler}
+              className={mergeClassNames(
+                "flex items-center justify-center gap-2 text-md font-bold text-white"
+              )}
+            >
+              <AiOutlineEdit fontSize={24} />
+              {/* <span>Edit</span> */}
+            </button>
+          </div>
+        }
+        menuClassName="fade-up"
+        eventHandler={() => {}}
+      />
     </div>
   );
 };

@@ -94,3 +94,15 @@ export const sanitizePayload = (payload: { [x: string]: any }) => {
   });
   return sanitizedPayload;
 };
+
+// Function to get the value at a given path
+export function getValueAtPath(obj: Object, path: string) {
+  const pathArray = path.split(/[.[\]]/).filter(Boolean);
+  return pathArray.reduce((acc: any, key) => {
+    if (acc && acc[key] !== undefined) {
+      return acc[key];
+    }
+    return undefined;
+  }, obj);
+}
+

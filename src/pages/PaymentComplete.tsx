@@ -29,7 +29,7 @@ function PaymentComplete() {
         <div className="flex flex-row">
           <div className="flex flex-col px-8 py-8">
             <div
-              className="flex flex-col"
+              className="flex flex-col max-w-2xl"
               style={{
                 justifyContent: "center",
                 alignItems: "center",
@@ -41,15 +41,18 @@ function PaymentComplete() {
               <h3
                 style={{
                   fontWeight: 700,
-                  fontSize: "20px",
-                  color: "#393A4A",
-                  margin: "8px 0",
+                  fontSize: "22px",
+                  color: "#111",
+                  margin: "8px 0 16px",
                 }}
               >
                 Payment Completed Successfully
               </h3>
 
-              <p>
+              <p
+                className="text-sm text-center font-normal leading-2"
+                style={{ color: "#393A4A" }}
+              >
                 Congratulations, you've succesfully completed the payment for
                 the admission form. You will receive an SMS and/or an email with
                 your username and password to login to your student portal where
@@ -58,18 +61,15 @@ function PaymentComplete() {
               <p>
                 <ol>{/* <li>hhhh</li> */}</ol>
               </p>
-              <p
-                className="pt-4 pb-6"
-                style={{ color: "#393A4A", fontSize: "14px" }}
-              >
-                {`Redirecting to login in ${time} seconds`}{" "}
+              <p className="pt-5 pb-6" style={{ fontSize: "12px" }}>
+                {`Redirecting to login in ${time} s`}{" "}
               </p>
 
               <button
                 className="font-bold rounded-md uppercase bg-orange-600 text-white p-4"
                 onClick={() => navigate("/portal")}
               >
-                Go to login
+                Proceed to login
               </button>
             </div>
           </div>

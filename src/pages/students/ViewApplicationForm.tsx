@@ -3,7 +3,12 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { AiOutlineEdit, AiOutlineDownload, AiOutlineComment } from "react-icons/ai";
+import {
+  AiOutlineEdit,
+  AiOutlineDownload,
+  AiOutlineCheck,
+  AiOutlineComment,
+} from "react-icons/ai";
 import {
   InputComponent,
   SelectComponent,
@@ -1583,8 +1588,7 @@ const FloatMenu: React.FC<{}> = () => {
                 "flex items-center justify-center gap-2 text-md font-bold text-white"
               )}
             >
-              <AiOutlineEdit fontSize={24} />
-              
+              <AiOutlineCheck fontSize={24} />
             </button>
 
             <button
@@ -1592,9 +1596,9 @@ const FloatMenu: React.FC<{}> = () => {
               className={mergeClassNames(
                 "flex items-center justify-center gap-2 text-md font-bold text-white"
               )}
+              title="Add Comment"
             >
               <AiOutlineComment fontSize={24} />
-              
             </button>
 
             <button

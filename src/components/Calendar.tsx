@@ -22,6 +22,7 @@ export type CalendarProps = {
   setPrev?: () => void;
   setNext?: () => void;
   events?: CalendarEvent[];
+  eventClickHandler?: (data?: GenericObject | GenericObject[]) => () => void;
 };
 
 const Calendar = ({
@@ -31,6 +32,9 @@ const Calendar = ({
   events = [],
   setPrev = () => {},
   setNext = () => {},
+  eventClickHandler = () => () => {
+    alert("hey");
+  },
 }: CalendarProps) => {
   const chosenDate = new Date(year, month, day);
   // console.log(year, month, day, chosenDate?.toString()?.split(" ")[1]);
@@ -120,6 +124,7 @@ const Calendar = ({
                       dateStyle(d, chosenDate)
                     )}
                     disabled={d === null}
+                    onClick={eventClickHandler(eventsForD)}
                   >
                     <span>{d}</span>
                     {eventsForD && eventsForD.length > 0 && (

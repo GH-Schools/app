@@ -3,12 +3,8 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  AiOutlineEdit,
-  AiOutlineDownload,
-  AiOutlineCheck,
-  AiOutlineComment,
-} from "react-icons/ai";
+import { AiFillEdit, AiOutlineEdit, AiOutlineDownload } from "react-icons/ai";
+import { RiChat2Fill, RiCheckDoubleLine, RiAttachmentLine } from "react-icons/ri";
 import {
   InputComponent,
   SelectComponent,
@@ -183,7 +179,18 @@ function ViewApplicationForm() {
                 label="Interview Status:"
                 value={
                   <StatusChip
-                    type="pending"
+                    type={((status) => {
+                      switch (status) {
+                        case "PENDING":
+                          return "pending";
+
+                        case "DONE":
+                          return "success";
+
+                        default:
+                          return "neutral";
+                      }
+                    })(admissionInfo?.interviewStatus)}
                     value={admissionInfo?.interviewStatus ?? "--"}
                     roundness="4px"
                     sx={{ textTransform: "uppercase" }}
@@ -193,18 +200,20 @@ function ViewApplicationForm() {
                 width="100%"
               />
 
-              {/* <FieldComponent
-                label="Preferred Course Session/Duration:"
-                value={admissionInfo?.session ?? "--"}
+              <FieldComponent
+                label=""
+                value={""}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
-              /> */}
+              />
             </div>
           </div>
         </div>
       </section>
 
       <Form setCompleted={setCompleted} />
+
+      <FloatMenu />
 
       {/* <Modal open={openModal} toggleHandler={() => setOpenModal(!openModal)}>
         <div>
@@ -218,7 +227,6 @@ function ViewApplicationForm() {
           />
         </div>
       </Modal> */}
-      <FloatMenu />
     </div>
   );
 }
@@ -1565,71 +1573,67 @@ const FieldComponent: React.FC<{
 };
 
 const FloatMenu: React.FC<{}> = () => {
+  const defaultButtonClass = `flex items-center justify-center p-2 rounded-full gap-2 text-md font-bold text-white transition duration-300 transition-ease-in hover:bg-[#ffffff58]`;
+
   return (
     <div
       className="fixed"
       style={{
-        top: "calc(100vh - 80px - 50px)",
-        left: "calc(100vw - 80px - 50px)",
+        top: "calc(100vh - 80px - 4.125rem)",
+        left: "calc(100vw - 80px - 4.125rem)",
       }}
     >
       <ActionMenu
         eventType={EVENT_TYPES.CLICK}
         placement={PLACEMENT.TOP}
-        activatorClassName={
-          "flex flex-col items-center justify-center p-4 rounded-full bg-black w-[80px] h-[80px] shadow-xl text-white text-2xl"
-        }
         activator={"A"}
+        activatorClassName={
+          "flex flex-col items-center justify-center p-4 rounded-full bg-black w-[80px] h-[80px] shadow-xl text-white text-2xl transition duration-200 transition-ease-in hover:bg-[#2F2F2F]"
+        }
         menu={
-          <div className="flex flex-col gap-4 p-4 rounded-md bg-black min-h-72 w-auto">
+          <div className="flex flex-col items-center gap-3 p-4 rounded-md bg-black min-h-72 w-auto">
             <button
               // onClick={activateFormHandler}
-              className={mergeClassNames(
-                "flex items-center justify-center gap-2 text-md font-bold text-white"
-              )}
-            >
-              <AiOutlineCheck fontSize={24} />
-            </button>
-
-            <button
-              // onClick={activateFormHandler}
-              className={mergeClassNames(
-                "flex items-center justify-center gap-2 text-md font-bold text-white"
-              )}
+              className={mergeClassNames(defaultButtonClass)}
               title="Add Comment"
+              disabled={false}
             >
-              <AiOutlineComment fontSize={24} />
+              <RiChat2Fill fontSize={24} />
             </button>
 
             <button
               // onClick={activateFormHandler}
-              className={mergeClassNames(
-                "flex items-center justify-center gap-2 text-md font-bold text-white"
-              )}
+              className={mergeClassNames(defaultButtonClass)}
+              title="Edit Form"
+              disabled={false}
             >
-              <AiOutlineEdit fontSize={24} />
-              {/* <span>Edit</span> */}
+              <AiFillEdit fontSize={24} />
             </button>
 
             <button
               // onClick={activateFormHandler}
-              className={mergeClassNames(
-                "flex items-center justify-center gap-2 text-md font-bold text-white"
-              )}
+              className={mergeClassNames(defaultButtonClass)}
+              title="Add Comment"
+              disabled={false}
             >
-              <AiOutlineEdit fontSize={24} />
-              {/* <span>Edit</span> */}
+              <RiCheckDoubleLine fontSize={24} />
             </button>
 
             <button
               // onClick={activateFormHandler}
-              className={mergeClassNames(
-                "flex items-center justify-center gap-2 text-md font-bold text-white"
-              )}
+              className={mergeClassNames(defaultButtonClass)}
+            >
+              <RiAttachmentLine fontSize={24} />
+            </button>
+
+            {/* <button
+              // onClick={activateFormHandler}
+              className={mergeClassNames(defaultButtonClass)}
             >
               <AiOutlineEdit fontSize={24} />
-              {/* <span>Edit</span> */}
-            </button>
+            </button> */}
+
+            <div className="w-4/5 border mt-4 opacity-1/2"></div>
           </div>
         }
         menuClassName="fade-up"

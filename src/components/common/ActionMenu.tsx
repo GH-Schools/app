@@ -45,7 +45,7 @@ function ActionMenu({
 
   const activatorProps = {
     className: mergeClassNames(
-      "flex justify-center items-center hover:bg-slate-200 w-[40px] h-[40px] rounded-full",
+      "flex justify-center items-center w-[40px] h-[40px] rounded-full",
       activatorClassName
     ),
     [eventType]: eventHandler,

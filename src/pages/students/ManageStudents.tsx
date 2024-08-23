@@ -69,6 +69,7 @@ function ManageStudents() {
         return (
           <ActionMenu
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
+            activatorClassName="hover:bg-slate-200"
             menu={<div className="border p-5" style={{}}></div>}
           />
         );

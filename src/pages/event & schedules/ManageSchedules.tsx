@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { CellProps } from "react-table";
 import { AiOutlineMore as MoreIcon } from "react-icons/ai";
 import { IoReload as SwapIcon } from "react-icons/io5";
 import { StoreState } from "../../redux/reducers";
@@ -11,13 +12,19 @@ import ActionMenu from "../../components/common/ActionMenu";
 import Calendar, { type CalendarEvent } from "../../components/Calendar";
 
 import { getAllSchedules } from "../../redux/actions/schedule.action";
-import { CellProps } from "react-table";
+import Modal from "../../components/modals/Modal";
+import { EventView } from "./modal-contents/Index";
+import { GenericObject } from "../../interfaces";
 
 function ManageSchedules() {
   const dispatch = useDispatch<any>();
   // const navigate = useNavigate();
   const [today, setToday] = useState(new Date());
+  const [openModal, setOpenModal] = useState(false);
   const [calendarView, setCalendarView] = useState(true);
+  const [selectedEvent, setSelectedEvent] = useState<GenericObject | null>(
+    null
+  );
 
   const schedules = useSelector((state: StoreState) => state.Schedule);
   const academicSession = useSelector(
@@ -51,7 +58,7 @@ function ManageSchedules() {
       Header: "Actions",
       accessor: "0",
       Cell: ({ row }: CellProps<any>) => {
-        // const { original } = row;
+        const { original } = row;
         return (
           <ActionMenu
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
@@ -59,7 +66,10 @@ function ManageSchedules() {
               <div className="flex flex-col" style={{}}>
                 <Button
                   className="text-left px-3 py-2 border-b hover:bg-slate-200 capitalize"
-                  href="/admin/dashboard/schedules/create"
+                  onClick={() => {
+                    setOpenModal(true);
+                    setSelectedEvent(original!);
+                  }}
                   text="Edit"
                 />
 
@@ -157,6 +167,10 @@ function ManageSchedules() {
                 year={today.getFullYear()}
                 setPrev={setPrev}
                 setNext={setNext}
+                eventClickHandler={(data) => () => {
+                  setOpenModal(true);
+                  setSelectedEvent((Array.isArray(data) ? data[0] : data)!);
+                }}
                 events={
                   data.map((schedule) => {
                     return {
@@ -247,6 +261,10 @@ function ManageSchedules() {
           </div>
         </section>
       )}
+
+      <Modal open={openModal} toggleHandler={() => setOpenModal(!openModal)}>
+        {selectedEvent && <EventView data={selectedEvent} />}
+      </Modal>
     </div>
   );
 }

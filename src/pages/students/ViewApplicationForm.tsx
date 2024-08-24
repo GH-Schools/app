@@ -213,7 +213,10 @@ function ViewApplicationForm() {
                 value={
                   <span
                     className="cursor-pointer text-blue-500"
-                    onClick={() => setOpenModal(!openModal)}
+                    onClick={() => {
+                      setModalContent(<AttachmentView data={{}} />);
+                      setOpenModal(!openModal)
+                    }}
                   >
                     2 attachments
                   </span>

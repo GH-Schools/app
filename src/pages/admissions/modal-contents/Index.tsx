@@ -1,8 +1,11 @@
-import Button from "../../../components/common/Button";
 import Notice, {
   theme as NoticeTheme,
 } from "../../../components/common/Notice";
+import Button from "../../../components/common/Button";
+import DocumentCard from "../../../components/cards/DocumentCard";
+
 import logo from "../../../assets/favicon.png";
+import { GenericObject } from "../../../interfaces";
 
 export const RulesAndRegulations = ({
   closeHandler,
@@ -360,6 +363,46 @@ export const RulesAndRegulations = ({
           }}
         />
       </div>
+    </div>
+  );
+};
+
+export const AttachmentView = ({ data }: { data: GenericObject }) => {
+  console.log(data);
+  // const [showEndDate, setShowEndDate] = useState(false);
+  return (
+    <div className="flex flex-col w-full gap-2.5 pb-3 w-[45vw] min-w-[360px] px-3">
+      <div className="flex flex-row justify-between items-center w-full">
+        <h2 className="text-2xl font-medium w-full">Attachments</h2>
+        <Button
+          text={"+ Add File"}
+          // href={`/admin/dashboard/schedules/create`}
+          className="text-center font-bold bg-green-600"
+          style={{
+            whiteSpace: "nowrap",
+            color: "#21B591",
+            fontSize: "12px",
+            fontWeight: 700,
+            padding: "10px",
+            borderRadius: "5px",
+            textTransform: "capitalize",
+          }}
+        />
+      </div>
+
+      <div className="border"></div>
+
+      <div className="flex flex-row justify-between items-center gap-2 max-w-full overflow-auto py-2">
+        <DocumentCard name="file" />
+        <DocumentCard name="file" />
+      </div>
+
+      <div className="border"></div>
+
+      <textarea
+        className="text-sm w-full"
+        placeholder="Add description"
+      ></textarea>
     </div>
   );
 };

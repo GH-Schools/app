@@ -12,7 +12,7 @@ import ActionMenu from "../../components/common/ActionMenu";
 import Calendar, { type CalendarEvent } from "../../components/Calendar";
 
 import { getAllSchedules } from "../../redux/actions/schedule.action";
-import Modal from "../../components/modals/Modal";
+import Modal, { DIRECTION } from "../../components/modals/Modal";
 import { EventView } from "./modal-contents/Index";
 import { GenericObject } from "../../interfaces";
 
@@ -262,7 +262,11 @@ function ManageSchedules() {
         </section>
       )}
 
-      <Modal open={openModal} toggleHandler={() => setOpenModal(!openModal)}>
+      <Modal
+        open={openModal}
+        toggleHandler={() => setOpenModal(!openModal)}
+        direction={DIRECTION.UP}
+      >
         {selectedEvent && <EventView data={selectedEvent} />}
       </Modal>
     </div>

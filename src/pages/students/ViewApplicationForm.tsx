@@ -4,13 +4,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiFillEdit, AiOutlineEdit, AiOutlineDownload } from "react-icons/ai";
-import { RiChat2Fill, RiCheckDoubleLine, RiAttachmentLine } from "react-icons/ri";
+import {
+  RiChat2Fill,
+  RiCheckDoubleLine,
+  RiAttachmentLine,
+} from "react-icons/ri";
 import {
   InputComponent,
   SelectComponent,
   // FileUploadComponent,
 } from "../../components/common/FormComponents";
-// import Modal from "../../components/modals/Modal";
+import Modal, { DIRECTION } from "../../components/modals/Modal";
 import Button from "../../components/common/Button";
 import TextSpinner from "../../components/TextSpinner";
 import TextIcon from "../../components/common/TextIcon";
@@ -24,7 +28,7 @@ import {
 } from "../../redux/actions/dashboard.action";
 
 import { NATIONS, REGIONS, schoolCourses } from "../../constants/data";
-import { OptionProps } from "../../interfaces";
+import { GenericObject, OptionProps } from "../../interfaces";
 
 import { notify } from "../../utils/toastNotification";
 import { mergeClassNames } from "../../utils/utilities";
@@ -37,12 +41,16 @@ import ActionMenu, {
   PLACEMENT,
   EVENT_TYPES,
 } from "../../components/common/ActionMenu";
+import { AttachmentView } from "../admissions/modal-contents/Index";
 // import logo from "../../assets/favicon.png";
 
 function ViewApplicationForm() {
   const dispatch = useDispatch<any>();
   const [, setCompleted] = useState(false);
-  // const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalContent, setModalContent] = useState<
+    JSX.Element | React.ReactNode | null
+  >(null);
 
   const admissionInfo = useSelector(
     (state: StoreState) => state?.Dashboard?.data?.[0]
@@ -201,8 +209,15 @@ function ViewApplicationForm() {
               />
 
               <FieldComponent
-                label=""
-                value={""}
+                label="File Attachments"
+                value={
+                  <span
+                    className="cursor-pointer text-blue-500"
+                    onClick={() => setOpenModal(!openModal)}
+                  >
+                    2 attachments
+                  </span>
+                }
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
@@ -213,20 +228,22 @@ function ViewApplicationForm() {
 
       <Form setCompleted={setCompleted} />
 
-      <FloatMenu />
+      <FloatMenu
+        actions={{
+          attach: () => {
+            setModalContent(<AttachmentView data={{}} />);
+            setOpenModal(!openModal);
+          },
+        }}
+      />
 
-      {/* <Modal open={openModal} toggleHandler={() => setOpenModal(!openModal)}>
-        <div>
-          <img
-            src={logo}
-            alt="log"
-            width={"100px"}
-            height={"100px"}
-            className="py-2"
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-      </Modal> */}
+      <Modal
+        open={openModal}
+        direction={DIRECTION.CENTER}
+        toggleHandler={() => setOpenModal(!openModal)}
+      >
+        {modalContent}
+      </Modal>
     </div>
   );
 }
@@ -1572,7 +1589,7 @@ const FieldComponent: React.FC<{
   );
 };
 
-const FloatMenu: React.FC<{}> = () => {
+const FloatMenu: React.FC<{ actions: GenericObject }> = ({ actions }) => {
   const defaultButtonClass = `flex items-center justify-center p-2 rounded-full gap-2 text-md font-bold text-white transition duration-300 transition-ease-in hover:bg-[#ffffff58]`;
 
   return (
@@ -1620,7 +1637,7 @@ const FloatMenu: React.FC<{}> = () => {
             </button>
 
             <button
-              // onClick={activateFormHandler}
+              onClick={actions.attach}
               className={mergeClassNames(defaultButtonClass)}
             >
               <RiAttachmentLine fontSize={24} />

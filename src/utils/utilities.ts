@@ -106,3 +106,6 @@ export function getValueAtPath(obj: Object, path: string) {
   }, obj);
 }
 
+export const isPromise = (object: any | Promise<any>) => {
+  return object instanceof Promise;
+};

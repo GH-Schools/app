@@ -9,7 +9,7 @@ export const EventView = ({ data }: { data: GenericObject }) => {
   console.log(data);
   const [showEndDate, setShowEndDate] = useState(false);
   return (
-    <div className="flex flex-col w-full gap-2.5 pb-3 w-[40vw] px-3">
+    <div className="flex flex-col w-full gap-2.5 pb-3 w-[40vw] min-w-[360px] px-3">
       <div className="flex flex-row justify-between items-center w-full">
         <input
           type="text"

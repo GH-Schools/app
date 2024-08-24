@@ -10,7 +10,7 @@ import {
   SelectComponent,
   // FileUploadComponent,
 } from "../../components/common/FormComponents";
-import Modal from "../../components/modals/Modal";
+import Modal, { DIRECTION } from "../../components/modals/Modal";
 import Button from "../../components/common/Button";
 import Lottie from "../../components/common/Lottie";
 import TextSpinner from "../../components/TextSpinner";
@@ -43,7 +43,7 @@ import { RulesAndRegulations } from "./modal-contents/Index";
 
 function Application() {
   const [completed, setCompleted] = useState(false);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch<any>();
 
   const admissionInfoIsLoading = useSelector(
@@ -55,6 +55,12 @@ function Application() {
   );
 
   const paymentInfo = useSelector((state: StoreState) => state?.Payment);
+
+  useEffect(() => {
+    if (!admissionInfo && !admissionInfoIsLoading) {
+      setOpenModal(true);
+    }
+  }, [admissionInfo, admissionInfoIsLoading]);
 
   return (
     <>
@@ -118,11 +124,9 @@ function Application() {
         {!completed ? <Form setCompleted={setCompleted} /> : <Success />}
       </div>
 
-      {!admissionInfo && !admissionInfoIsLoading && (
-        <Modal open={openModal}>
-          <RulesAndRegulations closeHandler={() => setOpenModal(!openModal)}/>
-        </Modal>
-      )}
+      <Modal open={openModal} direction={DIRECTION.CENTER}>
+        <RulesAndRegulations closeHandler={() => setOpenModal(!openModal)} />
+      </Modal>
     </>
   );
 }

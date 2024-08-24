@@ -43,6 +43,7 @@ function PaymentComplete() {
                   fontWeight: 700,
                   fontSize: "22px",
                   color: "#111",
+                  textAlign: "center",
                   margin: "8px 0 16px",
                 }}
               >

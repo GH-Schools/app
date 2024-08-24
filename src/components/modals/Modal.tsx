@@ -2,18 +2,58 @@ import { MdClose } from "react-icons/md";
 
 import { mergeClassNames } from "../../utils/utilities";
 
+export enum DIRECTION {
+  UP,
+  DOWN,
+  LEFTWARDS,
+  RIGHTWARDS,
+  CENTER,
+}
+
 type ModalProps = {
   open: boolean;
-  toggleHandler?: (ev: any) => void;
   children: React.ReactNode;
+  direction?: DIRECTION;
+  toggleHandler?: (ev: any) => void;
 };
 
-function Modal({ open, toggleHandler, children }: ModalProps) {
+function Modal({
+  open,
+  children,
+  toggleHandler,
+  direction = DIRECTION.RIGHTWARDS,
+}: ModalProps) {
+  const directionClass = {
+    [DIRECTION.UP]: {
+      outer: mergeClassNames("top-0", !open ? "left-[100vw]" : "left-0"),
+      inner: mergeClassNames("left-1/2", !open ? "top-[100vh]" : "top-1/2"),
+    },
+    [DIRECTION.DOWN]: {
+      outer: mergeClassNames("top-0", !open ? "left-[100vw]" : "left-0"),
+      inner: mergeClassNames("left-1/2", !open ? "top-[-100vh]" : "top-1/2"),
+    },
+    [DIRECTION.LEFTWARDS]: {
+      outer: mergeClassNames("top-0", !open ? "left-[100vw]" : "left-0"),
+      inner: mergeClassNames("top-1/2", !open ? "left-[100vw]" : "left-1/2"),
+    },
+    [DIRECTION.RIGHTWARDS]: {
+      outer: mergeClassNames("top-0", !open ? "left-[-100vw]" : "left-0"),
+      inner: mergeClassNames("top-1/2", !open ? "left-0" : "left-1/2"),
+    },
+    [DIRECTION.CENTER]: {
+      outer: mergeClassNames("top-0", !open ? "left-[-100vw]" : "left-0"),
+      inner: mergeClassNames(
+        "top-1/2 left-1/2",
+        !open ? "scale-x-0 scale-y-0" : "scale-x-1 scale-y-1"
+      ),
+    },
+  };
+
   return (
     <div
       className={mergeClassNames(
-        `flex flex-col justify-between items-start fixed top-0 w-[100%] p-4`,
-        !open ? "left-[-100vw]" : "left-0",
+        `flex flex-col justify-between items-start fixed w-[100%] p-4`,
+        directionClass[direction].outer,
         `h-full min-h-screen shadow-md`
       )}
       style={{
@@ -23,12 +63,11 @@ function Modal({ open, toggleHandler, children }: ModalProps) {
     >
       <div
         className={mergeClassNames(
-          `flex flex-col justify-between items-center relative min-w-[80vw] sm:min-w-[300px] min-h-md h-auto top-1/2 left-1/2 rounded-md`,
-          !open ? "left-[-100vw]" : "left-0",
-          `px-4 pt-2 pb-4 overflow-auto transition-all delay-0 duration-600 ease-in-out shadow-md`
+          `flex flex-col justify-between items-center relative min-w-[80vw] sm:min-w-[300px] min-h-md h-auto -translate-x-1/2 -translate-y-1/2 rounded-md`,
+          directionClass[direction].inner,
+          `px-4 pt-2 pb-4 overflow-auto transition-all delay-0 duration-[500ms] ease shadow-md`
         )}
         style={{
-          transform: "translate(-50%, -50%)",
           zIndex: "+99999",
           color: "black",
           backgroundColor: "white",

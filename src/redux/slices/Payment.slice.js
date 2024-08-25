@@ -31,7 +31,7 @@ const paymentSlice = createSlice({
     // GET CLIENT PAYMENTS
     builder
       .addCase(getMyPayments.fulfilled, (state, { payload }) => {
-        console.log(payload);
+        // console.log(payload);
         state.isLoading = false;
         state.payments = payload?.payload;
       })
@@ -46,7 +46,7 @@ const paymentSlice = createSlice({
     // GET ADMIN PAYMENTS
     builder
       .addCase(getAllPayments.fulfilled, (state, { payload }) => {
-        console.log(payload);
+        // console.log(payload);
         state.isLoading = false;
         state.payments = payload?.payload;
       })

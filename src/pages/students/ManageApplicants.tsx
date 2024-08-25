@@ -24,13 +24,13 @@ import { notify } from "../../utils/toastNotification";
 function ManageApplicants() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const academicSession = useSelector(
-    (state: StoreState) => state.App?.sessionInfo
-  );
+  // const academicSession = useSelector(
+  //   (state: StoreState) => state.App?.sessionInfo
+  // );
 
   const users = useSelector((state: StoreState) => state.Dashboard);
 
-  console.log(academicSession);
+  // console.log(academicSession);
 
   const column = [
     {
@@ -83,6 +83,7 @@ function ManageApplicants() {
             type="checkbox"
             value={original?.applicantHasBeenCalled ? "Yes" : "No"}
             checked={original?.applicantHasBeenCalled}
+            onChange={() => {}}
           />
         );
       },
@@ -97,6 +98,7 @@ function ManageApplicants() {
             type="checkbox"
             value={original?.interviewStatus}
             checked={original?.interviewStatus === "DONE"}
+            onChange={() => {}}
           />
         );
       },
@@ -110,6 +112,7 @@ function ManageApplicants() {
           <ActionMenu
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
             activatorClassName="hover:bg-slate-200"
+            edgeOffset={44}
             menu={
               <div className="flex flex-col" style={{}}>
                 <button className="text-left px-3 py-2 border-b hover:bg-slate-200">

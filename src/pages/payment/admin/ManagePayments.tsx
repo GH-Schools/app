@@ -14,7 +14,7 @@ import {
 import PlainTable from "../../../components/tables/PlainTable";
 import MetricsCard from "../../../components/cards/MetricsCard";
 import { getAllPayments } from "../../../redux/actions/payment.action";
-import ActionMenu from "../../../components/common/ActionMenu";
+import ActionMenu, { PLACEMENT } from "../../../components/common/ActionMenu";
 import { CellProps } from "react-table";
 import Button from "../../../components/common/Button";
 
@@ -69,6 +69,8 @@ function ManagePayments() {
         const { original } = row;
         return (
           <ActionMenu
+            placement={PLACEMENT.AUTO}
+            edgeOffset={44}
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
             menu={
               <div className="flex flex-col" style={{}}>

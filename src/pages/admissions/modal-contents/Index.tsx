@@ -371,7 +371,7 @@ export const AttachmentView = ({ data }: { data: GenericObject }) => {
   console.log(data);
   // const [showEndDate, setShowEndDate] = useState(false);
   return (
-    <div className="flex flex-col w-full gap-2.5 pb-3 w-[45vw] min-w-[360px] px-3">
+    <div className="flex flex-col w-full gap-2.5 pb-3 w-[95%] sm:w-[45vw] min-w-[300px] px-3">
       <div className="flex flex-row justify-between items-center w-full">
         <h2 className="text-2xl font-medium w-full">Attachments</h2>
         <Button
@@ -395,6 +395,11 @@ export const AttachmentView = ({ data }: { data: GenericObject }) => {
       <div className="flex flex-row justify-between items-center gap-2 max-w-full overflow-auto py-2">
         <DocumentCard name="file" />
         <DocumentCard name="file" />
+        <DocumentCard name="file" />
+        <DocumentCard name="file" />
+        <DocumentCard name="file" />
+        <DocumentCard name="file" />
+
       </div>
 
       <div className="border"></div>

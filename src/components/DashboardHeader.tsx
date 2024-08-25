@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { MdSearch } from "react-icons/md";
 import { AiOutlineUser as AvatarIcon } from "react-icons/ai";
 import { RxHamburgerMenu as MenuIcon } from "react-icons/rx";
 // import CustomInput from "./common/CustomInput";
-import DropMenu, { EVENT_TYPES, PLACEMENT } from "./common/DropMenu";
+// import DropMenu,  from "./common/DropMenu";
 import { StoreState } from "../redux/reducers";
-import { useDispatch } from "react-redux";
 import { getUserProfile } from "../redux/actions/auth.action";
 import { getCurrentSession } from "../redux/actions/app.action";
+import ActionMenu, { EVENT_TYPES, PLACEMENT } from "./common/ActionMenu";
+import Button from "./common/Button";
 
 type HeaderProps = {
   toggleHandler: (state: boolean) => any;
@@ -16,6 +19,7 @@ type HeaderProps = {
 
 function DashboardHeader({ toggleHandler }: HeaderProps) {
   const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
   const authenticatedUser = useSelector(
     (state: StoreState) => state?.Auth?.userProfile
   );
@@ -45,15 +49,39 @@ function DashboardHeader({ toggleHandler }: HeaderProps) {
           startAdornment={<MdSearch />}
           placeholder="Search here..."
         /> */}
-        <DropMenu
-          placement={PLACEMENT.BOTTOM}
+        <ActionMenu
+          placement={PLACEMENT.AUTO}
           eventType={EVENT_TYPES.CLICK}
-          activatorElement={
-            <button className="bg-red-800 w-10 h-10 rounded-full flex items-center justify-center fill-white text-white">
-              <AvatarIcon />
-            </button>
+          // eventHandler={() => }
+          activatorClassName={
+            "bg-red-800 w-10 h-10 rounded-full flex items-center justify-center fill-white text-white"
           }
-          // menuElement={<div className="bg-red-500 py-6 px-10 flex"></div>}
+          activator={<AvatarIcon />}
+          menu={
+            <div className="flex flex-col bg-white">
+              <Button
+                text="Profile"
+                className="text-left text-sm px-3 py-2 border-b hover:bg-slate-200 capitalize"
+                onClick={() => {
+                  navigate("/student/dashboard/profile");
+                }}
+              />
+              <Button
+                text="Profile"
+                className="text-left text-sm px-3 py-2 border-b hover:bg-slate-200 capitalize"
+                onClick={() => {
+                  navigate("/student/dashboard/profile");
+                }}
+              />
+              <Button
+                text="Profile"
+                className="text-left text-sm px-3 py-2 border-b hover:bg-slate-200 capitalize"
+                onClick={() => {
+                  navigate("/student/dashboard/profile");
+                }}
+              />
+            </div>
+          }
         />
       </div>
     </header>

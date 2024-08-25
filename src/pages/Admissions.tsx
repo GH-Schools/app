@@ -334,7 +334,7 @@ const Section1 = ({ isActive }: SectionProps) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.mobile}
-                      placeholder="Enter last name"
+                      placeholder="Enter phone number e.g. +234XXXXXXXXX"
                       className={
                         errors.mobile && touched.mobile ? "input-error" : ""
                       }

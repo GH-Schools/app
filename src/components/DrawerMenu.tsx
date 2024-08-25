@@ -28,14 +28,20 @@ const DrawerMenu = ({
   );
 
   const onClickHandler = (ev: any) => {
-    if (onClick && typeof onClick === "function") {
-      onClick(ev);
+    if (children) {
+      // Toggle the open state when the item has children
+      setOpen(!open);
     } else {
-      window.location.href = href;
+      // If there's an onClick handler provided, use it; otherwise, navigate to the href
+      if (onClick && typeof onClick === "function") {
+        onClick(ev);
+      } else {
+        window.location.href = href;
+      }
     }
   };
 
-  return children ? (
+  return (
     <>
       <button
         className={
@@ -50,29 +56,14 @@ const DrawerMenu = ({
           <span className="text-left text-sm">{text}</span>
         </div>
 
-        <button
-          className="p-1 rounded-full text-xl"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <MdExpandLess /> : <MdExpandMore />}
-        </button>
+        {children && (
+          <span className="p-1 rounded-full text-xl">
+            {open ? <MdExpandLess /> : <MdExpandMore />}
+          </span>
+        )}
       </button>
       {open && children}
     </>
-  ) : (
-    <button
-      className={
-        "flex flex-row p-2 justify-between items-center hover:bg-[#ffffff29] focus:bg-[#ffffff19] focus:border-l-2 focus:border-[#ffffff99]"
-      }
-      onClick={onClickHandler}
-      title={href}
-      {...rest}
-    >
-      <div className={`flex flex-row items-center mr-2 font-medium`}>
-        <Icon />
-        <span className="text-left text-sm">{text}</span>
-      </div>
-    </button>
   );
 };
 

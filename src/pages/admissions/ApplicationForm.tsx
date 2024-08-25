@@ -59,6 +59,8 @@ function Application() {
   useEffect(() => {
     if (!admissionInfo && !admissionInfoIsLoading) {
       setOpenModal(true);
+    } else {
+      setOpenModal(false);
     }
   }, [admissionInfo, admissionInfoIsLoading]);
 
@@ -124,9 +126,11 @@ function Application() {
         {!completed ? <Form setCompleted={setCompleted} /> : <Success />}
       </div>
 
-      <Modal open={openModal} direction={DIRECTION.CENTER}>
-        <RulesAndRegulations closeHandler={() => setOpenModal(!openModal)} />
-      </Modal>
+      {!admissionInfoIsLoading && (
+        <Modal open={openModal} direction={DIRECTION.CENTER}>
+          <RulesAndRegulations closeHandler={() => setOpenModal(!openModal)} />
+        </Modal>
+      )}
     </>
   );
 }

@@ -12,7 +12,7 @@ const DashboardSlice = createSlice({
     builder
       // Academic Session
       .addCase(getMyAdmissionForm.fulfilled, (state, { payload }) => {
-        console.log('fulfilled', payload);
+        console.log('fulfilled');
         state.isLoading = false;
         state.data = [payload?.payload];
       })
@@ -27,7 +27,7 @@ const DashboardSlice = createSlice({
 
       // Academic Session
       .addCase(getSingleAdmissionForm.fulfilled, (state, { payload }) => {
-        console.log('fulfilled', payload);
+        console.log('fulfilled');
         state.isLoading = false;
         state.data = [payload?.payload];
       })
@@ -42,7 +42,7 @@ const DashboardSlice = createSlice({
 
       // Academic Session
       .addCase(getAllAdmissionForms.fulfilled, (state, { payload }) => {
-        console.log('fulfilled', payload);
+        console.log('fulfilled');
         state.isLoading = false;
         state.data = payload?.payload;
       })

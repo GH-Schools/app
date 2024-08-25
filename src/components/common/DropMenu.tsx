@@ -6,6 +6,7 @@ export enum PLACEMENT {
   RIGHT,
   BOTTOM,
   LEFT,
+  AUTO,
 }
 
 export enum EVENT_TYPES {
@@ -20,25 +21,28 @@ export type DropMenuProps = {
   activatorElement?: React.ReactNode | JSX.Element;
   placement?: PLACEMENT;
   eventType?: EVENT_TYPES;
-  eventHandler?: EventHandler<any> | Function
+  eventHandler?: EventHandler<any> | Function;
 };
 
 function DropMenu({
   activatorElement,
   menuElement,
-  eventHandler = () => { alert("hey") },
+  eventHandler = () => {
+    alert("hey");
+  },
   eventType = EVENT_TYPES.HOVER,
   placement = PLACEMENT.BOTTOM,
 }: DropMenuProps) {
   const positionClass = {
     [PLACEMENT.TOP]: "left-1/2 -translate-x-1/2 bottom-full",
-    [PLACEMENT.RIGHT]: "left-full top-1/2 -translate-y-1/2",
+    [PLACEMENT.RIGHT]: "left-[102%] top-1/2 -translate-y-1/2",
     [PLACEMENT.BOTTOM]: "left-1/2 -translate-x-1/2 top-full",
-    [PLACEMENT.LEFT]: "right-full top-1/2 -translate-y-1/2",
+    [PLACEMENT.LEFT]: "right-[102%] top-1/2 -translate-y-1/2",
+    [PLACEMENT.AUTO]: "right-[102%] top-1/2 -translate-y-1/2",
   };
 
   const activatorProps = {
-    [eventType]: eventHandler
+    [eventType]: eventHandler,
   };
 
   return (

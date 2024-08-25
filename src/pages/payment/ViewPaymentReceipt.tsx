@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { AiOutlineDownload } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 import {
@@ -6,6 +7,7 @@ import {
   downloadPaymentReceipt,
 } from "../../redux/actions/payment.action";
 import Button from "../../components/common/Button";
+import TextIcon from "../../components/common/TextIcon";
 
 function ViewPaymentReceipt() {
   const dispatch = useDispatch<any>();
@@ -32,7 +34,13 @@ function ViewPaymentReceipt() {
                   <h3 className="font-bold text-2xl">Payment Information</h3>
 
                   <Button
-                    text="Download Receipt"
+                    text={
+                      <TextIcon
+                        text="Download Receipt"
+                        icon={<AiOutlineDownload fontSize={20} />}
+                        size="sm"
+                      />
+                    }
                     onClick={() =>
                       dispatch(
                         downloadPaymentReceipt({ payId: payment?.payId })

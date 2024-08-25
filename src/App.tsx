@@ -32,6 +32,7 @@ const Login = React.lazy(() => import("./pages/Login"));
 const NoPage = React.lazy(() => import("./pages/UnknownPage"));
 const AdminLogin = React.lazy(() => import("./pages/AdminLogin"));
 const Admissions = React.lazy(() => import("./pages/Admissions"));
+const Profile = React.lazy(() => import("./pages/profile/Profile"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const PaymentComplete = React.lazy(() => import("./pages/PaymentComplete"));
 const ContactIndex = React.lazy(() => import("./pages/contact/ContactIndex"));
@@ -125,6 +126,7 @@ function App() {
                   element={<ViewPaymentReceipt />}
                 />
                 <Route path="contact-us" element={<ContactIndex />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
 
               {/* DASHBOARD */}

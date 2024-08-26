@@ -1,25 +1,47 @@
-import React, { useEffect } from "react";
+import * as Yup from "yup";
+import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
-import { getMyPayments } from "../../redux/actions/payment.action";
+
+import { completeResetPassword } from "../../redux/actions/auth.action";
+import { validations } from "../../utils/validations";
+
 import { GenericObject } from "../../interfaces";
 import {
-  BsPinMap as LocationIcon,
+  // BsPinMap as LocationIcon,
   BsMailbox2 as MailIcon,
   BsPhone as PhoneIcon,
 } from "react-icons/bs";
+import { Formik } from "formik";
+import { getToken } from "../../utils/storage";
+import { notify } from "../../utils/toastNotification";
+import TextSpinner from "../../components/TextSpinner";
+import { InputComponent } from "../../components/common/FormComponents";
+import Button from "../../components/common/Button";
 
 function Profile() {
   const dispatch = useDispatch<any>();
+  // const navigate = useNavigate();
   const authenticatedUser = useSelector(
     (state: StoreState) => state?.Auth?.userProfile
   );
 
-  console.log(authenticatedUser);
+  const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    dispatch(getMyPayments({}));
-  }, [dispatch]);
+  const schemaValidation = Yup.object({
+    password: validations
+      .password("Password", 6, 24)
+      .required("Password is required"),
+    confirmPassword: validations
+      .password("Password")
+      .required("Re-enter your password")
+      .oneOf([Yup.ref("password"), ""], "Passwords do not match!"),
+  });
+
+  // useEffect(() => {
+  //   dispatch(getUser({}));
+  // }, [dispatch]);
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5">
@@ -27,27 +49,48 @@ function Profile() {
         <div className="flex flex-col flex-grow shadow-sm px-4 py-4 rounded-xl gap-2 bg-white w-1/3 ">
           <div className="rounded-lg border py-4 px-5">
             <div className="flex flex-row justify-between items-start mb-4">
-              <h3 className="font-bold text-2xl">Contact Information</h3>
-            </div>
-
-            <div className="flex flex-col md:flex-row text-sm gap-0 md:gap-6 items-center justify-between w-full text-[#818793] mb-6">
-              Need support with the online application? Contact us with the
-              informations below:
+              <h3 className="font-bold text-2xl">Profile Information</h3>
             </div>
 
             <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
               <FieldComponent
                 icon={<MailIcon style={{ fontSize: "18px" }} />}
-                label="Email Address"
-                value={"admissions@ghschools.online"}
+                label="First Name"
+                value={authenticatedUser?.firstName ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
 
               <FieldComponent
                 icon={<PhoneIcon style={{ fontSize: "18px" }} />}
-                label="Phone Number (Whatsapp)"
-                value={"+233 26 871 2345"}
+                label="Middle Name"
+                value={authenticatedUser?.middleName ?? "--"}
+                sx={{ marginBottom: "10px" }}
+                width="100%"
+              />
+
+              <FieldComponent
+                icon={<PhoneIcon style={{ fontSize: "18px" }} />}
+                label="Last Name"
+                value={authenticatedUser?.lastName ?? "--"}
+                sx={{ marginBottom: "10px" }}
+                width="100%"
+              />
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
+              <FieldComponent
+                icon={<MailIcon style={{ fontSize: "18px" }} />}
+                label="Email Address"
+                value={authenticatedUser?.email ?? "--"}
+                sx={{ marginBottom: "10px" }}
+                width="100%"
+              />
+
+              <FieldComponent
+                icon={<PhoneIcon style={{ fontSize: "18px" }} />}
+                label="Phone Number"
+                value={authenticatedUser?.mobile ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
@@ -55,66 +98,110 @@ function Profile() {
               <FieldComponent
                 icon={<PhoneIcon style={{ fontSize: "18px" }} />}
                 label="Alt. Phone Number 1"
-                value={"+233 30 242 4909"}
+                value={authenticatedUser?.mobile1 ?? "--"}
                 sx={{ marginBottom: "10px" }}
                 width="100%"
               />
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-between w-full">
-              <FieldComponent
-                icon={<PhoneIcon style={{ fontSize: "18px" }} />}
-                label="Alt. Phone Number 2"
-                value={"+233 27 762 2250"}
-                sx={{ marginBottom: "10px" }}
-                width="100%"
-              />
-
-              <FieldComponent
-                icon={<PhoneIcon style={{ fontSize: "18px" }} />}
-                label="Alt. Phone Number 3"
-                value={"+233 54 462 2250"}
-                sx={{ marginBottom: "10px" }}
-                width="100%"
-              />
-
-              <FieldComponent
-                icon={<LocationIcon style={{ fontSize: "18px" }} />}
-                label="Location"
-                value={
-                  "Achimota Accra near Achimota New Transport Terminal and Adjacent the Achimota ICGC"
-                }
-                sx={{ marginBottom: "10px" }}
-                width="100%"
-              />
-            </div>
-
-            <div className="flex flex-col gap-0 items-center justify-between w-full mt-2 overflow-auto">
-              <div
-                className="flex flex-col md:flex-row gap-0 md:gap-6 items-center justify-center bg-slate-100 w-full border rounded-md text-sm"
-                style={{ marginBottom: "12px" }}
-              >
-                <iframe
-                  title="map"
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1985.3239129357248!2d-0.2278726!3d5.6189061!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99519d280a59%3A0xd2c0850c11243fa4!2sGH%20Schools!5e0!3m2!1sen!2sng!4v1722949962905!5m2!1sen!2sng"
-                  width="800"
-                  height="300"
-                  style={{ border: "none" }}
-                  allowFullScreen={false}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                >
-                  <a
-                    href="https://maps.app.goo.gl/pbFfcnTJoVm9KRXE7"
-                    target={"_blank"}
-                    rel="noreferrer"
-                  >
-                    View location on map
-                  </a>
-                </iframe>
-              </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="flex flex-row gap-5">
+        <div className="flex flex-col flex-grow shadow-sm px-4 py-4 rounded-xl gap-2 bg-white w-1/3 ">
+          <Formik
+            initialValues={{ confirmPassword: "", password: "" }}
+            validationSchema={schemaValidation}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              try {
+                setSubmitting(true);
+                const body = {
+                  token: getToken() as string,
+                  newPassword: values.password,
+                  confirmPassword: values.confirmPassword,
+                };
+                const response = await dispatch(completeResetPassword(body));
+                console.log(response);
+                if (response?.meta?.requestStatus === "fulfilled") {
+                  notify("Password reset successfully", { type: "success" });
+                  resetForm();
+                }
+              } catch (error) {
+                console.error(error);
+              } finally {
+                setSubmitting(false);
+              }
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <form
+                className="rounded-lg border py-4 px-5"
+                onSubmit={handleSubmit}
+              >
+                <div className="flex flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                  <h3 className="font-bold text-xl sm:text-2xl mb-5 text-inherit">
+                    Account Security
+                  </h3>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-0 md:gap-6 items-start justify-between w-full">
+                  <InputComponent
+                    label="New Password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    errors={errors}
+                    touched={touched}
+                    value={values.password}
+                    placeholder="Enter new password"
+                    sx={{ marginBottom: "10px" }}
+                    width="100%"
+                    required={true}
+                  />
+
+                  <InputComponent
+                    label="Confirm Password"
+                    type={showPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.confirmPassword}
+                    placeholder="Enter new password to confirm"
+                    errors={errors}
+                    touched={touched}
+                    sx={{ marginBottom: "10px" }}
+                    width="100%"
+                    required={true}
+                  />
+                </div>
+
+                <div className="mt-0 mb-6 px-1 w-full">
+                  <span
+                    className="inline-block text-xs uppercase font-semibold cursor-pointer"
+                    style={{ color: "lightslategray" }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide Password" : "Show Password"}
+                  </span>
+                </div>
+
+                <Button
+                  type={"submit"}
+                  text={<TextSpinner text="Reset Password" loading={isSubmitting} />}
+                  style={styles.proceedBtn}
+                />
+              </form>
+            )}
+          </Formik>
         </div>
       </section>
     </div>
@@ -158,6 +245,16 @@ const FieldComponent: React.FC<{
       </div>
     </div>
   );
+};
+
+const styles = {
+  proceedBtn: {
+    backgroundColor: "#21B591",
+    color: "white",
+    fontSize: "14px",
+    fontWeight: 600,
+    textTransform: "capitalize",
+  },
 };
 
 export default Profile;

@@ -66,7 +66,7 @@ function DashboardHeader({ toggleHandler }: HeaderProps) {
                   navigate("/student/dashboard/profile");
                 }}
               />
-              <Button
+              {/* <Button
                 text="Profile"
                 className="text-left text-sm px-3 py-2 border-b hover:bg-slate-200 capitalize"
                 onClick={() => {
@@ -79,7 +79,7 @@ function DashboardHeader({ toggleHandler }: HeaderProps) {
                 onClick={() => {
                   navigate("/student/dashboard/profile");
                 }}
-              />
+              /> */}
             </div>
           }
         />

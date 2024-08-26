@@ -256,12 +256,14 @@ function ActionMenu({
         openMenuId === menuIdRef.current ? null : menuIdRef.current
       );
 
-      const a = setTimeout(() => {
-        chooseBestPosition(event);
-        clearTimeout(a);
-      }, 100);
+      if (placement === PLACEMENT.AUTO) {
+        const a = setTimeout(() => {
+          chooseBestPosition(event);
+          clearTimeout(a);
+        }, 100);
+      }
     },
-    [chooseBestPosition, openMenuId, setOpenMenuId]
+    [chooseBestPosition, openMenuId, placement, setOpenMenuId]
   );
 
   const handleClickOutside = useCallback(

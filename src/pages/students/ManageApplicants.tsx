@@ -1,11 +1,11 @@
 import { CellProps } from "react-table";
-import React, { useEffect } from "react"; //
+import React, { useEffect, useState } from "react"; //
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { StoreState } from "../../redux/reducers";
 
-import { AiOutlineMore as MoreIcon } from "react-icons/ai";
+import { AiOutlineMore as MoreIcon, AiOutlineSearch } from "react-icons/ai";
 import { BsFileEarmarkText as PendingIcon } from "react-icons/bs";
 import {
   BsFileCheck as ReviewedIcon,
@@ -14,16 +14,20 @@ import {
 
 import PlainTable from "../../components/tables/PlainTable";
 import MetricsCard from "../../components/cards/MetricsCard";
+import ActionMenu from "../../components/common/ActionMenu";
+import CustomInput from "../../components/common/CustomInput";
+// import { InputComponent } from "../../components/common/FormComponents";
 import {
   getAllAdmissionForms,
   updateAdmissionForm,
 } from "../../redux/actions/dashboard.action";
-import ActionMenu from "../../components/common/ActionMenu";
 import { notify } from "../../utils/toastNotification";
+import Button from "../../components/common/Button";
 
 function ManageApplicants() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
   // const academicSession = useSelector(
   //   (state: StoreState) => state.App?.sessionInfo
   // );
@@ -174,6 +178,16 @@ function ManageApplicants() {
     dispatch(getAllAdmissionForms({}));
   }, [dispatch]);
 
+  const handleSearch = () => {
+    const keywords = searchValue
+      .trim()
+      .replace(/\s+/gi, " ")
+      .split(" ")
+      .map((word) => word.toLowerCase());
+    alert(`Searching for: ${keywords.toString()}`);
+    setSearchValue("");
+  };
+
   return (
     <div className="flex flex-col gap-7 my-5 mx-5">
       <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
@@ -214,7 +228,33 @@ function ManageApplicants() {
 
       <section className="flex flex-row gap-5">
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-4 pb-6 rounded-xl gap-2 bg-white w-3/5 ">
-          <h3 className="font-bold text-xl mb-2">Admission Applications</h3>
+          <div className="flex flex-row items-center justify-between">
+            <h3 className="font-bold text-xl mb-2">Admission Applications</h3>
+
+            <CustomInput
+              value={searchValue}
+              onChange={(ev: any) => setSearchValue(ev.target.value)}
+              placeholder="search for applicant"
+              sx={{ paddingRight: "0" }}
+              inputSx={{ padding: "5px", fontSize: "12px" }}
+              endAdornment={
+                <Button
+                  text={<AiOutlineSearch fontSize={18} />}
+                  onClick={handleSearch}
+                  disabled={searchValue === ""}
+                  style={{
+                    padding: "6px 10px",
+                    color: "white",
+                    fontSize: "10px",
+                    fontWeight: 600,
+                    backgroundColor: "#21B591",
+                    textTransform: "capitalize",
+                  }}
+                />
+              }
+            />
+          </div>
+
           <div className="flex rounded-lg border w-full min-h-72">
             <PlainTable
               data={data}

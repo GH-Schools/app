@@ -4,6 +4,7 @@ import { mergeClassNames } from "../../utils/utilities";
 type ButtonProps = {
   text: string | React.ReactNode;
   type?: "submit" | "reset" | "button";
+  disabled?: boolean;
   href?: string;
   className?: string;
   style?: { [x: string]: any };

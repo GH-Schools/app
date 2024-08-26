@@ -41,7 +41,7 @@ import ActionMenu, {
   PLACEMENT,
   EVENT_TYPES,
 } from "../../components/common/ActionMenu";
-import { AttachmentView } from "../admissions/modal-contents/Index";
+import { AttachmentView, AddComment } from "../admissions/modal-contents/Index";
 // import logo from "../../assets/favicon.png";
 
 function ViewApplicationForm() {
@@ -237,6 +237,10 @@ function ViewApplicationForm() {
             setModalContent(<AttachmentView data={{}} />);
             setOpenModal(!openModal);
           },
+          comment: () => {
+            setModalContent(<AddComment data={{}} />)
+            setOpenModal(!openModal);
+          }
         }}
       />
 
@@ -1613,7 +1617,7 @@ const FloatMenu: React.FC<{ actions: GenericObject }> = ({ actions }) => {
         menu={
           <div className="flex flex-col items-center gap-3 p-4 rounded-md bg-black min-h-72 w-auto">
             <button
-              // onClick={activateFormHandler}
+              onClick={actions.comment}
               className={mergeClassNames(defaultButtonClass)}
               title="Add Comment"
               disabled={false}
@@ -1633,7 +1637,7 @@ const FloatMenu: React.FC<{ actions: GenericObject }> = ({ actions }) => {
             <button
               // onClick={activateFormHandler}
               className={mergeClassNames(defaultButtonClass)}
-              title="Add Comment"
+              title="Mark"
               disabled={false}
             >
               <RiCheckDoubleLine fontSize={24} />

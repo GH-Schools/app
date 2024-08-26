@@ -6,6 +6,7 @@ import DocumentCard from "../../../components/cards/DocumentCard";
 
 import logo from "../../../assets/favicon.png";
 import { GenericObject } from "../../../interfaces";
+import { Formik } from "formik";
 
 export const RulesAndRegulations = ({
   closeHandler,
@@ -395,11 +396,10 @@ export const AttachmentView = ({ data }: { data: GenericObject }) => {
       <div className="flex flex-row justify-between items-center gap-2 max-w-full overflow-auto py-2">
         <DocumentCard name="file" />
         <DocumentCard name="file" />
+        {/* <DocumentCard name="file" />
         <DocumentCard name="file" />
         <DocumentCard name="file" />
-        <DocumentCard name="file" />
-        <DocumentCard name="file" />
-
+        <DocumentCard name="file" /> */}
       </div>
 
       <div className="border"></div>
@@ -409,5 +409,59 @@ export const AttachmentView = ({ data }: { data: GenericObject }) => {
         placeholder="Add description"
       ></textarea>
     </div>
+  );
+};
+
+export const AddComment = ({ data }: { data: GenericObject }) => {
+  console.log(data);
+  // const [showEndDate, setShowEndDate] = useState(false);
+  return (
+    <Formik
+      initialValues={{
+        comment: "",
+      }}
+      onSubmit={() => {
+        try {
+          alert('hey')
+        } catch (error) {
+          console.error(error);
+        }
+      }}
+    >
+      {({ handleChange, values, handleSubmit }) => (
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col w-full gap-2.5 pb-3 w-[95%] sm:w-[45vw] min-w-[300px] px-3"
+        >
+          <div className="flex flex-row justify-between items-center w-full">
+            <h2 className="text-2xl font-medium w-full">Add Comment</h2>
+            <Button
+              text={"Send"}
+              // href={`/admin/dashboard/schedules/create`}
+              className="text-center font-bold bg-green-600"
+              style={{
+                whiteSpace: "nowrap",
+                color: "#21B591",
+                fontSize: "12px",
+                fontWeight: 700,
+                padding: "10px",
+                borderRadius: "5px",
+                textTransform: "capitalize",
+              }}
+            />
+          </div>
+
+          <div className="border"></div>
+
+          <textarea
+            name="comment"
+            value={values.comment}
+            onChange={handleChange}
+            className="text-sm w-full min-h-[150px] bg-slate-100 p-2 rounded-md border-2"
+            placeholder="Type your comment"
+          ></textarea>
+        </form>
+      )}
+    </Formik>
   );
 };

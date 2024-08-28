@@ -22,28 +22,28 @@ function Home() {
     {
       name: "Catering School",
       description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis tenetur quas architecto sunt inventore maxime aut dignissimos unde. Minus necessitatibus ad, fugiat ipsum laborum dolorum accusamus est id blanditiis exercitationem!",
+        ,
       logo: GHCatering,
       textColor: "text-black",
     },
     {
       name: "Cosmetology School",
       description:
-        "If you have the personal passion for improving people’s confidence and appearance, our industry standard course is right for you: make up & eye enhancement, manicure & pedicure, nail technology, salon & spa management, hair technology, body enhancement",
+        ,
       logo: GHCosmetology,
       textColor: "text-black",
     },
     {
       name: "Media School",
       description:
-        'GH Media School was established by Mr. Leslie Addo-Listowell, out of a mother company called "Media Tribe Studio 233", a multimedia company with a special focus on the production of branded and non-branded content for TV Stations across the country.',
+        ,
       logo: GHMedia,
       textColor: "text-white",
     },
     {
       name: "Technology School",
       description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis tenetur quas architecto sunt inventore maxime aut dignissimos unde. Minus necessitatibus ad, fugiat ipsum laborum dolorum accusamus est id blanditiis exercitationem!",
+        ,
       logo: GHTechnology,
       textColor: "text-white",
     },

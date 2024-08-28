@@ -15,7 +15,7 @@ function Home() {
     {
       name: "Fashion School",
       description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis tenetur quas architecto sunt inventore maxime aut dignissimos unde. Minus necessitatibus ad, fugiat ipsum laborum dolorum accusamus est id blanditiis exercitationem!",
+        ,
       logo: GHFashion,
       textColor: "text-white",
     },

@@ -15,35 +15,35 @@ function Home() {
     {
       name: "Fashion School",
       description:
-        ,
+        "",
       logo: GHFashion,
       textColor: "text-white",
     },
     {
       name: "Catering School",
       description:
-        ,
+        "",
       logo: GHCatering,
       textColor: "text-black",
     },
     {
       name: "Cosmetology School",
       description:
-        ,
+        "",
       logo: GHCosmetology,
       textColor: "text-black",
     },
     {
       name: "Media School",
       description:
-        ,
+        "",
       logo: GHMedia,
       textColor: "text-white",
     },
     {
       name: "Technology School",
       description:
-        ,
+        "",
       logo: GHTechnology,
       textColor: "text-white",
     },

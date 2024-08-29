@@ -60,21 +60,21 @@ function ViewPaymentReceipt() {
                   <FieldComponent
                     label="First Name"
                     value={payment?.User?.firstName}
-                    sx={{ marginBottom: "10px" }}
+                    sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                     width="100%"
                   />
 
                   <FieldComponent
                     label="Middle Name"
                     value={payment?.User?.middleName ?? "--"}
-                    sx={{ marginBottom: "10px" }}
+                    sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                     width="100%"
                   />
 
                   <FieldComponent
                     label="Last Name"
                     value={payment?.User?.lastName}
-                    sx={{ marginBottom: "10px" }}
+                    sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                     width="100%"
                   />
                 </div>
@@ -83,7 +83,7 @@ function ViewPaymentReceipt() {
                   <FieldComponent
                     label="Email Address"
                     value={payment?.User?.email}
-                    sx={{ marginBottom: "10px" }}
+                    sx={{ marginBottom: "10px", textTransform: "lowercase" }}
                     width="100%"
                   />
 
@@ -106,7 +106,7 @@ function ViewPaymentReceipt() {
                   <FieldComponent
                     label="Nationality"
                     value={payment?.User?.nationality ?? "--"}
-                    sx={{ marginBottom: "10px" }}
+                    sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                     width="100%"
                   />
 
@@ -120,7 +120,7 @@ function ViewPaymentReceipt() {
                   <FieldComponent
                     label="Currency"
                     value={payment?.currency}
-                    sx={{ marginBottom: "10px" }}
+                    sx={{ marginBottom: "10px", textTransform: "uppercase" }}
                     width="100%"
                   />
                 </div>
@@ -169,7 +169,7 @@ const FieldComponent: React.FC<{
           padding: "10px 0px",
           width: "100%",
           borderRadius: "3px",
-          // textTransform: "capitalize",
+          textTransform: "inherit",
           // backgroundColor: "#F6FAFC",
         }}
         {...rest}

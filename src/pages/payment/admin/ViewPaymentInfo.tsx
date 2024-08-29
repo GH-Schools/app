@@ -53,7 +53,7 @@ function ViewPaymentInfo() {
                   text={
                     <TextIcon
                       text="Download Receipt"
-                      icon={<AiOutlineDownload fontSize={20}/>}
+                      icon={<AiOutlineDownload fontSize={20} />}
                       size="sm"
                     />
                   }
@@ -76,21 +76,21 @@ function ViewPaymentInfo() {
                 <FieldComponent
                   label="First Name"
                   value={paymentInfo?.User?.firstName ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                   width="100%"
                 />
 
                 <FieldComponent
                   label="Middle Name"
                   value={paymentInfo?.User?.middleName ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                   width="100%"
                 />
 
                 <FieldComponent
                   label="Last Name"
                   value={paymentInfo?.User?.lastName ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                   width="100%"
                 />
               </div>
@@ -99,7 +99,7 @@ function ViewPaymentInfo() {
                 <FieldComponent
                   label="Email Address"
                   value={paymentInfo?.User?.email ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "lowercase" }}
                   width="100%"
                 />
 
@@ -122,7 +122,7 @@ function ViewPaymentInfo() {
                 <FieldComponent
                   label="Nationality"
                   value={paymentInfo?.User?.nationality ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                   width="100%"
                 />
 
@@ -136,7 +136,7 @@ function ViewPaymentInfo() {
                 <FieldComponent
                   label="Currency"
                   value={paymentInfo?.currency ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "uppercase" }}
                   width="100%"
                 />
               </div>
@@ -145,7 +145,7 @@ function ViewPaymentInfo() {
                 <FieldComponent
                   label="Mode of Payment"
                   value={paymentInfo?.source ?? "--"}
-                  sx={{ marginBottom: "10px" }}
+                  sx={{ marginBottom: "10px", textTransform: "capitalize" }}
                   width="100%"
                 />
               </div>
@@ -193,7 +193,7 @@ const FieldComponent: React.FC<{
           padding: "10px 0px",
           width: "100%",
           borderRadius: "3px",
-          // textTransform: "capitalize",
+          textTransform: "inherit",
           // backgroundColor: "#F6FAFC",
         }}
         {...rest}

@@ -41,7 +41,7 @@ import ActionMenu, {
   PLACEMENT,
   EVENT_TYPES,
 } from "../../components/common/ActionMenu";
-import { AttachmentView, AddComment } from "../admissions/modal-contents/Index";
+import { AttachmentView, AddComment, ConfirmMarkAsInterviewed } from "../admissions/modal-contents/Index";
 // import logo from "../../assets/favicon.png";
 
 function ViewApplicationForm() {
@@ -235,6 +235,10 @@ function ViewApplicationForm() {
         actions={{
           attach: () => {
             setModalContent(<AttachmentView data={{}} />);
+            setOpenModal(!openModal);
+          },
+          markAsInterviewed: () => {
+            setModalContent(<ConfirmMarkAsInterviewed data={{}} />)
             setOpenModal(!openModal);
           },
           comment: () => {
@@ -1635,9 +1639,9 @@ const FloatMenu: React.FC<{ actions: GenericObject }> = ({ actions }) => {
             </button>
 
             <button
-              // onClick={activateFormHandler}
+              onClick={actions.markAsInterviewed}
               className={mergeClassNames(defaultButtonClass)}
-              title="Mark"
+              title="Mark as complete"
               disabled={false}
             >
               <RiCheckDoubleLine fontSize={24} />

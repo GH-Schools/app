@@ -372,7 +372,7 @@ export const AttachmentView = ({ data }: { data: GenericObject }) => {
   console.log(data);
   // const [showEndDate, setShowEndDate] = useState(false);
   return (
-    <div className="flex flex-col w-full gap-2.5 pb-3 w-[95%] sm:w-[45vw] min-w-[300px] px-3">
+    <div className="flex flex-col w-full gap-2.5 pb-3 w-[95%] md:w-[45vw] min-w-[300px] px-3">
       <div className="flex flex-row justify-between items-center w-full">
         <h2 className="text-2xl font-medium w-full">Attachments</h2>
         <Button
@@ -422,7 +422,7 @@ export const AddComment = ({ data }: { data: GenericObject }) => {
       }}
       onSubmit={() => {
         try {
-          alert('hey')
+          alert("hey");
         } catch (error) {
           console.error(error);
         }
@@ -463,5 +463,62 @@ export const AddComment = ({ data }: { data: GenericObject }) => {
         </form>
       )}
     </Formik>
+  );
+};
+
+export const ConfirmMarkAsInterviewed = ({ data }: { data: GenericObject }) => {
+  console.log(data);
+  // const [showEndDate, setShowEndDate] = useState(false);
+  return (
+    <div className="flex flex-col w-full gap-2.5 pb-3 w-[95%] sm:w-[45vw] min-w-[300px] px-3">
+      <div className="flex flex-row justify-between items-center w-full">
+        <h2 className="text-2xl font-medium w-full">Confirm action</h2>
+      </div>
+
+      <div className="border"></div>
+
+      <div className="flex flex-col gap-2 my-6 mx-auto justify-center items-center w-full max-w-[450px]">
+        <h2 className="text-lg text-center font-bold w-full">
+          Are you sure want to mark this applicant interview as complete?
+        </h2>
+        <p className="text-sm text-center font-normal w-full">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
+          ratione alias porro placeat numquam rem animi ea.
+        </p>
+      </div>
+
+      <div className="border"></div>
+
+      <div className="flex flex-row justify-center items-center gap-2 w-full">
+        <Button
+          text={"Yes"}
+          // href={`/admin/dashboard/schedules/create`}
+          className="text-center font-bold bg-green-600"
+          style={{
+            whiteSpace: "nowrap",
+            color: "#21B591",
+            fontSize: "14px",
+            fontWeight: 700,
+            padding: "10px",
+            borderRadius: "5px",
+            textTransform: "capitalize",
+          }}
+        />
+        <Button
+          text={"Cancel"}
+          // href={`/admin/dashboard/schedules/create`}
+          className="text-center font-bold bg-green-600"
+          style={{
+            whiteSpace: "nowrap",
+            color: "#21B591",
+            fontSize: "14px",
+            fontWeight: 700,
+            padding: "10px",
+            borderRadius: "5px",
+            textTransform: "capitalize",
+          }}
+        />
+      </div>
+    </div>
   );
 };

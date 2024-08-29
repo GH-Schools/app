@@ -63,7 +63,7 @@ function Modal({
     >
       <div
         className={mergeClassNames(
-          `flex flex-col justify-between items-center relative min-w-[80vw] sm:min-w-[300px] min-h-md h-auto -translate-x-1/2 -translate-y-1/2 rounded-md`,
+          `flex flex-col justify-between items-center relative w-full md:w-auto min-w-[80vw] sm:min-w-[300px] min-h-md h-auto -translate-x-1/2 -translate-y-1/2 rounded-md`,
           directionClass[direction].inner,
           `px-4 pt-2 pb-4 overflow-auto transition-all delay-0 duration-[500ms] ease shadow-md`
         )}

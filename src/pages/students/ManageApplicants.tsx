@@ -228,7 +228,7 @@ function ManageApplicants() {
 
       <section className="flex flex-row gap-5">
         <div className="flex flex-col flex-grow shadow-sm px-6 pt-4 pb-6 rounded-xl gap-2 bg-white w-3/5 ">
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-1 items-center justify-between mb-1 sm:mb-0">
             <h3 className="font-bold text-xl mb-2">Admission Applications</h3>
 
             <CustomInput

@@ -149,6 +149,7 @@ function App() {
                 <Route path="payment/:payId" element={<ViewPaymentInfo />} />
                 <Route path="schedules" element={<ManageSchedules />} />
                 <Route path="schedules/create" element={<AddSchedule />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
 
               <Route path="*" element={<NoPage />} />

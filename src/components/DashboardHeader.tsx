@@ -63,7 +63,13 @@ function DashboardHeader({ toggleHandler }: HeaderProps) {
                 text="Profile"
                 className="text-left text-sm px-3 py-2 border-b hover:bg-slate-200 capitalize"
                 onClick={() => {
-                  navigate("/student/dashboard/profile");
+                  navigate(
+                    `/${
+                      authenticatedUser?.role === "STUDENT"
+                        ? "student"
+                        : "admin"
+                    }/dashboard/profile`
+                  );
                 }}
               />
               {/* <Button

@@ -62,7 +62,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
             style={{ objectFit: "contain" }}
           />
 
-          <nav className="flex flex-col w-full py-4">
+          <nav className="flex flex-col w-full py-4 gap-1">
             <DrawerMenu
               text="Dashboard"
               icon={<DashboardIcon />}
@@ -85,7 +85,7 @@ function Drawer({ open, toggleHandler }: DrawerProps) {
           </nav>
         </div>
 
-        <nav className="flex flex-col w-full py-2">
+        <nav className="flex flex-col w-full py-2 gap-1">
           <DrawerMenu
             text="Contact Center"
             icon={<SupportIcon />}

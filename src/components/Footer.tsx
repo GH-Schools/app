@@ -35,10 +35,10 @@ function Footer() {
           </span>
           <span className="flex items-center">
             Phone:
-            <a href="tel:+233302424909">+233 30 242 4909</a> (landline)
+            <a href="tel:+233268712345">+233 26 871 2345</a> (landline)
           </span>
           <span className="flex items-center">
-            Alt. 1: <a href="tel:+233204622250">+233 20 462 2250</a>
+            Alt. 1: <a href="tel:+233302424909">+233 30 242 4909</a>
           </span>
           <span className="flex items-center">
             Alt. 2: <a href="tel:+233277622250">+233 27 762 2250</a>

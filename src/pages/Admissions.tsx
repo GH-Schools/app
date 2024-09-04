@@ -100,7 +100,7 @@ const NavigationTab = ({
         </span>
 
         <h2 className="font-bold text-base md:text-base uppercase">
-          Pay for admissions form
+          Buy admissions form
         </h2>
 
         <p
@@ -416,6 +416,14 @@ const Section1 = ({ isActive }: SectionProps) => {
               +233 204 622 250
             </a>
             <br />
+            Whatsapp:{" "}
+            <a
+              href="tel:+233268712345"
+              className="border-b border-dotted text-gray-700"
+            >
+              +233 268 712 345
+            </a>
+            <br />
             Alt. Phone Number:{" "}
             <a
               href="tel:+233544622250"
@@ -579,8 +587,7 @@ const Section2 = ({
         </Formik>
       </section>
 
-      <section className="card flex flex-col flex-none rounded-xl shadow-md items-center justify-center bg-green-800 text-slate-50 w-full p-8 mb-5">
-        {/* <p className="mb-4">NEED MORE HELP?</p> */}
+      {/* <section className="card flex flex-col flex-none rounded-xl shadow-md items-center justify-center bg-green-800 text-slate-50 w-full p-8 mb-5">
         <h2 className="font-bold text-xl capitalize">
           Don't have an account yet?
         </h2>
@@ -606,7 +613,7 @@ const Section2 = ({
         >
           {"Apply for admission"}
         </button>
-      </section>
+      </section> */}
 
       <section className="card flex flex-col flex-none rounded-xl shadow-md items-start justify-center bg-white w-full px-12 py-8 mb-5">
         <p className="mb-4 text-base">Need more help?</p>

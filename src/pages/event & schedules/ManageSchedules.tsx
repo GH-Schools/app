@@ -8,7 +8,7 @@ import { StoreState } from "../../redux/reducers";
 
 import Button from "../../components/common/Button";
 import PlainTable from "../../components/tables/PlainTable";
-import ActionMenu from "../../components/common/ActionMenu";
+import ActionMenu, { PLACEMENT } from "../../components/common/ActionMenu";
 import Calendar, { type CalendarEvent } from "../../components/Calendar";
 
 import { getAllSchedules } from "../../redux/actions/schedule.action";
@@ -61,6 +61,7 @@ function ManageSchedules() {
         const { original } = row;
         return (
           <ActionMenu
+            placement={PLACEMENT.TOP}
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
             menu={
               <div className="flex flex-col" style={{}}>

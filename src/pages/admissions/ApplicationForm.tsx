@@ -40,6 +40,7 @@ import {
   schoolObjectToArray,
 } from "../../utils/admissionForm";
 import { RulesAndRegulations } from "./modal-contents/Index";
+import TextIcon from "../../components/common/TextIcon";
 
 function Application() {
   const [completed, setCompleted] = useState(false);
@@ -840,17 +841,56 @@ const Form = ({
 
                     {index > 0 && (
                       <Button
-                        text="-"
+                        className="self-start md:self-start mt-[5px] mb-[15px] md:mb-0 md:mt-[35px]"
+                        text={
+                          <TextIcon
+                            size="sm"
+                            text={
+                              <div className="flex flex-row items-center justify-center">
+                                <span
+                                  className="flex flex-row items-center justify-center rounded-full"
+                                  style={{
+                                    color: "brown",
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "1px",
+                                    fontWeight: 400,
+                                    fontSize: "22px",
+                                    border: "1px solid brown",
+                                  }}
+                                >
+                                  -
+                                </span>
+                              </div>
+                            }
+                            icon={
+                              <div className="flex flex-row items-center justify-center gap-2">
+                                <span
+                                  className="flex flex-row items-center justify-center rounded-full"
+                                  style={{
+                                    color: "brown",
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "1px",
+                                    fontWeight: 400,
+                                    fontSize: "22px",
+                                    border: "1px solid brown",
+                                  }}
+                                >
+                                  -
+                                </span>
+                                <span>Remove</span>
+                              </div>
+                            }
+                          />
+                        }
                         style={{
-                          color: "red",
-                          fontWeight: 600,
-                          padding: "10px",
+                          color: "brown",
+                          flex: "none",
+                          padding: "0",
+                          fontWeight: 400,
                           fontSize: "12px",
-                          // marginTop: "10px",
                           cursor: "pointer",
-                          alignSelf: "flex-end",
-                          marginBottom: "14px",
-                          border: "1px solid red",
                           textTransform: "capitalize",
                           backgroundColor: "transparent",
                         }}

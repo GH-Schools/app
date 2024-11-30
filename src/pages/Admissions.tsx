@@ -151,11 +151,17 @@ const Section1 = ({ isActive }: SectionProps) => {
           <div
             className={`flex flex-col text-left items-left justify-center w-full`}
           >
-            <h2 className="font-bold text-xl md:text-2xl text-black">
-              Select A Payment Method Below
+            <h2 className="flex gap-3 items-center font-bold text-xl md:text-2xl text-black">
+              <div className="flex items-center justify-center p-1 rounded-full text-white text-sm bg-black w-[25px] h-[25px] flex-none font-bold shadow-sm">
+                {"1"}
+              </div>
+              <span>Payment methods: MoMo or Bank Card</span>
             </h2>
+            <p className="md:mt-3 mt-1 text-gray-600 font-normal text-sm">
+              {`Admissions form cost: GHc ${registrationCost}.00`}
+            </p>
             <p className="md:mt-3 mt-1 text-gray-600 font-normal text-base">
-              {`Admission form into GH Schools costs GHC ${registrationCost}.00`}
+              {`Note: If you choose MoMo option, have the money ready in your account. The system will trigger your MoMo and all you have to do is enter your PIN. No need to ask for our MoMo number`}
             </p>
           </div>
 
@@ -165,15 +171,15 @@ const Section1 = ({ isActive }: SectionProps) => {
         </section>
 
         <section className="card flex flex-col flex-none rounded-xl shadow-md items-center justify-center bg-white w-full px-12 py-8 mb-5">
-          <h2 className="font-bold text-xl w-full capitalize text-black">
-            Pay for your fees online via - mobile or bank card option by filling
-            the form below
+          <h2 className="flex gap-3 items-center font-bold text-xl w-full capitalize text-black">
+            <div className="flex items-center justify-center p-1 rounded-full text-white text-sm bg-black w-[25px] h-[25px] flex-none font-bold shadow-sm">
+              {"2"}
+            </div>
+            <span>Personal Details</span>
           </h2>
           <p className="mt-4 text-base font-normal text-gray-600">
-            Kindly provide your first and last name (surname) below. For
-            example, if your first name is Abigail and last name (surname) is
-            Osei, enter in the field below: Abigail Osei. Also note that, your
-            payment receipt would be sent to the email address provided below.
+            Kindly provide your first and last name (surname) below. Also note that, your
+            payment receipt would be sent to the email address or phone number provided below.
           </p>
 
           <div className="w-full">

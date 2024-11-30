@@ -19,6 +19,7 @@ export type StoreState = {
   Dashboard: {
     isLoading: boolean;
     data: GenericObject[];
+    metrics: GenericObject
   };
   Schedule: {
     isLoading: boolean;

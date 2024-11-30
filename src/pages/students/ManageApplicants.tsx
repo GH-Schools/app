@@ -14,11 +14,12 @@ import {
 
 import PlainTable from "../../components/tables/PlainTable";
 import MetricsCard from "../../components/cards/MetricsCard";
-import ActionMenu from "../../components/common/ActionMenu";
+import ActionMenu, { PLACEMENT } from "../../components/common/ActionMenu";
 import CustomInput from "../../components/common/CustomInput";
 // import { InputComponent } from "../../components/common/FormComponents";
 import {
   getAllAdmissionForms,
+  getAllMetrics,
   updateAdmissionForm,
 } from "../../redux/actions/dashboard.action";
 import { notify } from "../../utils/toastNotification";
@@ -28,9 +29,8 @@ function ManageApplicants() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
-  // const academicSession = useSelector(
-  //   (state: StoreState) => state.App?.sessionInfo
-  // );
+
+  const metrics = useSelector((state: StoreState) => state.Dashboard?.metrics);
 
   const users = useSelector((state: StoreState) => state.Dashboard);
 
@@ -114,6 +114,7 @@ function ManageApplicants() {
         const { original } = row;
         return (
           <ActionMenu
+            placement={PLACEMENT.TOP}
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
             activatorClassName="hover:bg-slate-200"
             edgeOffset={44}
@@ -175,6 +176,7 @@ function ManageApplicants() {
   const data = users?.data;
 
   useEffect(() => {
+    dispatch(getAllMetrics({}));
     dispatch(getAllAdmissionForms({}));
   }, [dispatch]);
 
@@ -193,23 +195,19 @@ function ManageApplicants() {
       <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
         {[
           {
-            title: `${data?.length}`,
+            title: metrics?.totalApplicants ?? "--",
             message: `Total Applications`,
             icon: <PendingIcon fontSize={28} />,
             color: "bg-gray-400",
           },
           {
-            title: `${
-              data?.filter((a) => a?.interviewStatus === "DONE")?.length
-            }`,
+            title: metrics?.completedApplications ?? "--",
             message: `Interviewed Applicants`,
             icon: <ReviewedIcon fontSize={28} />,
             color: "bg-green-600",
           },
           {
-            title: `${
-              data?.filter((a) => a?.interviewStatus === "PENDING")?.length
-            }`,
+            title: metrics?.pendingApplicants ?? "--",
             message: `Pending Applications`,
             icon: <PendingIcon fontSize={28} />,
             color: "bg-yellow-600",

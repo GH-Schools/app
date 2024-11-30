@@ -7,6 +7,13 @@ import DocumentCard from "../../../components/cards/DocumentCard";
 import logo from "../../../assets/favicon.png";
 import { GenericObject } from "../../../interfaces";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
+import {
+  getSingleAdmissionForm,
+  updateAdmissionForm,
+} from "../../../redux/actions/dashboard.action";
+import { notify } from "../../../utils/toastNotification";
+import { getAuthUser } from "../../../utils/storage";
 
 export const RulesAndRegulations = ({
   closeHandler,
@@ -368,7 +375,12 @@ export const RulesAndRegulations = ({
   );
 };
 
-export const AttachmentView = ({ data }: { data: GenericObject }) => {
+export const AttachmentView = ({
+  data,
+}: {
+  data: GenericObject;
+  closeHandler?: () => void;
+}) => {
   console.log(data);
   // const [showEndDate, setShowEndDate] = useState(false);
   return (
@@ -412,23 +424,65 @@ export const AttachmentView = ({ data }: { data: GenericObject }) => {
   );
 };
 
-export const AddComment = ({ data }: { data: GenericObject }) => {
-  console.log(data);
-  // const [showEndDate, setShowEndDate] = useState(false);
+export const AddComment = ({
+  data,
+  closeHandler,
+}: {
+  data: GenericObject;
+  closeHandler: () => void;
+}) => {
+  const dispatch = useDispatch<any>();
+  const authUser = getAuthUser();
+  let prevComments: {
+    userId: any;
+    message: string;
+    timestamp: number;
+    userName: string;
+  }[] = [];
+  try {
+    prevComments = JSON.parse(data?.comments ?? "[]");
+  } catch (error) {
+    console.error(error);
+  }
+
   return (
     <Formik
       initialValues={{
         comment: "",
       }}
-      onSubmit={() => {
+      onSubmit={async (values, helpers) => {
         try {
-          alert("hey");
+          const res = await dispatch(
+            updateAdmissionForm({
+              formId: data?.formId,
+              userId: data?.userId,
+              comments: JSON.stringify(
+                [
+                  {
+                    userId: data?.userId,
+                    message: values?.comment,
+                    timestamp: Date.now(),
+                    userName: authUser?.firstName
+                      ? `${authUser?.firstName} ${authUser?.lastName}`
+                      : "",
+                  },
+                ].concat(prevComments)
+              ),
+            })
+          );
+          console.log(res);
+          if (res?.meta?.requestStatus === "fulfilled") {
+            notify("Sent!", { type: "success" });
+            dispatch(getSingleAdmissionForm(data?.formId));
+            helpers.resetForm();
+            closeHandler();
+          }
         } catch (error) {
           console.error(error);
         }
       }}
     >
-      {({ handleChange, values, handleSubmit }) => (
+      {({ handleChange, values, handleSubmit, isSubmitting }) => (
         <form
           onSubmit={handleSubmit}
           className="flex flex-col w-full gap-2.5 pb-3 w-[95%] sm:w-[45vw] min-w-[300px] px-3"
@@ -436,7 +490,8 @@ export const AddComment = ({ data }: { data: GenericObject }) => {
           <div className="flex flex-row justify-between items-center w-full">
             <h2 className="text-2xl font-medium w-full">Add Comment</h2>
             <Button
-              text={"Send"}
+              text={isSubmitting ? "Sending..." : "Send"}
+              disabled={isSubmitting}
               // href={`/admin/dashboard/schedules/create`}
               className="text-center font-bold bg-green-600"
               style={{
@@ -447,6 +502,7 @@ export const AddComment = ({ data }: { data: GenericObject }) => {
                 padding: "10px",
                 borderRadius: "5px",
                 textTransform: "capitalize",
+                backgroundColor: "transparent",
               }}
             />
           </div>

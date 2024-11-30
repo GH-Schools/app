@@ -1,33 +1,40 @@
-import React from "react"; // { useEffect }
+import React, { useEffect } from "react"; // 
 import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { StoreState } from "../../redux/reducers";
 
 // import { SiGoogleforms } from "react-icons/si";
 import {
   BsPeople as UserIcon,
   BsFileEarmarkText as CardIcon,
-  // BsFillCreditCardFill as CardIcon,
   BsCalendarWeek as EventIcon
+  // BsFillCreditCardFill as CardIcon,
 } from "react-icons/bs";
-import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
+
 import Button from "../../components/common/Button";
+import Notice, { theme as NoticeTheme } from "../../components/common/Notice";
+
 import { getAuthUser } from "../../utils/storage";
 import { GenericObject } from "../../interfaces";
+import { getAllMetrics } from "../../redux/actions/dashboard.action";
 
 function AdminDashboard() {
-  // const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<any>();
   const academicSession = useSelector(
     (state: StoreState) => state.App?.sessionInfo
   );
 
+  const metrics = useSelector(
+    (state: StoreState) => state.Dashboard?.metrics
+  );
+
   const authUser = getAuthUser();
 
-  console.log(academicSession);
+  console.log(academicSession, metrics);
 
-  // useEffect(() => {
-  //   dispatch(get());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllMetrics({}));
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col gap-7 my-5 mx-5">
@@ -114,7 +121,7 @@ function AdminDashboard() {
       <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
         {[
           {
-            title: "0",
+            title: metrics?.totalApplicants ?? "0",
             message: `Total Applications`,
             icon: <CardIcon fontSize={28} />,
           },
@@ -124,7 +131,7 @@ function AdminDashboard() {
             icon: <UserIcon fontSize={28} />,
           },
           {
-            title: "3",
+            title: metrics?.pendingEvents ?? "0",
             message: `Upcoming Events`,
             icon: <EventIcon fontSize={28} />,
           },

@@ -125,6 +125,21 @@ export const getAllAdmissionForms = createAsyncThunk<any, GenericObject>(
   }
 );
 
+export const getAllMetrics = createAsyncThunk<any, GenericObject>(
+  "dashboard/getAllMetrics",
+  async (queryParams: GenericObject = {}) => {
+    try {
+      const response: { payload: any } = await axiosServices.get(
+        `/metrics${createQuery(queryParams)}`
+      );
+      return response?.payload;
+    } catch (error: any) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+);
+
 export const downloadAdmissionForm = createAsyncThunk<any, GenericObject>(
   "dashboard/downloadAdmissionForm",
   async (payload: GenericObject) => {

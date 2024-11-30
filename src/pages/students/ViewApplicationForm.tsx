@@ -1,47 +1,51 @@
 import * as Yup from "yup";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { AiOutlineDownload } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { AiFillEdit, AiOutlineEdit, AiOutlineDownload } from "react-icons/ai";
-import {
-  RiChat2Fill,
-  RiCheckDoubleLine,
-  RiAttachmentLine,
-} from "react-icons/ri";
+
 import {
   InputComponent,
   SelectComponent,
   // FileUploadComponent,
 } from "../../components/common/FormComponents";
-import Modal, { DIRECTION } from "../../components/modals/Modal";
 import Button from "../../components/common/Button";
 import TextSpinner from "../../components/TextSpinner";
 import TextIcon from "../../components/common/TextIcon";
+import Modal, { DIRECTION } from "../../components/modals/Modal";
 
 import { StoreState } from "../../redux/reducers";
 import { validations } from "../../utils/validations";
 import {
   getMyAdmissionForm,
-  downloadAdmissionForm,
   updateAdmissionForm,
+  downloadAdmissionForm,
 } from "../../redux/actions/dashboard.action";
 
 import { NATIONS, REGIONS, schoolCourses } from "../../constants/data";
-import { GenericObject, OptionProps } from "../../interfaces";
+import { OptionProps } from "../../interfaces";
 
-import { notify } from "../../utils/toastNotification";
-import { mergeClassNames } from "../../utils/utilities";
 import {
   schoolArrayToObject,
   schoolObjectToArray,
 } from "../../utils/admissionForm";
+import { notify } from "../../utils/toastNotification";
+import { mergeClassNames } from "../../utils/utilities";
+
+import {
+  Comment,
+  FloatMenu,
+  FieldComponent,
+  SectionIndicator,
+} from "./components/Index";
 import StatusChip from "../../components/common/StatusChip";
-import ActionMenu, {
-  PLACEMENT,
-  EVENT_TYPES,
-} from "../../components/common/ActionMenu";
-import { AttachmentView, AddComment, ConfirmMarkAsInterviewed } from "../admissions/modal-contents/Index";
+
+import {
+  AddComment,
+  AttachmentView,
+  ConfirmMarkAsInterviewed,
+} from "../admissions/modal-contents/Index";
 // import logo from "../../assets/favicon.png";
 
 function ViewApplicationForm() {
@@ -55,6 +59,16 @@ function ViewApplicationForm() {
   const admissionInfo = useSelector(
     (state: StoreState) => state?.Dashboard?.data?.[0]
   );
+
+  const comments = useMemo(() => {
+    let parsedComments = [];
+    try {
+      parsedComments = JSON.parse(admissionInfo?.comments ?? "[]");
+    } catch (error) {
+      console.error(error);
+    }
+    return parsedComments;
+  }, [admissionInfo?.comments]);
 
   return (
     <div
@@ -215,7 +229,7 @@ function ViewApplicationForm() {
                     className="cursor-pointer text-blue-500"
                     onClick={() => {
                       setModalContent(<AttachmentView data={{}} />);
-                      setOpenModal(!openModal)
+                      setOpenModal(!openModal);
                     }}
                   >
                     2 attachments
@@ -231,20 +245,49 @@ function ViewApplicationForm() {
 
       <Form setCompleted={setCompleted} />
 
+      {/* ACTIONS */}
+      <section className="flex flex-row gap-5 bg-white rounded-xl overflow-auto shadow-sm">
+        <fieldset className="flex flex-col flex-grow border rounded-lg m-4">
+          <legend className="px-1">
+            <h3 className="font-bold text-xl text-black">Interviewer's Comments</h3>
+          </legend>
+          <div className="flex flex-col gap-5 items-center justify-start w-full p-4 ">
+            {comments.map((a: any, i: number) => (
+              <Comment
+                key={i}
+                message={a?.message ?? ""}
+                userName={a?.userName ?? "Ade Laja"}
+                timestamp={a?.timestamp ?? Date.now()}
+              />
+            ))}
+          </div>
+        </fieldset>
+      </section>
+
       <FloatMenu
         actions={{
           attach: () => {
-            setModalContent(<AttachmentView data={{}} />);
+            setModalContent(
+              <AttachmentView
+                data={{}}
+                closeHandler={() => setOpenModal(false)}
+              />
+            );
             setOpenModal(!openModal);
           },
           markAsInterviewed: () => {
-            setModalContent(<ConfirmMarkAsInterviewed data={{}} />)
+            setModalContent(<ConfirmMarkAsInterviewed data={{}} />);
             setOpenModal(!openModal);
           },
           comment: () => {
-            setModalContent(<AddComment data={{}} />)
+            setModalContent(
+              <AddComment
+                data={admissionInfo}
+                closeHandler={() => setOpenModal(false)}
+              />
+            );
             setOpenModal(!openModal);
-          }
+          },
         }}
       />
 
@@ -286,10 +329,10 @@ const Form = ({
     (state: StoreState) => state.App?.sessionInfo
   );
 
+  const [combinedFormValues, setCombinedFormValues] = useState({});
   const [activeForm, setActiveForm] = useState<Steps | null>(
     admissionInfo?.hasCompletedForm ? null : Steps.PERSONAL
   );
-  const [combinedFormValues, setCombinedFormValues] = useState({});
 
   const disabledForms = {
     [Steps.PERSONAL]: activeForm !== Steps.PERSONAL || admissionInfoIsLoading,
@@ -1277,17 +1320,56 @@ const Form = ({
 
                     {index > 0 && (
                       <Button
-                        text="-"
+                        className="self-start md:self-start mt-[5px] mb-[15px] md:mb-0 md:mt-[35px]"
+                        text={
+                          <TextIcon
+                            size="sm"
+                            text={
+                              <div className="flex flex-row items-center justify-center">
+                                <span
+                                  className="flex flex-row items-center justify-center rounded-full"
+                                  style={{
+                                    color: "brown",
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "1px",
+                                    fontWeight: 400,
+                                    fontSize: "22px",
+                                    border: "1px solid brown",
+                                  }}
+                                >
+                                  -
+                                </span>
+                              </div>
+                            }
+                            icon={
+                              <div className="flex flex-row items-center justify-center gap-2">
+                                <span
+                                  className="flex flex-row items-center justify-center rounded-full"
+                                  style={{
+                                    color: "brown",
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "1px",
+                                    fontWeight: 400,
+                                    fontSize: "22px",
+                                    border: "1px solid brown",
+                                  }}
+                                >
+                                  -
+                                </span>
+                                <span>Remove</span>
+                              </div>
+                            }
+                          />
+                        }
                         style={{
-                          color: "red",
-                          fontWeight: 600,
-                          padding: "10px",
+                          color: "brown",
+                          flex: "none",
+                          padding: "0",
+                          fontWeight: 400,
                           fontSize: "12px",
-                          // marginTop: "10px",
                           cursor: "pointer",
-                          alignSelf: "flex-end",
-                          marginBottom: "14px",
-                          border: "1px solid red",
                           textTransform: "capitalize",
                           backgroundColor: "transparent",
                         }}
@@ -1527,156 +1609,20 @@ const Form = ({
   );
 };
 
-const SectionIndicator = ({
-  isComplete,
-  isActive,
-  isLoading,
-  sectionNumber,
-  activateFormHandler,
-}: {
-  isComplete: boolean;
-  isActive: boolean;
-  isLoading: boolean;
-  sectionNumber: number;
-  activateFormHandler: (ev?: any) => void;
-}) => {
-  return !isComplete ? (
-    <div
-      className={mergeClassNames(
-        "flex items-center justify-center w-[35px] h-[35px] border-2 border-white rounded-full text-md font-bold text-white transition delay-200 ease-in duration-300",
-        !isActive ? "bg-gray-600" : "ring ring-[#21B591] bg-[#21B591]"
-      )}
-    >
-      {<TextSpinner loading={isLoading} text={`${sectionNumber}`} />}
-    </div>
-  ) : (
-    <button
-      onClick={activateFormHandler}
-      className={mergeClassNames(
-        "flex items-center justify-center border-2 gap-2 border-white text-md font-bold text-[#21B591] transition delay-200 ease-in duration-300"
-      )}
-    >
-      <AiOutlineEdit />
-      <span>Edit</span>
-    </button>
-  );
-};
-
-const FieldComponent: React.FC<{
-  width: string;
-  label: string;
-  value: React.ReactNode;
-  sx: any;
-}> = ({ width, label, sx = {}, value = "", ...rest }) => {
-  return (
-    <div className="flex flex-col" style={{ width, ...sx }}>
-      <span
-        style={{
-          width: "auto",
-          fontSize: "12px",
-          fontWeight: 500,
-          color: "#818793",
-          marginBottom: "3px",
-          textTransform: "capitalize",
-        }}
-      >
-        {label}
-      </span>
-      <div
-        style={{
-          fontSize: "14px",
-          fontWeight: 700,
-          padding: "10px 0px",
-          // width: "100%",
-          borderRadius: "3px",
-          // textTransform: "capitalize",
-          // backgroundColor: "#F6FAFC",
-        }}
-        {...rest}
-      >
-        {value}
-      </div>
-    </div>
-  );
-};
-
-const FloatMenu: React.FC<{ actions: GenericObject }> = ({ actions }) => {
-  const defaultButtonClass = `flex items-center justify-center p-2 rounded-full gap-2 text-md font-bold text-white transition duration-300 transition-ease-in hover:bg-[#ffffff58]`;
-
-  return (
-    <div
-      className="fixed"
-      style={{
-        top: "calc(100vh - 80px - 4.125rem)",
-        left: "calc(100vw - 80px - 4.125rem)",
-      }}
-    >
-      <ActionMenu
-        eventType={EVENT_TYPES.CLICK}
-        placement={PLACEMENT.TOP}
-        activator={"A"}
-        activatorClassName={
-          "flex flex-col items-center justify-center p-4 rounded-full bg-black w-[80px] h-[80px] shadow-xl text-white text-2xl transition duration-200 transition-ease-in hover:bg-[#2F2F2F]"
-        }
-        menu={
-          <div className="flex flex-col items-center gap-3 p-4 rounded-md bg-black min-h-72 w-auto">
-            <button
-              onClick={actions.comment}
-              className={mergeClassNames(defaultButtonClass)}
-              title="Add Comment"
-              disabled={false}
-            >
-              <RiChat2Fill fontSize={24} />
-            </button>
-
-            <button
-              // onClick={activateFormHandler}
-              className={mergeClassNames(defaultButtonClass)}
-              title="Edit Form"
-              disabled={false}
-            >
-              <AiFillEdit fontSize={24} />
-            </button>
-
-            <button
-              onClick={actions.markAsInterviewed}
-              className={mergeClassNames(defaultButtonClass)}
-              title="Mark as complete"
-              disabled={false}
-            >
-              <RiCheckDoubleLine fontSize={24} />
-            </button>
-
-            <button
-              onClick={actions.attach}
-              className={mergeClassNames(defaultButtonClass)}
-            >
-              <RiAttachmentLine fontSize={24} />
-            </button>
-
-            {/* <button
-              // onClick={activateFormHandler}
-              className={mergeClassNames(defaultButtonClass)}
-            >
-              <AiOutlineEdit fontSize={24} />
-            </button> */}
-
-            <div className="w-4/5 border mt-4 opacity-1/2"></div>
-          </div>
-        }
-        menuClassName="fade-up"
-        eventHandler={() => {}}
-      />
-    </div>
-  );
-};
-
 const styles = {
   proceedBtn: {
     backgroundColor: "#21B591",
     color: "white",
     fontSize: "14px",
     fontWeight: 600,
+    textTransform: "capitalize",
+  },
+  headerBtn: {
+    backgroundColor: "transparent",
+    color: "#21B591",
+    fontSize: "12px",
+    fontWeight: 600,
+    padding: "0 15px",
     textTransform: "capitalize",
   },
 };

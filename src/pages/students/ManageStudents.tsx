@@ -11,7 +11,8 @@ import PlainTable from "../../components/tables/PlainTable";
 import MetricsCard from "../../components/cards/MetricsCard";
 
 import { getUsers } from "../../redux/actions/users.action";
-import ActionMenu from "../../components/common/ActionMenu";
+import ActionMenu, { PLACEMENT } from "../../components/common/ActionMenu";
+import { getAllMetrics } from "../../redux/actions/dashboard.action";
 
 function ManageStudents() {
   const dispatch = useDispatch<any>();
@@ -20,6 +21,8 @@ function ManageStudents() {
   );
 
   const users = useSelector((state: StoreState) => state.User);
+
+  const metrics = useSelector((state: StoreState) => state.Dashboard?.metrics);
 
   console.log(academicSession);
 
@@ -68,6 +71,7 @@ function ManageStudents() {
 
         return (
           <ActionMenu
+            placement={PLACEMENT.TOP}
             activator={<MoreIcon style={{ fontSize: "24px" }} />}
             activatorClassName="hover:bg-slate-200"
             menu={<div className="border p-5" style={{}}></div>}
@@ -81,6 +85,7 @@ function ManageStudents() {
 
   useEffect(() => {
     dispatch(getUsers({}));
+    dispatch(getAllMetrics({}));
   }, [dispatch]);
 
   return (
@@ -88,13 +93,13 @@ function ManageStudents() {
       <section className="flex flex-col sm:flex-row gap-5 overflow-auto pb-3">
         {[
           {
-            title: "11.11 K",
+            title: metrics?.activeStudents ?? "--",
             message: `Active Students`,
             icon: <UserIcon fontSize={28} />,
             color: "bg-green-600",
           },
           {
-            title: "250.00 K",
+            title: metrics?.totalApplicants ?? "--",
             message: `Aspirants`,
             icon: <UserIcon fontSize={28} />,
             color: "bg-yellow-600",
